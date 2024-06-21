@@ -1,0 +1,12 @@
+sugar_alc_words = {'erythritol': 'erythritol',
+                   'galactitol': 'galactitol',
+                   'glucitol': 'glucitol',
+                   'isomalt': 'isomalt',
+                   'hydrogenated isomaltulose': 'isomalt',
+                   'isomalto-oligosaccharide': 'isomalt',
+                   'lactitol': 'lactitol',
+                   'maltitol': 'maltitol', 'maltitol syrup': 'maltitol',
+                   'mannitol': 'mannitol',
+                   'polyglycitol': 'polyglycitol', 'polyglycitol syrup': 'polyglycitol',
+                   'sorbitol': 'sorbitol',
+                   'xylitol': 'xylitol'}
