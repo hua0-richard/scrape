@@ -1,6 +1,9 @@
 from util.mappings import mappings
 import re
 
+# Servings_cont
+# Fix Units
+
 nutrition_label_mappings_coles = {
     "Energy": "Cals",
     "Protein": "Protein",
@@ -84,7 +87,13 @@ class Coles(mappings):
         if (con):
             clean.loc[index, 'Netcontent_unit'] = con[2]
             clean.loc[index, 'Netcontent_val'] = str(con[0]*con[1])
+
+            clean.loc[index, 'Containersize_val'] = con[1]
+            clean.loc[index, 'Containersize_unit'] = con[2]
         else:
+            clean.loc[index, 'Containersize_val'] = ''.join(filter(lambda char: char.isdigit() or char == '.', result))
+            clean.loc[index, 'Containersize_unit'] = ''.join(filter(str.isalpha, result))
+
             clean.loc[index, 'Netcontent_org'] = result
             clean.loc[index, 'Netcontent_unit'] = ''.join(filter(str.isalpha, result))
             clean.loc[index, 'Netcontent_val'] = ''.join(filter(lambda char: char.isdigit() or char == '.', result))
@@ -99,25 +108,12 @@ class Coles(mappings):
             raw = raw[len(prefix):].strip()
 
         clean.loc[index, 'ProductName'] = raw.strip()
-
-    @staticmethod
-    def item_ingredients(index, dirty, clean):
-        try:
-            raw_ingredients = dirty.loc[index, 'item_ingredients']
-            if raw_ingredients.startswith('INGREDIENTS:'):
-                raw_ingredients = raw_ingredients[len('INGREDIENTS:'):]
-        except:
-            raw_ingredients = ''
-
-        clean.loc[index, 'Ingredients'] = raw_ingredients
-        tokenized_raw_ingredients = raw_ingredients.split(',')
-        for index in range(len(tokenized_raw_ingredients)):
-            tokenized_raw_ingredients[index] = tokenized_raw_ingredients[index].strip()
-        if (len(tokenized_raw_ingredients) > 1):
-            tokenized_raw_ingredients[-1] = tokenized_raw_ingredients[-1][:-1]
-
     @staticmethod
     def item_label(index, dirty, clean):
+        try:
+            clean.loc[index, 'NutrInfo_org'] = dirty.loc[index, 'item_label']
+        except Exception as e:
+            None
         try:
             lines = dirty.loc[index, 'item_label'].split('\n')
             lines = [s.strip() for s in lines]
