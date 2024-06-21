@@ -28,6 +28,43 @@ def look_ahead(input):
     return result
 
 
+def extract_container_size(product_description):
+    # Regular expression pattern to find container size with unit and quantity in different orders
+    pattern = r'(\d+)\s*(mL|ml|L|l|g|G)\s*[Xx]\s*(\d+)|(\d+)\s*[Xx]\s*(\d+)\s*(mL|ml|L|l|g|G)'
+    match = re.search(pattern, product_description)
+
+    if match:
+        if match.group(1):  # Handles pattern with size first, then quantity
+            container_size = int(match.group(1))
+            unit = match.group(2)
+            num_containers = int(match.group(3))
+        else:  # Handles pattern with quantity first, then size
+            num_containers = int(match.group(4))
+            container_size = int(match.group(5))
+            unit = match.group(6)
+        return num_containers, container_size, unit
+    else:
+        return None
+
+def extract_container_type(product_description):
+    # Define keywords for container types
+    keywords = [
+        'cans', 'bottles', 'tea bags', 'beans', 'ground',
+        'sachets', 'capsules', 'jar', 'cordial', 'powder'
+    ]
+
+    # Construct regular expression pattern dynamically
+    pattern = r'\b(?:' + '|'.join(re.escape(k) for k in keywords) + r')\b'
+
+    # Search for the pattern in the product description
+    match = re.search(pattern, product_description, re.IGNORECASE)
+
+    if match:
+        container_type = match.group()
+        return container_type.strip()
+    else:
+        return None
+
 class Coles(mappings):
     @staticmethod
     def name(index, dirty, clean):
@@ -42,12 +79,19 @@ class Coles(mappings):
 
         split = raw.find("|")
         result = raw[split + 1:].strip()
-        if ('pack' in result.lower()):
-            clean.loc[index, 'Pack_type'] = 'Pack'
+
+        con = extract_container_size(raw)
+        if (con):
+            clean.loc[index, 'Netcontent_unit'] = con[2]
+            clean.loc[index, 'Netcontent_val'] = str(con[0]*con[1])
         else:
             clean.loc[index, 'Netcontent_org'] = result
             clean.loc[index, 'Netcontent_unit'] = ''.join(filter(str.isalpha, result))
-            clean.loc[index, 'Netcontent_val'] = ''.join(filter(str.isdigit, result))
+            clean.loc[index, 'Netcontent_val'] = ''.join(filter(lambda char: char.isdigit() or char == '.', result))
+
+        pack = extract_container_type(raw)
+        if pack:
+            clean.loc[index, 'Pack_type'] = pack
 
         if (index != -1):
             raw = raw[:split].strip()
@@ -161,3 +205,5 @@ class Coles(mappings):
             clean.loc[index, 'Containersize_org'] = end
         except Exception as e:
             None
+
+
