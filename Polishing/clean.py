@@ -3,7 +3,7 @@ import logging
 import os
 import math
 from util import headings
-from specific.coles_drinks import ColesDrinks as m
+from specific.soriana import Soriana as m
 import sys
 
 logging.basicConfig(level=logging.DEBUG, format='[%(levelname)] %(message)s')
