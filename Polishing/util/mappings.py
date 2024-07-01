@@ -10,28 +10,28 @@ class mappings:
     @staticmethod
     def country(index, clean):
         try:
-            clean.loc[index, 'Country'] = '1'
+            clean.loc[index, 'Country'] = ''
         except Exception as e:
             None
     
     @staticmethod
     def region(index, clean):
         try:
-            clean.loc[index, 'Region_AUS'] = 4
+            clean.loc[index, 'Region'] = ''
         except Exception as e:
             None
 
     @staticmethod
     def city(index, clean):
         try:
-            clean.loc[index, 'City_AUS'] = 7
+            clean.loc[index, 'City'] = ''
         except Exception as e:
             None
 
     @staticmethod
     def store(index, clean):
         try:
-            clean.loc[index, 'Store_AUS'] = 4
+            clean.loc[index, 'Store'] = ''
         except Exception as e:
             None
 
