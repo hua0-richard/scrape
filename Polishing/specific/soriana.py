@@ -19,4 +19,5 @@ def basics(input, index, clean, dirty):
                 val = tmp.replace(k, "").strip()
                 val = re.sub(r'\D', '', val)
                 clean.loc[index, nutrition_label_mappings_soriana[key]] = val
-                
+                if (nutrition_label_mappings_soriana[key] == 'Cals_value_pp'):
+                    clean.loc[index, 'Cals_unit_pp'] = 'kcal'
