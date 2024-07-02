@@ -1,3 +1,8 @@
+##TODO##
+# Added Sugars
+# p100g carb, sugar, energy calc
+# added sugars
+
 from util.mappings import mappings
 import re
 import pandas as pd
