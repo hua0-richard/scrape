@@ -26,15 +26,20 @@ def p100g(input, index, clean, type_a, type_b):
     lines = input.split('\n')
     net_content = 'Contenido Neto'
     net_content_num = 0
+    default = ""
 
     for l in lines:
         if net_content in l:
             tmp = l
             val = tmp.replace(net_content, "").strip()
+            default = val
+            unit = re.sub(r'[^a-zA-Z]', '', val)
             val = re.sub(r'[^0-9.]', '', val)
             net_content_num = float(val)
             clean.loc[index, type_a] =  (net_content_num / 100) * float(clean.loc[index, type_b])
             clean.loc[index, 'Netcontent_val'] = net_content_num
+            clean.loc[index, 'Netcontent_unit'] = unit
+            clean.loc[index, 'Netcontent_org'] = default
             return
 
 
@@ -73,6 +78,7 @@ def container_size(input, index, clean):
 
     servings_per_container_val = -1
     serving_size_val = -1
+    default = ""
 
     for l in lines:
         if servings_per_container in l:
@@ -83,6 +89,7 @@ def container_size(input, index, clean):
         if serving_size in l:
             tmp = l
             val = tmp.replace(serving_size, "").strip()
+            default = val
             val = re.sub(r'[^0-9.]', '', val)
             serving_size_val = float(val)
 
@@ -91,6 +98,8 @@ def container_size(input, index, clean):
     if (serving_size_val > 0 and servings_per_container_val > 0):
         clean.loc[index, 'Containersize_val'] = contval
         clean.loc[index, 'Containersize_unit'] = 'ml'
+        clean.loc[index, 'Containersize_org'] = default
+
         
 
             
