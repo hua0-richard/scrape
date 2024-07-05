@@ -143,15 +143,29 @@ class Soriana(mappings):
         if (pd.isnull(clean.loc[index, 'TotalSugars_g_pp']) == False):
             p100g(input = dirty.loc[index, 'item_label'], index = index, clean = clean, type_a = 'TotalSugars_g_p100g', type_b = 'TotalSugars_g_pp')
         
-        @staticmethod
-        def country(index, clean):
-            clean.loc[index, 'Country'] = 'Mexico'
-        @staticmethod
-        def indices(index, clean):
-            INDEX = 30
-            clean.loc[index, 'ID'] = 30
+    @staticmethod
+    def country(index, clean):
+        clean.loc[index, 'Country'] = 'Mexico'
+    
+    @staticmethod
+    def store(index, clean):
+        clean.loc[index, 'Store'] = 'Soriana'
 
+    ### CHANGES ###
 
-        
-        
+    @staticmethod
+    def indices(index, clean, dirty):
+        INDEX = 30
+        clean.loc[index, 'ID'] = 30
+
+    @staticmethod
+    def city(index, clean):
+        CITY = "Veracruz"
+        clean.loc[index, 'City'] = CITY            
+    
+    @staticmethod
+    def region(index, clean):
+        REGION = "Veracruz"
+        clean.loc[index, 'Region'] = REGION
+    
 
