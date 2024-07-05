@@ -44,7 +44,11 @@ def p100g(input, index, clean, type_a, type_b):
             val = re.sub(r'[^0-9.]', '', val)
             net_content_num = float(val)
             nums = re.sub(r'\D', '', clean.loc[index, type_b])
-            clean.loc[index, type_a] =  round((net_content_num / 100) * float(nums), 2)
+            if (net_content_num < 10):
+                print(net_content_num)
+                clean.loc[index, type_a] =  round((100 / (net_content_num * 1000)) * float(nums),2)
+            else:
+                clean.loc[index, type_a] =  round((100 / net_content_num) * float(nums),2)
             clean.loc[index, 'Netcontent_val'] = net_content_num
             clean.loc[index, 'Netcontent_org'] = default
             clean.loc[index, 'Netcontent_unit'] = val_unit
@@ -134,10 +138,10 @@ class Soriana(mappings):
         clean.loc[index, 'NutrInfo_org'] = dirty.loc[index, 'item_label']
         clean.loc[index, 'NutrLabel'] = dirty.loc[index, 'item_label']
 
-        # if (pd.isnull(clean.loc[index, 'TotalCarb_g_pp']) == False):
-        #     p100g(input = dirty.loc[index, 'item_label'], index = index, clean = clean, type_a = 'TotalCarb_g_p100g', type_b = 'TotalCarb_g_pp')
-        # if (pd.isnull(clean.loc[index, 'TotalSugars_g_pp']) == False):
-        #     p100g(input = dirty.loc[index, 'item_label'], index = index, clean = clean, type_a = 'TotalSugars_g_p100g', type_b = 'TotalSugars_g_pp')
+        if (pd.isnull(clean.loc[index, 'TotalCarb_g_pp']) == False):
+            p100g(input = dirty.loc[index, 'item_label'], index = index, clean = clean, type_a = 'TotalCarb_g_p100g', type_b = 'TotalCarb_g_pp')
+        if (pd.isnull(clean.loc[index, 'TotalSugars_g_pp']) == False):
+            p100g(input = dirty.loc[index, 'item_label'], index = index, clean = clean, type_a = 'TotalSugars_g_p100g', type_b = 'TotalSugars_g_pp')
         
         @staticmethod
         def country(index, clean):
