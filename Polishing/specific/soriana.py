@@ -40,12 +40,11 @@ def p100g(input, index, clean, type_a, type_b):
             clean.loc[index, 'Netcontent_org'] = tmp
             val = tmp.replace(net_content, "").strip()
             default = val
-            unit = re.sub(r'[^a-zA-Z]', '', val)
             val_unit = re.sub(r'[^a-zA-Z]', '', val)
             val = re.sub(r'[^0-9.]', '', val)
             net_content_num = float(val)
             nums = re.sub(r'\D', '', clean.loc[index, type_b])
-            clean.loc[index, type_a] =  (net_content_num / 100) * float(nums)
+            clean.loc[index, type_a] =  round((net_content_num / 100) * float(nums), 2)
             clean.loc[index, 'Netcontent_val'] = net_content_num
             clean.loc[index, 'Netcontent_org'] = default
             clean.loc[index, 'Netcontent_unit'] = val_unit
