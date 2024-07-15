@@ -18,18 +18,6 @@ def setup_unimarc(driver, EXPLICIT_WAIT_TIME, site_location_df, ind):
     setLocation_unimarc(driver, address, EXPLICIT_WAIT_TIME)
     time.sleep(3)
 
-
-## This removes cookies popup for unimarc
-def checkRemoveCookiesNotice_unimarc(driver, EXPLICIT_WAIT_TIME):
-    try:
-        # Wait a bit as it pops up late and explicit wait doesn't quite work..
-        time.sleep(2)
-        ## Find cookies
-    except:
-        None
-
-
-## This sets location for Lablaws
 def setLocation_unimarc(driver, address, EXPLICIT_WAIT_TIME):
     # Login
     tmp = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
