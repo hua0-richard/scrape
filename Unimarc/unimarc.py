@@ -161,50 +161,9 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                 None
 
             try:
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind)
             except:
-                try:
-                    time.sleep(1)
-                    new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
-                except:
-                    # This will fail if connection issue
-                    driver.close()
-                    driver = webdriver.Edge()
-                    driver.maximize_window()
-
-                    url = site_location_df.loc[ind, 0]
-                    driver.get(url)
-
-                    setup_unimarc(driver, EXPLICIT_WAIT_TIME, site_location_df, ind)
-                    time.sleep(3)
-                    driver.get(item_url)
-
-                    try:
-                        new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
-
-                    except:
-                        # This will fail if connection issue
-                        driver.close()
-                        driver = webdriver.Edge()
-                        driver.maximize_window()
-
-                        url = site_location_df.loc[ind, 0]
-                        driver.get(url)
-
-                        setup_unimarc(driver, EXPLICIT_WAIT_TIME, site_location_df, ind)
-                        time.sleep(3)
-                        driver.get(item_url)
-
-                        try:
-                            time.sleep(5)
-                            new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
-
-                        except:
-                            try:
-                                driver.find_element(By.XPATH, '//*[@title="Error 404"]')
-                                continue
-                            except:
-                                raise Exception('Item error')
+                None
             site_items_df.loc[len(site_items_df),] = new_row
 
         site_items_df.to_csv('output/tmp/ind' + str(ind) + 'aisle-sub_' + str(aisle) + '.csv', index=False)
@@ -214,8 +173,8 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
     return (site_items_df)
 
 
-def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
-    time.sleep(3)
+def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
+    time.sleep(5)
     subaisle = ''
     subsubaisle = ''
     try:
@@ -235,31 +194,26 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
     topRight = driver.find_element(By.CLASS_NAME, 'title_title__h1__PgNtb ')
     topRight = topRight.find_element(By.XPATH, './../..')
 
-    # Scrap name
     try:
         name = topRight.find_element(By.XPATH, './/h1[contains(@class,"title_title__h1__PgNtb ")]').text
     except:
         name = ''
-    # Scrap brand
+
     try:
         brand = topRight.find_element(By.XPATH, './/p[contains(@class,"ProductDetail_textBrand__IRQMn")]').text
     except:
         brand = None
 
-    # Scrap size
     try:
         size = topRight.find_element(By.XPATH, './div/p[contains(@class,"Text_text--lg__GZWsa")]').text
     except:
         size = None
 
-    # SKU
     try:
-        SKU = topRight.find_element(By.XPATH, './div/p[contains(@class,"Text_text--xs__Snd0F")]').text.replace('Sku: ',
-                                                                                                               '')
+        SKU = topRight.find_element(By.XPATH, './div/p[contains(@class,"Text_text--xs__Snd0F")]').text.replace('Sku: ',                                                                                                 '')
     except:
         SKU = None
 
-    # Scrap price
     price = None
     old_price = None
     multi_price = None
@@ -280,18 +234,14 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
 
     try:
         tmp = topRight.find_elements(By.XPATH, './/*[contains(@class,"ListPrice_listPrice__mdFUB")]')
-
         pricePerUnit = tmp[0].text
         old_price = tmp[1].text
         old_pricePerUnit = tmp[2].text
     except:
         None
 
-    # Item Index for matching
     itemIdx = f"{ind}_{name}"
 
-    # Scrap pictures
-    # imgs = driver.find_element(By.XPATH,'//img[@height="480px"]')
     try:
         imgs = driver.find_element(By.CLASS_NAME, 'react-multi-carousel-track ')
         imgs = imgs.find_elements(By.XPATH, './li/picture/img')
@@ -304,7 +254,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
 
     img_urls = []
     for img_idx in range(len(imgs)):
-        # time.sleep(4*random.random())
         src = imgs[img_idx].get_attribute('src')
         img_urls.append(src)
         try:
@@ -313,46 +262,28 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
         except:
             None
 
-    # Allergens
-    try:
-        driver.find_element(By.CLASS_NAME, 'ProductCertificates_buttonMoreLess__2MMup').click()
-    except:
-        None
-    try:
-        allergens = driver.find_elements(By.CLASS_NAME, 'ProductCertificates_certificate__rgpef ')
-        allergens_split = []
-        for a in allergens:
-            allergens_split.append(a.text)
-        allergen_info = ', '.join(allergens_split)
-    except:
-        allergen_info = None
-
-    # Scrape Description
     try:
         find_tmp = driver.find_element(By.ID, 'Description')
         description = find_tmp.find_elements(By.XPATH, './../../../section')[1].text
     except:
         description = None
-    # Ingredients
+
     try:
         find_tmp = driver.find_element(By.ID, 'Ingredients')
         item_ingredients = find_tmp.find_elements(By.XPATH, './../../../section')[1].text
     except:
         item_ingredients = None
 
-    # itemNum
     try:
         itemNum = None
     except:
         itemNum = None
 
-    # UPC
     try:
         UPC = None
     except:
         UPC = None
 
-    # Scrap Nutrition
     item_label = None
     serving = None
     try:
@@ -369,6 +300,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
     except:
         None
 
+    print(item_label)
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
                'aisle': aisle, 'subaisle': subaisle,
@@ -379,7 +311,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
                'itemNum': itemNum, 'description': description, 'serving': serving,
                'img_urls': ', '.join(img_urls), 'item_label': item_label,
                'item_ingredients': item_ingredients, 'url': item_url,
-               'SKU': SKU, 'UPC': UPC, 'allergen_info': allergen_info,
+               'SKU': SKU, 'UPC': UPC,
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
     print(new_row)
     return new_row
