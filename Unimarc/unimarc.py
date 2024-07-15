@@ -126,47 +126,51 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
         aisle_urls = []
         item_urls = []
-        # try to find file
-        for c in category_links:
-            print(c.get_attribute('href'))
-            aisle_urls.append(c.get_attribute('href'))
+        try:
+            df = pd.read_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_urls.csv", header=None, names=['value'])
+            item_urls = df['value'].tolist()
+            print(item_urls)
+        except Exception as e:
+            print(e)
+            for c in category_links:
+                print(c.get_attribute('href'))
+                aisle_urls.append(c.get_attribute('href'))
 
-        for a in aisle_urls:
-            driver.get(a)
-            count = 2
+            for a in aisle_urls:
+                driver.get(a)
+                count = 2
 
-            while (True):
-                time.sleep(10)
-                try:
-                    error_message = driver.find_element(By.XPATH,
-                                                        "//p[text()='Intenta seleccionando una menor cantidad de filtros para un']")
-                    break
-                except:
-                    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                        EC.presence_of_element_located((By.TAG_NAME, "section"))
-                    )
-                    containers = driver.find_element(By.TAG_NAME, "section")
-                    product_pages = containers.find_elements(By.TAG_NAME, "section")
-                    WebDriverWait(driver, 20).until(
-                        EC.presence_of_element_located((By.TAG_NAME, "a"))
-                    )
-                    for p in product_pages:
-                        product_links = p.find_elements(By.CSS_SELECTOR, "a.Link_link___5dmQ.Link_link--none__BjwPj")
-                        for pl in product_links:
-                            print(pl.get_attribute('href'))
-                            print(pl.get_attribute('text'))
-                            item_urls.append(pl.get_attribute('href'))
-                    driver.get(f"{a}?page={count}")
-                    count += 1
+                while (True):
+                    time.sleep(10)
+                    try:
+                        error_message = driver.find_element(By.XPATH,
+                                                            "//p[text()='Intenta seleccionando una menor cantidad de filtros para un']")
+                        break
+                    except:
+                        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                            EC.presence_of_element_located((By.TAG_NAME, "section"))
+                        )
+                        containers = driver.find_element(By.TAG_NAME, "section")
+                        product_pages = containers.find_elements(By.TAG_NAME, "section")
+                        WebDriverWait(driver, 20).until(
+                            EC.presence_of_element_located((By.TAG_NAME, "a"))
+                        )
+                        for p in product_pages:
+                            product_links = p.find_elements(By.CSS_SELECTOR, "a.Link_link___5dmQ.Link_link--none__BjwPj")
+                            for pl in product_links:
+                                print(pl.get_attribute('href'))
+                                print(pl.get_attribute('text'))
+                                item_urls.append(pl.get_attribute('href'))
+                        driver.get(f"{a}?page={count}")
+                        count += 1
 
-        item_urls = getItem_urls(driver, EXPLICIT_WAIT_TIME)
-        pd.DataFrame(item_urls).to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc.csv", index=False)
         print('(Number of Items: ' + str(len(item_urls)) + ')')
+        pd.DataFrame(item_urls).to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_urls.csv", index=False)
+        time.sleep(10)
 
         # Loop through items to scrape information
-        for item_url_idx in range(len(item_urls)):
-            item_url = item_urls[item_url_idx]
-            # Go to product url
+        for i in range(len(item_urls)):
+            item_url = item_urls[i]
             driver.get(item_url)
 
             try:
@@ -176,11 +180,11 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                 None
 
             try:
-                new_row = scrap_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
             except:
                 try:
                     time.sleep(1)
-                    new_row = scrap_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
+                    new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
                 except:
                     # This will fail if connection issue
                     driver.close()
@@ -195,7 +199,7 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                     driver.get(item_url)
 
                     try:
-                        new_row = scrap_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
+                        new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
 
                     except:
                         # This will fail if connection issue
@@ -212,7 +216,7 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
                         try:
                             time.sleep(5)
-                            new_row = scrap_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
+                            new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
 
                         except:
                             try:
@@ -229,33 +233,7 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
     return (site_items_df)
 
 
-def getItem_urls(driver, EXPLICIT_WAIT_TIME):
-    urls = []
-    while True:
-        items = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.visibility_of_all_elements_located((By.CLASS_NAME, 'abc__shelves '))
-        )
-        for item in items:
-            urls.append(item.find_element(By.XPATH, './section/div/div/div/a').get_attribute('href'))
-
-        try:
-            nextPage = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.visibility_of_element_located((By.ID, 'ArrowRightNavigate'))
-            )
-            next_url = nextPage.find_element(By.XPATH, './../..').get_attribute('href')
-            nextPage.click()
-            i = 0
-            while driver.current_url != next_url:
-                time.sleep(1)
-                i = i + 1
-                if (i > 15):
-                    raise Exception('Page taking too long to load')
-        except:
-            break
-    return (urls)
-
-
-def scrap_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
+def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
     breadcrumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
         EC.visibility_of_all_elements_located((By.CLASS_NAME, 'Breadcrumbs_breadcrumbsItems__yelUf '))
     )

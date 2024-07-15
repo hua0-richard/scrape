@@ -9,7 +9,7 @@ import unimarc as bot
 
 def main():
     site_location_df = pd.read_excel('urlLocations.xlsx', header=None)
-    EXPLICIT_WAIT_TIME = 30
+    EXPLICIT_WAIT_TIME = 60
 
     for ind in [41,42,43,44]:
         print('\nIndex: ',ind)
