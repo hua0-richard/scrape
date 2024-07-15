@@ -215,10 +215,10 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
+    time.sleep(3)
     subaisle = ''
     subsubaisle = ''
     try:
-        time.sleep(3)
         categories = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_all_elements_located((By.XPATH, "//*[@data-divider='/']"))
         )
@@ -369,7 +369,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
     except:
         None
 
-    # Save results (processing in later step)
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
                'aisle': aisle, 'subaisle': subaisle,
@@ -384,18 +383,3 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
     print(new_row)
     return new_row
-
-
-def captcha_unimarc1(driver, EXPLICIT_WAIT_TIME):
-    # As needed
-    try:
-        None
-    except:
-        None
-
-
-def captcha_unimarc2(driver, EXPLICIT_WAIT_TIME):
-    try:
-        None
-    except:
-        None
