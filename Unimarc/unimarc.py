@@ -222,18 +222,13 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
-    breadcrumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+    breadcrumbs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
         EC.visibility_of_all_elements_located((By.CLASS_NAME, 'Breadcrumbs_breadcrumbsItems__yelUf '))
     )
+
     # Scrap aisles
-    try:
-        subaisle = breadcrumb[2].text
-    except:
-        subaisle = ''
-    try:
-        subsubaisle = breadcrumb[3].text
-    except:
-        subsubaisle = ''
+    subaisle = breadcrumbs[2].text
+    subsubaisle = breadcrumbs[3].text
 
     # Top Right data
     topRight = driver.find_element(By.CLASS_NAME, 'title_title__h1__PgNtb ')
