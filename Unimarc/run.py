@@ -1,10 +1,11 @@
 # Packages for scrapping
-from selenium import webdriver as uc
+#from selenium import webdriver as uc
 import pandas as pd
 
 import time
 # Load store file
 import unimarc as bot
+import undetected_chromedriver as uc
 
 
 def main():
