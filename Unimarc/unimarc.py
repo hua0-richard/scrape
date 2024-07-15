@@ -18,6 +18,7 @@ def setup_unimarc(driver, EXPLICIT_WAIT_TIME, site_location_df, ind):
     setLocation_unimarc(driver, address, EXPLICIT_WAIT_TIME)
     time.sleep(3)
 
+
 def setLocation_unimarc(driver, address, EXPLICIT_WAIT_TIME):
     # Login
     tmp = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -137,7 +138,8 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                             EC.presence_of_element_located((By.TAG_NAME, "a"))
                         )
                         for p in product_pages:
-                            product_links = p.find_elements(By.CSS_SELECTOR, "a.Link_link___5dmQ.Link_link--none__BjwPj")
+                            product_links = p.find_elements(By.CSS_SELECTOR,
+                                                            "a.Link_link___5dmQ.Link_link--none__BjwPj")
                             for pl in product_links:
                                 print(pl.get_attribute('href'))
                                 print(pl.get_attribute('text'))
@@ -222,7 +224,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
         size = None
 
     try:
-        SKU = topRight.find_element(By.XPATH, './div/p[contains(@class,"Text_text--xs__Snd0F")]').text.replace('Sku: ','')
+        SKU = topRight.find_element(By.XPATH, './div/p[contains(@class,"Text_text--xs__Snd0F")]').text.replace('Sku: ',
+                                                                                                               '')
     except:
         SKU = None
 
