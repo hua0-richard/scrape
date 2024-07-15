@@ -156,7 +156,8 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
             None
 
         for i in range(len(item_urls)):
-            if item_urls[i] not in df_data['url'].values:
+            if not df_data.empty and item_urls[i] in df_data['url'].values:
+                print('Item Already Exists!')
                 continue
             item_url = item_urls[i]
             driver.get(item_url)
@@ -218,7 +219,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
         size = None
 
     try:
-        SKU = topRight.find_element(By.XPATH, './div/p[contains(@class,"Text_text--xs__Snd0F")]').text.replace('Sku: ',                                                                                                 '')
+        SKU = topRight.find_element(By.XPATH, './div/p[contains(@class,"Text_text--xs__Snd0F")]').text.replace('Sku: ','')
     except:
         SKU = None
 
