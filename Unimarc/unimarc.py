@@ -292,7 +292,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
         None
 
     # Item Index for matching
-    itemIdx = 'Ind' + str(ind) + 'S' + str(idx) + '_A' + aisle + '_SA' + subaisle + '_I' + name
+    itemIdx = f"{ind}_{name}"
 
     # Scrap pictures
     # imgs = driver.find_element(By.XPATH,'//img[@height="480px"]')
