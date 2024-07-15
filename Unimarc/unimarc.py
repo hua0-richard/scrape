@@ -108,7 +108,7 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
         aisle_urls = []
         item_urls = []
         try:
-            df = pd.read_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_urls.csv", header=None, names=['value'])
+            df = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_unimarc_urls.csv", header=None, names=['value'])
             item_urls = df['value'].tolist()
             print(item_urls)
         except Exception as e:
@@ -150,8 +150,10 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
         time.sleep(10)
 
         df_data = pd.DataFrame()
+        site_items_df = pd.DataFrame()
         try:
-            df_data = pd.read_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_data.csv")
+            df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_unimarc_data.csv")
+            site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
         except:
             None
 
@@ -172,14 +174,15 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                 new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind)
             except:
                 None
-            site_items_df.loc[len(site_items_df),] = new_row
+            site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+            site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
 
             if i % 10 == 0:
-                site_items_df.to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_data.csv", index=False)
+                site_items_df.to_csv(f"output/tmp/index_{str(ind)}_{aisle}_unimarc_data.csv", index=False)
 
-        site_items_df.to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_data.csv", index=False)
+        site_items_df.to_csv(f"output/tmp/index_{str(ind)}_{aisle}_unimarc_data.csv", index=False)
 
-    return (site_items_df)
+    return site_items_df
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
