@@ -215,12 +215,19 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
+    subaisle = ''
+    subsubaisle = ''
     try:
         categories = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_all_elements_located((By.XPATH, "//div[@data-divider]//a"))
+            EC.presence_of_all_elements_located((By.XPATH, "//*[@data-divider='/']"))
         )
-        subaisle = categories[2]
-        subsubaisle = categories[3].text
+
+        tmp_subaisle_text = categories[2].find_element(By.XPATH, './a | ./p').text
+        tmp_subsubaisle_text = categories[3].find_element(By.XPATH, './a | ./p').text
+        print(tmp_subaisle_text)
+        print(tmp_subsubaisle_text)
+        subaisle = tmp_subsubaisle_text
+        subsubaisle = tmp_subsubaisle_text
     except Exception as e:
         print(e)
 
