@@ -39,8 +39,8 @@ def setLocation_unimarc(driver, address, EXPLICIT_WAIT_TIME):
     time.sleep(5)
     # Set Location
     shop = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.presence_of_all_elements_located((By.CSS_SELECTOR, "svg#shop")))
-    shop[0].click()
+        EC.visibility_of_element_located((By.XPATH, "//p[text()='Retiro en tienda']")))
+    shop.click()
 
     address_split = address.split(',')
     region = address_split[len(address_split) - 1].strip()
