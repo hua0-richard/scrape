@@ -36,19 +36,11 @@ def setLocation_unimarc(driver, address, EXPLICIT_WAIT_TIME):
         EC.element_to_be_clickable((By.ID, "login-step__submit-button"))
     )
     continue_button.click()
-
+    time.sleep(5)
     # Set Location
-    count = 0
-    while count < 5:
-        try:
-            shop = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.visibility_of_element_located((By.ID, 'Shop'))
-            )
-            shop.click()
-            count = 6
-        except:
-            time.sleep(2)
-            count += 1
+    shop = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, "svg#shop")))
+    shop[0].click()
 
     address_split = address.split(',')
     region = address_split[len(address_split) - 1].strip()
@@ -78,6 +70,7 @@ def setLocation_unimarc(driver, address, EXPLICIT_WAIT_TIME):
     opts[0].find_element(By.XPATH, './..').click()
 
     driver.find_element(By.XPATH, '//*[@aria-label="Confirmar tienda"]').click()
+    print("Login and Location Complete")
 
 
 def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=None,
