@@ -11,7 +11,7 @@ import urllib.request
 import time
 import datetime
 import pytz
-
+import re
 
 def setup_unimarc(driver, EXPLICIT_WAIT_TIME, site_location_df, ind):
     address = site_location_df.loc[ind, 1]
@@ -234,16 +234,15 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
     multi_price = None
     old_pricePerUnit = None
     pricePerUnit = None
-    try:
-        tmp = topRight.find_elements(By.XPATH, './div/div/div//*[contains(@class,"Text_text--semibold__MukSj")]')
-        tmp_text = []
-        for t in tmp:
-            tmp_text.append(t.text)
 
-        if len(tmp_text) > 1:
-            multi_price = ' '.join(tmp_text)
-        else:
-            price = tmp_text[0]
+    try:
+        compact_name = re.sub(r'\s+', '', name).lower()
+        priceid = f"listPrice__offerPrice--discountprice-{compact_name}"
+        price_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.visibility_of_element_located(
+                (By.ID, priceid))
+        )
+        price = price_element.text
     except:
         None
 
