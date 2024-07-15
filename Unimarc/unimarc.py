@@ -386,8 +386,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
                'item_ingredients': item_ingredients, 'url': item_url,
                'SKU': SKU, 'UPC': UPC, 'allergen_info': allergen_info,
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
-
-    return (new_row)
+    print(new_row)
+    return new_row
 
 
 def captcha_unimarc1(driver, EXPLICIT_WAIT_TIME):
