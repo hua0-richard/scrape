@@ -26,10 +26,7 @@ def main():
         new_data = bot.scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME,idx='Unimarc',
                                             aisles=['Bebidas y Licores'], ind=ind)
 
-        new_data['store'] = '3'
-
-
-        new_data.to_csv('output/ind'+str(ind)+'aisle-Dairy.csv', index = False)
+        new_data['store'] = 'unimarc'
 
 if __name__ == '__main__':
     res = main()

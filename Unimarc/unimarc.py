@@ -149,8 +149,15 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
         print('(Number of Items: ' + str(len(item_urls)) + ')')
         time.sleep(10)
 
-        # Loop through items to scrape information
+        df_data = pd.DataFrame()
+        try:
+            df_data = pd.read_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_data.csv")
+        except:
+            None
+
         for i in range(len(item_urls)):
+            if item_urls[i] not in df_data['url'].values:
+                continue
             item_url = item_urls[i]
             driver.get(item_url)
 
@@ -166,10 +173,11 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                 None
             site_items_df.loc[len(site_items_df),] = new_row
 
-        site_items_df.to_csv('output/tmp/ind' + str(ind) + 'aisle-sub_' + str(aisle) + '.csv', index=False)
-        print_time = time.time() - time_aisle
-        print('Time for aisle: ' + str(round(print_time, 1)) + 's (' + str(
-            round(print_time / len(item_urls), 2)) + 's est. per item)')
+            if i % 10 == 0:
+                site_items_df.to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_data.csv", index=False)
+
+        site_items_df.to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_data.csv", index=False)
+
     return (site_items_df)
 
 
