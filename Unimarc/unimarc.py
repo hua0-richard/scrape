@@ -144,9 +144,9 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                                 item_urls.append(pl.get_attribute('href'))
                         driver.get(f"{a}?page={count}")
                         count += 1
+            pd.DataFrame(item_urls).to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_urls.csv", index=False)
 
         print('(Number of Items: ' + str(len(item_urls)) + ')')
-        pd.DataFrame(item_urls).to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_urls.csv", index=False)
         time.sleep(10)
 
         # Loop through items to scrape information
@@ -215,13 +215,14 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
-    breadcrumbs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.visibility_of_all_elements_located((By.CLASS_NAME, 'Breadcrumbs_breadcrumbsItems__yelUf '))
-    )
-
-    # Scrap aisles
-    subaisle = breadcrumbs[2].text
-    subsubaisle = breadcrumbs[3].text
+    try:
+        categories = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//div[@data-divider]//a"))
+        )
+        subaisle = categories[2]
+        subsubaisle = categories[3].text
+    except Exception as e:
+        print(e)
 
     # Top Right data
     topRight = driver.find_element(By.CLASS_NAME, 'title_title__h1__PgNtb ')
