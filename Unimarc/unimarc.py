@@ -164,21 +164,16 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
         for i in range(len(item_urls)):
             if not df_data.empty and item_urls[i] in df_data['url'].values:
-                print('Item Already Exists!')
+                print(f'{ind}-{i} Item Already Exists!')
                 continue
             item_url = item_urls[i]
             driver.get(item_url)
 
             try:
-                driver.find_element(By.XPATH, '//*[@title="Error 404"]')
-                continue
-            except:
-                None
-
-            try:
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind)
-            except:
-                None
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, i)
+            except Exception as e:
+                print(e)
+                new_row = None
             site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
             site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
 
@@ -190,7 +185,7 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
     return site_items_df
 
 
-def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
+def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     time.sleep(5)
     subaisle = ''
     subsubaisle = ''
@@ -257,27 +252,18 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
     except:
         None
 
-    itemIdx = f"{ind}_{name}"
-
+    itemIdx = f"{ind}-{index}"
+    src = None
     try:
-        imgs = driver.find_element(By.CLASS_NAME, 'react-multi-carousel-track ')
-        imgs = imgs.find_elements(By.XPATH, './li/picture/img')
-    except:
-        try:
-            imgs = driver.find_element(By.XPATH, '//picture/img')
-            imgs = [imgs]
-        except:
-            imgs = []
-
-    img_urls = []
-    for img_idx in range(len(imgs)):
-        src = imgs[img_idx].get_attribute('src')
-        img_urls.append(src)
-        try:
-            urllib.request.urlretrieve(src,
-                                       'output/images/' + str(ind) + '/' + itemIdx + '_Img' + str(img_idx) + '.png')
-        except:
-            None
+        img = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, f'img[alt="{name}"]'))
+        )
+        src = img.get_attribute('src')
+        urllib.request.urlretrieve(src,f"output/images/{ind}-{index}.png")
+    except Exception as e:
+        print(e)
+        print("No Image")
 
     try:
         find_tmp = driver.find_element(By.ID, 'Description')
@@ -325,7 +311,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
                'old_price': old_price, 'pricePerUnit': pricePerUnit,
                'old_pricePerUnit': old_pricePerUnit,
                'itemNum': itemNum, 'description': description, 'serving': serving,
-               'img_urls': ', '.join(img_urls), 'item_label': item_label,
+               'img_urls': src, 'item_label': item_label,
                'item_ingredients': item_ingredients, 'url': item_url,
                'SKU': SKU, 'UPC': UPC,
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
