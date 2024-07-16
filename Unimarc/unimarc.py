@@ -91,7 +91,6 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
     for aisle in aisles:
         print(aisle)
-        time_aisle = time.time()
 
         # Get aisle URL
         categories_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -149,7 +148,7 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                                 item_urls.append(pl.get_attribute('href'))
                         driver.get(f"{a}?page={count}")
                         count += 1
-            pd.DataFrame(item_urls).to_csv(f"output/tmp/'index_{str(ind)}_{aisle}_unimarc_urls.csv", index=False)
+            pd.DataFrame(item_urls).to_csv(f"output/tmp/index_{str(ind)}_{aisle}_unimarc_urls.csv", index=False)
 
         print('(Number of Items: ' + str(len(item_urls)) + ')')
         time.sleep(10)
@@ -252,7 +251,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     except:
         None
 
-    itemIdx = f"{ind}-{index}"
+    itemIdx = f"{ind}-{index}-{aisle[:3].upper()}"
     src = None
     try:
         img = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -260,7 +259,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                 (By.CSS_SELECTOR, f'img[alt="{name}"]'))
         )
         src = img.get_attribute('src')
-        urllib.request.urlretrieve(src,f"output/images/{ind}-{index}.png")
+        urllib.request.urlretrieve(src,f"output/images/{ind}-{index}-{aisle[:3].upper()}.png")
     except Exception as e:
         print(e)
         print("No Image")
