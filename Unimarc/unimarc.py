@@ -1,4 +1,5 @@
 # Packages for scrapping
+import unicodedata
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import pandas as pd
@@ -12,6 +13,10 @@ import time
 import datetime
 import pytz
 import re
+
+def remove_accents(text):
+    return ''.join(c for c in unicodedata.normalize('NFD', text)
+                   if unicodedata.category(c) != 'Mn')
 
 def setup_unimarc(driver, EXPLICIT_WAIT_TIME, site_location_df, ind):
     address = site_location_df.loc[ind, 1]
@@ -141,8 +146,6 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                             product_links = p.find_elements(By.CSS_SELECTOR,
                                                             "a.Link_link___5dmQ.Link_link--none__BjwPj")
                             for pl in product_links:
-                                print(pl.get_attribute('href'))
-                                print(pl.get_attribute('text'))
                                 item_urls.append(pl.get_attribute('href'))
                         driver.get(f"{a}?page={count}")
                         count += 1
@@ -195,7 +198,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
         categories = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_all_elements_located((By.XPATH, "//*[@data-divider='/']"))
         )
-        print(categories)
         tmp_subaisle_text = categories[2].find_element(By.XPATH, './/a | .//p').get_attribute('textContent')
         tmp_subsubaisle_text = categories[3].find_element(By.XPATH, './/a | .//p').get_attribute('textContent')
         subaisle = tmp_subaisle_text
@@ -236,15 +238,16 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
     pricePerUnit = None
 
     try:
-        compact_name = re.sub(r'\s+', '', name).lower()
-        priceid = f"listPrice__offerPrice--discountprice-{compact_name}"
+        compact_name = re.sub(r'\s+', '', name).lower().strip()
+        compact_name = remove_accents(compact_name)
         price_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.visibility_of_element_located(
-                (By.ID, priceid))
+            EC.presence_of_element_located((By.XPATH, f'//*[contains(@id, "{compact_name}")]'))
         )
         price = price_element.text
-    except:
-        None
+
+    except Exception as e:
+        print(e)
+        print("No Price")
 
     try:
         tmp = topRight.find_elements(By.XPATH, './/*[contains(@class,"ListPrice_listPrice__mdFUB")]')
@@ -314,7 +317,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind):
     except:
         None
 
-    print(item_label)
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
                'aisle': aisle, 'subaisle': subaisle,
