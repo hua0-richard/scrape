@@ -1,12 +1,6 @@
 from util.mappings import mappings
 import re
 
-nutrition_label_mappings_unimarc = {
-    "Energía (kCal)": "Cals",
-    "Hidratos de Carbono Disp.": "TotalCarb",
-    "Azúcares Totales": "TotalSugars",
-}
-
 def contains_only_digits_and_period(s):
     pattern = re.compile(r'^[0-9.]+$')
     return bool(pattern.match(s))
@@ -63,6 +57,8 @@ class unimarc(mappings):
             lines = dirty.loc[index, 'item_label']
             clean.loc[index, 'Nutr_label'] = lines
             lines = lines.split('\n')
+            servings_cont = 0
+
             for l in lines:
                 PORTION = "Porción por envase:"
                 PORTION_IND = "Porción individual:"
@@ -73,13 +69,19 @@ class unimarc(mappings):
                 if has_substring(l, PORTION):
                     tmp = l.replace(PORTION,"").strip()
                     clean.loc[index, 'Servings_cont'] = tmp
+                    servings_cont = tmp
                 elif has_substring(l, PORTION_IND):
                     tmp = l.replace(PORTION_IND,"").strip()
                     tmp_val = remove_non_numeric_except_period(tmp)
+                    serv_ind = float(tmp_val)
                     tmp_unit = remove_numbers(tmp)
                     clean.loc[index, 'Servsize_portion_org'] = tmp
                     clean.loc[index, 'Servsize_portion_val'] = tmp_val
                     clean.loc[index, 'Servsize_portion_unit'] = tmp_unit
+
+
+                    clean.loc[index, 'Containersize_org'] = f"{servings_cont} x {tmp_val} {tmp_unit}"
+                    servings_cont = 0
                 elif has_substring(l,ENERGY):
                     clean.loc[index, 'Cals_org_pp'] = l
                     tmp = l.replace(ENERGY,"").strip()
