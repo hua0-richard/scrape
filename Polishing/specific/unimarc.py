@@ -39,14 +39,14 @@ class unimarc(mappings):
     @staticmethod
     def city(index, clean):
         try:
-            clean.loc[index, 'City_CHI'] = 7
+            clean.loc[index, 'City_CHI'] = str(7)
         except Exception as e:
             None
 
     @staticmethod
     def region(index, clean):
         try:
-            clean.loc[index, 'Region_CHI'] = 12
+            clean.loc[index, 'Region_CHI'] = str(12)
         except Exception as e:
             None
     
