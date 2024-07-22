@@ -58,17 +58,38 @@ class unimarc(mappings):
                 PORTION_IND = "Porción individual:"
                 ENERGY = "Energía (kCal)"
                 SUGAR_TOTALS = "Azúcares totales (g)"
+                CARBS = "H. de C. disponibles (g)"
 
                 if has_substring(l, PORTION):
-                    tmp = l.replace(PORTION).strip()
+                    tmp = l.replace(PORTION,"").strip()
                     clean.loc[index, 'Servings_cont'] = tmp
                 elif has_substring(l, PORTION_IND):
-                    tmp = l.replace(PORTION_IND).strip()
+                    tmp = l.replace(PORTION_IND,"").strip()
                     tmp_val = remove_non_numeric_except_period(tmp)
                     tmp_unit = remove_numbers(tmp)
                     clean.loc[index, 'Servsize_portion_org'] = tmp
                     clean.loc[index, 'Servsize_portion_val'] = tmp_val
                     clean.loc[index, 'Servsize_portion_unit'] = tmp_unit
+                elif has_substring(l,ENERGY):
+                    clean.loc[index, 'Cals_org_pp'] = l
+                    tmp = l.replace(ENERGY,"").strip()
+                    tokens = tmp.split()
+                    clean.loc[index, 'Cals_value_p100g'] = tokens[0]
+                    clean.loc[index, 'Cals_unit_p100g'] = 'kCal'
+                    clean.loc[index, 'Cals_value_pp'] = tokens[1]
+                    clean.loc[index, 'Cals_unit_pp'] = 'kCal'
+                elif has_substring(l, CARBS):
+                    tmp = l.replace(CARBS,"").strip()
+                    tokens = tmp.split()
+                    clean.loc[index, 'TotalCarb_g_p100g'] = tokens[0]
+                    clean.loc[index, 'TotalCarb_g_pp'] = tokens[1]
+                elif has_substring(l, SUGAR_TOTALS):
+                    tmp = l.replace(SUGAR_TOTALS,"").strip()
+                    tokens = tmp.split()
+                    clean.loc[index, 'TotalSugars_g_p100g'] = tokens[0]
+                    clean.loc[index, 'TotalSugars_g_pp'] = tokens[1]
+
+
         except Exception as e:
             None
 
