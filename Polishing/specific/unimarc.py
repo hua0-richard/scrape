@@ -1,17 +1,5 @@
 from util.mappings import mappings
 import re
-'''
-Datos de Nutrici√≥n
-Porci√≥n por envase: 38
-Porci√≥n individual: 24g
-Nutrientes 100 g 1 porci√≥n
-
-Nutrition Facts
-Serving per container: 38
-Individual serving: 24g
-Nutrients 100 g 1 serving
-'''
-
 
 nutrition_label_mappings_unimarc = {
     "Energía (kCal)": "Cals",
@@ -22,25 +10,21 @@ nutrition_label_mappings_unimarc = {
 def contains_only_digits_and_period(s):
     pattern = re.compile(r'^[0-9.]+$')
     return bool(pattern.match(s))
+def remove_non_numeric_except_period(string):
+    return re.sub(r'[^0-9.]', '', string)
+def remove_numbers(string):
+    return re.sub(r'\d+', '', string)
+
+def has_substring(main_string, substring):
+    return substring in main_string
 
 class unimarc(mappings):
     @staticmethod
     def country(index, clean):
         try:
-            clean.loc[index, 'Country'] = '3'
+            clean.loc[index, 'Country'] = 'Mexico'
         except Exception as e:
             None
-    
-
-
-
-
-
-
-
-
-
-
 
     @staticmethod
     def city(index, clean):
@@ -63,68 +47,30 @@ class unimarc(mappings):
         except Exception as e:
             None
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     @staticmethod
     def item_label(index, dirty, clean):
         try:
-            lines = dirty.loc[index, 'item_label'].split('\n')
-            # Loop through each line   
-            for i in range(4, len(lines)):
-                l = lines[i]
-                # check for keywords in dict
-                # label first, standard second
-                try:
-                    tokens = l.strip().split()
-                    tokens = [str(element) for element in tokens]
-                except Exception as e:
-                    print(e)
-                for key, value in nutrition_label_mappings_unimarc.items():
-                    if key in l:
-                        count = 0
-                        for t in tokens:
-                            # Check first token in line
-                            if (contains_only_digits_and_period(t) and count == 0):
-                                if (value == 'Cals'):
-                                    col1 = "Cals_value_pp"
-                                    col2 = "Cals_unit_pp"
-                                    col3 = "Cals_org_pp"
-                                    clean.loc[index, col1] = t
-                                    clean.loc[index, col2] = 'kCal'
-                                    clean.loc[index, col3] = l
-                                if (value == 'TotalCarb'):
-                                    col1 = "TotalCarb_g_pp"
-                                    clean.loc[index, col1] = t
-                                if (value == 'TotalSugars'):
-                                    col1 = "TotalSugars_g_pp"
-                                    clean.loc[index, col1] = t
-                                count = count + 1
-                            # Check second token in line
-                            elif (contains_only_digits_and_period(t) and count == 1):
-                                if (value == 'Cals'):
-                                    col1 = "Cals_value_p100g"
-                                    col2 = "Cals_unit_p100g"
-                                    clean.loc[index, col1] = t
-                                    clean.loc[index, col2] = 'kCal'
+            lines = dirty.loc[index, 'item_label']
+            clean.loc[index, 'Nutr_label'] = lines
+            lines = lines.split('\n')
+            for l in lines:
+                PORTION = "Porción por envase:"
+                PORTION_IND = "Porción individual:"
+                ENERGY = "Energía (kCal)"
+                SUGAR_TOTALS = "Azúcares totales (g)"
 
-                                if (value == 'TotalCarb'):
-                                    col1 = "TotalCarb_g_p100g"
-                                    clean.loc[index, col1] = t
-                                if (value == 'TotalSugars'):
-                                    col1 = "TotalSugars_g_p100g"
-                                    clean.loc[index, col1] = t
-
+                if has_substring(l, PORTION):
+                    tmp = l.replace(PORTION).strip()
+                    clean.loc[index, 'Servings_cont'] = tmp
+                elif has_substring(l, PORTION_IND):
+                    tmp = l.replace(PORTION_IND).strip()
+                    tmp_val = remove_non_numeric_except_period(tmp)
+                    tmp_unit = remove_numbers(tmp)
+                    clean.loc[index, 'Servsize_portion_org'] = tmp
+                    clean.loc[index, 'Servsize_portion_val'] = tmp_val
+                    clean.loc[index, 'Servsize_portion_unit'] = tmp_unit
         except Exception as e:
             None
-        return 0
+
+
+
