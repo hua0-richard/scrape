@@ -3,7 +3,7 @@ import logging
 import os
 import math
 from util import headings
-from specific.soriana import Soriana as m
+from specific.unimarc import unimarc as m
 import sys
 
 logging.basicConfig(level=logging.DEBUG, format='[%(levelname)] %(message)s')
@@ -15,6 +15,9 @@ def clear_console():
 
 def process_data(dat):
     clean_dat = headings.clean_dat
+    if not m.preprocess(clean_dat).columns.empty:
+        print("REMOVED CITY REGION STORE")
+        clean_dat = m.preprocess(clean_dat)
 
     # set all columns to None
     for col in clean_dat:

@@ -20,9 +20,19 @@ def has_substring(main_string, substring):
 
 class unimarc(mappings):
     @staticmethod
+    def preprocess(clean):
+        try:
+            df = clean.drop(columns=['City'])
+            df = df.drop(columns=['Region'])
+            df = df.drop(columns=['Store'])
+            print("PREPROCESS")
+            return df
+        except Exception as e:
+            None
+    @staticmethod
     def country(index, clean):
         try:
-            clean.loc[index, 'Country'] = 'Mexico'
+            clean.loc[index, 'Country'] = 'Chile'
         except Exception as e:
             None
 
@@ -43,7 +53,7 @@ class unimarc(mappings):
     @staticmethod
     def store(index, clean):
         try:
-            clean.loc[index, 'Store_CHI'] = 3
+            clean.loc[index, 'Store_CHI'] = 'Unimarc'
         except Exception as e:
             None
 
@@ -88,8 +98,11 @@ class unimarc(mappings):
                     tokens = tmp.split()
                     clean.loc[index, 'TotalSugars_g_p100g'] = tokens[0]
                     clean.loc[index, 'TotalSugars_g_pp'] = tokens[1]
+        except Exception as e:
+            None
 
-
+        try:
+            clean.loc[index, 'SKU'] = dirty.loc[index, 'SKU']
         except Exception as e:
             None
 

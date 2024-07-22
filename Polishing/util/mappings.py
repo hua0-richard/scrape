@@ -1,4 +1,13 @@
+import pandas as pd
+
+
 class mappings:
+    @staticmethod
+    def preprocess(clean):
+        try:
+            return pd.DataFrame()
+        except Exception as e:
+            None
     @staticmethod
     def indices(index, dirty, clean):
         try:
@@ -10,28 +19,28 @@ class mappings:
     @staticmethod
     def country(index, clean):
         try:
-            clean.loc[index, 'Country'] = ''
+            None
         except Exception as e:
             None
     
     @staticmethod
     def region(index, clean):
         try:
-            clean.loc[index, 'Region'] = ''
+            None
         except Exception as e:
             None
 
     @staticmethod
     def city(index, clean):
         try:
-            clean.loc[index, 'City'] = ''
+            None
         except Exception as e:
             None
 
     @staticmethod
     def store(index, clean):
         try:
-            clean.loc[index, 'Store'] = ''
+            None
         except Exception as e:
             None
 
