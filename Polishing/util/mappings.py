@@ -24,14 +24,14 @@ class mappings:
             None
     
     @staticmethod
-    def region(index, clean):
+    def region(index, dirty, clean):
         try:
             None
         except Exception as e:
             None
 
     @staticmethod
-    def city(index, clean):
+    def city(index, dirty, clean):
         try:
             None
         except Exception as e:

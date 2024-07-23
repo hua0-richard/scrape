@@ -12,6 +12,9 @@ def remove_numbers(string):
 def has_substring(main_string, substring):
     return substring in main_string
 
+container_pattern = r'\b(?:botella|lata|tetra|caja|bidón|botellón|pack)\b(?:\s+(?:de|retornable|no\s+retornable))?\s*(?:\d+(?:\.\d+)?)?\s*(?:cc|ml|L|Lt)?'
+container_pattern_milk = r'\b(?:L|Lt|ml|g|Kg|cc|un)\b|\b(?:bolsa|botella|caja|pote|tarro|bandeja|pan|bidón|doypack|lata|tetra|cajita|pouch|squeeze)\b'
+
 class unimarc(mappings):
     @staticmethod
     def preprocess(clean):
@@ -31,16 +34,36 @@ class unimarc(mappings):
             None
 
     @staticmethod
-    def city(index, clean):
+    def city(index, dirty, clean):
         try:
-            clean.loc[index, 'City_CHI'] = str(7)
+            index_number = int(dirty.loc[index, 'idx'][:2])
+            city = ""
+            if (index_number == 41):
+                city = "Maipú"
+            elif (index_number == 42):
+                city = "Viña del Mar"
+            elif (index_number == 43):
+                city = "Concepción"
+            elif (index_number == 44):
+                city = "Talca"
+            clean.loc[index, "City_CHI"] = city
         except Exception as e:
             None
 
     @staticmethod
-    def region(index, clean):
+    def region(index, dirty, clean):
         try:
-            clean.loc[index, 'Region_CHI'] = str(12)
+            index_number = int(dirty.loc[index, 'idx'][:2])
+            region = ""
+            if (index_number == 41):
+                region = "Región Metropolitana"
+            elif (index_number == 42):
+                region = "Región de Valparaíso"
+            elif (index_number == 43):
+                region = "Región del Bío Bío"
+            elif (index_number == 44):
+                region = "Región del Maule"
+            clean.loc[index, "Region_CHI"] = region
         except Exception as e:
             None
     
@@ -55,7 +78,7 @@ class unimarc(mappings):
     def item_label(index, dirty, clean):
         try:
             lines = dirty.loc[index, 'item_label']
-            clean.loc[index, 'Nutr_label'] = lines
+            clean.loc[index, 'NutrInfo_org'] = lines
             lines = lines.split('\n')
             servings_cont = 0
 
@@ -65,6 +88,7 @@ class unimarc(mappings):
                 ENERGY = "Energía (kCal)"
                 SUGAR_TOTALS = "Azúcares totales (g)"
                 CARBS = "H. de C. disponibles (g)"
+                PACK = "Pack"
 
                 if has_substring(l, PORTION):
                     tmp = l.replace(PORTION,"").strip()
@@ -80,7 +104,9 @@ class unimarc(mappings):
                     clean.loc[index, 'Servsize_portion_unit'] = tmp_unit
 
 
-                    clean.loc[index, 'Containersize_org'] = f"{servings_cont} x {tmp_val} {tmp_unit}"
+                    clean.loc[index, 'Containersize_org'] = f"{servings_cont} portion(s) x {tmp_val} {tmp_unit} per portion "
+                    clean.loc[index, 'Containersize_val'] = float(servings_cont) * float(tmp_val)
+                    clean.loc[index, 'Containersize_unit'] = tmp_unit
                     servings_cont = 0
                 elif has_substring(l,ENERGY):
                     clean.loc[index, 'Cals_org_pp'] = l
@@ -105,6 +131,39 @@ class unimarc(mappings):
 
         try:
             clean.loc[index, 'SKU'] = dirty.loc[index, 'SKU']
+        except Exception as e:
+            None
+
+        try:
+            tokens = dirty.loc[index, 'name'].split()
+            if (tokens[0] == PACK):
+                for i in range(len(tokens)):
+                    if tokens[i] == 'un':
+                        clean.loc[index, 'Unitpp'] = tokens[i - 1]
+                        packsize_org = ""
+                        for j in range(i - 1, len(tokens)):
+                            packsize_org += tokens[j] + " "
+                        packsize_org = packsize_org.strip()
+                        clean.loc[index, 'Packsize_org'] = packsize_org
+                        break
+        except Exception as e:
+            None
+
+        try:
+            matches = re.findall(container_pattern, dirty.loc[index, 'name'])
+            matches_milk = re.findall(container_pattern_milk, dirty.loc[index, 'name'])
+            if matches:
+                clean.loc[index, 'Pack_type'] = matches[0]
+            elif matches_milk:
+                clean.loc[index, 'Pack_type'] = matches_milk[0]
+        except Exception as e:
+            None
+
+        try:
+            size = dirty.loc[index, 'size']
+            clean.loc[index, 'Netcontent_org'] = size
+            clean.loc[index, 'Netcontent_val'] = remove_non_numeric_except_period(size)
+            clean.loc[index, 'Netcontent_unit'] = remove_numbers(size).replace('.', '')
         except Exception as e:
             None
 

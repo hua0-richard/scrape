@@ -39,8 +39,8 @@ def process_data(dat):
         # extract country, region, city, store
         try:
             m.country(item_idx, clean_dat)
-            m.region(item_idx, clean_dat)
-            m.city(item_idx, clean_dat)
+            m.region(item_idx, dat, clean_dat)
+            m.city(item_idx, dat, clean_dat)
             m.store(item_idx, clean_dat)
         except Exception as e:
             logging.error(e)
