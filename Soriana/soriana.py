@@ -150,7 +150,6 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
         for item_url_idx in range(len(all_urls)):
             item_url = item_urls[item_url_idx]
-            new_row = None
             if not df_data.empty and all_urls[i] in df_data['url'].values:
                 print(f'{ind}-{i} Item Already Exists!')
                 continue
