@@ -28,8 +28,7 @@ def main():
         
         soriana.setup_soriana(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
 
-        # new_data = soriana.scrapSite_soriana(driver, EXPLICIT_WAIT_TIME,idx='Soriana',
-        #                                     aisles=['Jugos y bebidas'], ind=ind)
+        soriana.scrapSite_soriana(driver, EXPLICIT_WAIT_TIME,idx='Soriana', aisles=['Jugos y bebidas'], ind=ind)
 
 if __name__ == '__main__':
     res = main()
