@@ -139,6 +139,7 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                                           encoding='utf-8-sig')
             print(f'items so far... {len(all_urls)}')
 
+        # check for previous items
         df_data = pd.DataFrame()
         site_items_df = pd.DataFrame()
         try:
@@ -158,7 +159,8 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                 try:
                     driver.get(item_url)
                     new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
-                    site_items_df.loc[len(site_items_df),] = new_row
+                    site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+                    site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
                     break
                 except Exception as e:
                     print(f'Failed to scrape item. Attempt {i}. Trying Again... ')
