@@ -157,6 +157,7 @@ def scrapSite_unimarc(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
         site_items_df = pd.DataFrame()
         try:
             df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_unimarc_data.csv")
+            df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_unimarc_data.csv")
             site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
         except:
             None

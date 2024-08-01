@@ -124,20 +124,31 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
             subaisles_urls.append(psa.get_attribute('href'))
 
         all_urls = []
-        for subaisles_url_idx in range(len(subaisles_urls)):
-            print(subaisles_urls[subaisles_url_idx])
+        try:
+            all_urls = pd.read_csv('output/tmp/ind' + str(ind) + aisle + '_item_urls.csv', header=None)
+            tmp = all_urls.to_numpy()
+            all_urls = []
+            for t in tmp:
+                all_urls.append(t[0])
+            print(all_urls)
+        except:
+            print('No prior url file found')
+            None
 
-            subaisles_url = subaisles_urls[subaisles_url_idx]
+        if (len(all_urls) == 0):
+            for subaisles_url_idx in range(len(subaisles_urls)):
+                print(subaisles_urls[subaisles_url_idx])
 
-            driver.get(subaisles_url)
-            item_urls = getItem_urls(driver, EXPLICIT_WAIT_TIME)
-            for u in item_urls:
-                all_urls.append(u)
+                subaisles_url = subaisles_urls[subaisles_url_idx]
 
-            # Save URLS in case of issue
-            pd.DataFrame(all_urls).to_csv('output/tmp/ind' + str(ind) + '_item_urls.csv', index=False,
-                                          encoding='utf-8-sig')
-            print(f'items so far... {len(all_urls)}')
+                driver.get(subaisles_url)
+                item_urls = getItem_urls(driver, EXPLICIT_WAIT_TIME)
+                for u in item_urls:
+                    all_urls.append(u)
+
+                # Save URLS in case of issue
+                pd.DataFrame(all_urls).to_csv('output/tmp/ind' + str(ind) + aisle + '_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
+                print(f'items so far... {len(all_urls)}')
 
         # check for previous items
         df_data = pd.DataFrame()
@@ -149,21 +160,23 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
             print('No Prior Data Found... ')
 
         for item_url_idx in range(len(all_urls)):
-            item_url = item_urls[item_url_idx]
+            item_url = all_urls[item_url_idx]
             if not df_data.empty and all_urls[i] in df_data['url'].values:
                 print(f'{ind}-{i} Item Already Exists!')
                 continue
 
             for i in range(5):
                 try:
+                    time.sleep(5)
                     driver.get(item_url)
                     new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
-                    site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
-                    site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+                    #site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+                    #site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+                    print(new_row)
                     break
                 except Exception as e:
                     print(f'Failed to scrape item. Attempt {i}. Trying Again... ')
-                    None
+                    print(e)
 
             if (item_url_idx % 10 == 0):
                 site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_soriana_data.csv', index=False)
@@ -172,17 +185,19 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
-    # Scrap main
-    breadcrumbs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.visibility_of_element_located((By.CLASS_NAME, 'breadcrumb'))
-    ).text.split('\n')
-    subaisle = ''
-    subsubaisle = ''
+    time.sleep(3)
     try:
-        subaisle = breadcrumbs[2]
-        subsubaisle = breadcrumbs[3]
-    except:
-        None
+        aisle_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.CLASS_NAME, 'breadcrumb-item__link'))
+        )
+        aisle_container_text = []
+        for i in aisle_container:
+            aisle_container_text.append(i.text)
+        subaisle = aisle_container_text[-2]
+        subsubaisle = aisle_container_text[-1]
+    except Exception as e:
+        print('Aisle Error')
+        print(e)
 
     try:
         name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -283,7 +298,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
 
     itemNum = None
 
-    # Save results (processing in later step)
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
                'aisle': aisle, 'subaisle': subaisle,
