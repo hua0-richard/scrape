@@ -29,11 +29,11 @@ def main():
         soriana.setup_soriana(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
 
         soriana.scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisles=['Jugos y bebidas'], ind=ind)
-        print('Done!')
+        print('Done! 1/3')
         soriana.scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisles=['Lácteos y huevo'], ind=ind)
-        print('Done!')
+        print('Done! 2/3')
         soriana.scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisles=['Vinos, licores y cervezas'])
-        print('Done!')
+        print('Done! 3/3')
 
 if __name__ == '__main__':
     res = main()
