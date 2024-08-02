@@ -82,8 +82,8 @@ def setLocation_soriana(driver, address, EXPLICIT_WAIT_TIME):
     print('Set Location Complete')
 
 
-def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=None,
-                      site_location_df=None):
+def scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=None,
+                       site_location_df=None):
     #  Setup Data
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
                                           'size', 'price', 'multi_price',
@@ -169,9 +169,9 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
                 try:
                     time.sleep(5)
                     driver.get(item_url)
-                    new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx)
-                    #site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
-                    #site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+                    new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_url_idx)
+                    site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+                    site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
                     print(new_row)
                     break
                 except Exception as e:
@@ -184,7 +184,7 @@ def scrapSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=No
         site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_soriana_data.csv', index=False)
 
 
-def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
+def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     time.sleep(3)
     try:
         aisle_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -207,7 +207,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
         name = ''
 
     # Item Index for matching
-    itemIdx = 'S' + str(idx) + '_A' + aisle + '_SA' + subaisle + '_I' + name
+    itemIdx = f"{ind}-{index}-{aisle[:3].upper()}"
 
     try:
         brand = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -236,18 +236,15 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, idx):
     except:
         None
 
-    # Scrap pictures
+    # Scrape pictures
     imgs = driver.find_element(By.CLASS_NAME, 'primary-images')
     imgs = imgs.find_elements(By.XPATH, './/img')
     img_urls = []
-    img_idx = 1
     for img_idx in range(len(imgs)):
         src = imgs[img_idx].get_attribute('src')
         img_urls.append(src)
         try:
-            # ActionChains(driver).move_to_element(imgs[img_idx]).click().perform()
-            # urllib.request.urlretrieve(src, 'output/images/'+str(ind)+'/'+itemIdx+'_Img'+str(img_idx)+'.png')
-            imgs[img_idx].screenshot('output/images/' + str(ind) + '/' + itemIdx + '_Img' + str(img_idx) + '.png')
+            imgs[img_idx].screenshot('output/images/' + str(ind) + '/' + itemIdx + str(img_idx) + '.png')
         except:
             None
 
@@ -331,7 +328,7 @@ def getItem_urls(driver, EXPLICIT_WAIT_TIME):
             # Create a new element to parse the HTML
             soup = BeautifulSoup(html, 'html.parser')
             try:
-                urls.append(f'https://www.soriana.com{soup.find('a')['href']}')
+                urls.append(f'https://www.soriana.com{soup.find("a")["href"]}')
             except Exception as e:
                 print('Failed to get item URL')
         urls = list(set(urls))
