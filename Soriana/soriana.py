@@ -161,8 +161,8 @@ def scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=N
 
         for item_url_idx in range(len(all_urls)):
             item_url = all_urls[item_url_idx]
-            if not df_data.empty and all_urls[i] in df_data['url'].values:
-                print(f'{ind}-{i} Item Already Exists!')
+            if not df_data.empty and all_urls[item_url_idx] in df_data['url'].values:
+                print(f'{ind}-{item_url_idx} Item Already Exists!')
                 continue
 
             for i in range(5):
@@ -199,6 +199,34 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Aisle Error')
         print(e)
 
+    ## Prices
+    price = None
+    old_price = None
+    multi_price = None
+
+    for i in range(5):
+        try:
+            price_reference = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.CSS_SELECTOR, "span.cart-price.price-plp.price-pdp span")))
+            price_text = price_reference.get_attribute('outerHTML')
+            match = re.search(r'\$(\d+\.\d{2})', price_text)
+            if match:
+                price = match.group(1)
+                print('Found Price')
+            break
+        except:
+            print('No Price Found')
+
+    try:
+        discount_price_container = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.CSS_SELECTOR,".col-12.d-lg.container-aprox-height.js-product-card")))
+        discount_price_text = discount_price_container.find_element(By.CSS_SELECTOR, ".strike-through.cart-price")
+        price_text = discount_price_text.get_attribute('outerHTML')
+        match = re.search(r'\$(\d+\.\d{2})', price_text)
+        if match:
+            old_price = match.group(1)
+            print('Found Discount')
+    except:
+        print('No Discount Price')
+
     try:
         name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.visibility_of_element_located((By.CLASS_NAME, 'product-name'))
@@ -216,25 +244,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         brand = brand.find_element(By.XPATH, './div/a/p').text
     except:
         brand = None
-
-    ## Prices
-    price = None
-    old_price = None
-    multi_price = None
-    try:
-        price_data = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.visibility_of_element_located((By.CLASS_NAME, 'product-detail__details-container'))
-        )
-        try:
-            price = price_data.find_element(By.CLASS_NAME, 'oldDiscountPrice ').text
-        except:
-            None
-        try:
-            old_price = price_data.find_element(By.XPATH, './/*[@class="value "]').text
-        except:
-            None
-    except:
-        None
 
     # Scrape pictures
     imgs = driver.find_element(By.CLASS_NAME, 'primary-images')
@@ -289,7 +298,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
         try:
             val.index('Número de Piezas')
-            pricePerUnit = str(re.findall(r'd+', val)) + ' / ' + price
+            pricePerUnit = str(re.findall(r'\d+', val)[0]) + ' / ' + price
         except:
             None
 
