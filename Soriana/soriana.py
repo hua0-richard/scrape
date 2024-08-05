@@ -50,7 +50,7 @@ def setLocation_soriana(driver, address, EXPLICIT_WAIT_TIME):
         EC.presence_of_element_located((By.CLASS_NAME, 'common-header__postal-code-title'))
     ).click()
     WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.presence_of_element_located(
+        EC.element_to_be_clickable(
             (By.CSS_SELECTOR, ".modal-dialog.modal-dialog-centered.store-select-modal.mb-5.mt-1 .modal-content"))
     )
     WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -69,14 +69,18 @@ def setLocation_soriana(driver, address, EXPLICIT_WAIT_TIME):
 
     for i in range(5):
         try:
-            postal_input = None
             WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable(
-                    (By.CLASS_NAME, "js-select-store-modal"))
+                EC.element_to_be_clickable((By.CSS_SELECTOR,
+                                            'input.form-check-input-address[type="radio"][name="store"]')
+                                           )).click()
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable(
+                (By.CLASS_NAME, "js-select-store-modal"))
             ).click()
             break
         except:
             print(f'Attempt {i + 1}. Stale. Trying Again...')
+            time.sleep(5)
             continue
 
     print('Set Location Complete')
@@ -95,7 +99,6 @@ def scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=N
 
     for aisle in aisles:
         print('\n', aisle)
-        time_aisle = time.time()
         # Open Grocery
         WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.visibility_of_element_located((By.XPATH, '//*[@aria-label="Departamentos"]'))
@@ -138,6 +141,8 @@ def scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=N
         if (len(all_urls) == 0):
             for subaisles_url_idx in range(len(subaisles_urls)):
                 print(subaisles_urls[subaisles_url_idx])
+                if (subaisles_urls[subaisles_url_idx] == 'https://www.soriana.com/lacteos-y-huevo/cremas-y-jocoques/crema-liquida/'):
+                    continue
 
                 subaisles_url = subaisles_urls[subaisles_url_idx]
 
@@ -320,19 +325,24 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
 def getItem_urls(driver, EXPLICIT_WAIT_TIME):
     urls = []
-    items = []
-    while True:
+    items_html = None
+    for _ in range(70):
         time.sleep(5)
         for i in range(5):
+            if i == 4:
+                continue
             try:
                 items = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                     EC.visibility_of_all_elements_located((By.CLASS_NAME, 'product'))
                 )
                 items_html = [item.get_attribute('outerHTML') for item in items]
+                print(f"Number of items found: {len(items_html)}")
                 break
             except Exception as e:
-                print("Failed to get Item URL. Trying Again... ")
+                print(f"Failed to get Item URL. Attempt {i} Trying Again... ")
                 time.sleep(5)
+        if items_html is None:
+            continue
         for html in items_html:
             # Create a new element to parse the HTML
             soup = BeautifulSoup(html, 'html.parser')
@@ -342,7 +352,7 @@ def getItem_urls(driver, EXPLICIT_WAIT_TIME):
                 print('Failed to get item URL')
         urls = list(set(urls))
         for i in range(5):
-            if (i == 4):
+            if i == 4:
                 return urls
             try:
                 WebDriverWait(driver, 10).until(
@@ -350,4 +360,4 @@ def getItem_urls(driver, EXPLICIT_WAIT_TIME):
                 ).click()
                 break
             except:
-                print("Trying to find next button... ")
+                print(f"Attempt {i}. Trying to find next button... ")
