@@ -214,7 +214,6 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
                     EC.presence_of_element_located((By.CSS_SELECTOR, 'a.ln-c-pagination__link[rel="next"][aria-label="Next page"]'))
                 ).click()
             except Exception as e:
-                print(e)
                 print('No Next Page')
                 break
 
