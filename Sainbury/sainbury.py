@@ -174,18 +174,25 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
         except Exception as e:
             print(f'Trying again... Attempt {_}')
 
+
     # Get subaisles
-    divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
-    )
-    subaisles = []
-    for div in divs:
-        anchors = div.find_elements(By.TAG_NAME, 'a')
-        for anchor in anchors:
-            href = anchor.get_attribute('href')
-            if href:
-                subaisles.append(href)
-    print(subaisles)
+    for _ in range(5):
+        try:
+            divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
+            )
+            subaisles = []
+            for div in divs:
+                anchors = div.find_elements(By.TAG_NAME, 'a')
+                for anchor in anchors:
+                    href = anchor.get_attribute('href')
+                    if href:
+                        subaisles.append(href)
+            print(subaisles)
+            print('Found Subaisles')
+            break
+        except Exception as e:
+            print(f'Trying again... Attempt {_}')
 
     #  Setup Data
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
@@ -197,8 +204,6 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
                                           'url', 'timeStamp'])
 
     time.sleep(FAVNUM)
-
-
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     itemIdx = None
