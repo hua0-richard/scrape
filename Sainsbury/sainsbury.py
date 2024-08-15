@@ -265,7 +265,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
             if (item_index % 10 == 0):
                 site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
 
-        site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_soriana_data.csv', index=False)
+    site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
 
     time.sleep(FAVNUM)
 
@@ -288,22 +288,47 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     item_ingredients = None
     pack = None
 
-    name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
-    ).text
+    try:
+        name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
+        ).text
+    except:
+        print('Error')
 
-    brand = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
-    ).text.split()[0]
+    try:
+        brand = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
+        ).text.split()[0]
+    except:
+        print('Error')
 
-    price = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-retail-price"]'))
-    ).text
+    try:
+        price = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-retail-price"]'))
+        ).text
+    except:
+        print('Error')
 
-    description = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '.pd__description'))
-    ).text
+    try:
+        description = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '.pd__description'))
+        ).text
+    except:
+        print('Error')
 
+    try:
+        price = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-retail-price"]'))
+        ).text
+    except:
+        print('Error')
+
+    try:
+        item_label = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "nutritionTable"))
+        ).text
+    except:
+        print('No Nutrition Label')
 
 
     new_row = {'idx': itemIdx,
