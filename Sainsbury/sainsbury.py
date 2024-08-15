@@ -195,7 +195,6 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
         except Exception as e:
             print(f'Trying again... Attempt {_}')
 
-
     for s in subaisles:
         driver.get(s)
         time.sleep(GEN_TIMEOUT)
@@ -216,6 +215,9 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
             except Exception as e:
                 print('No Next Page')
                 break
+
+    pd.DataFrame(items).to_csv('output/tmp/ind' + str(ind) + aisle + '_item_urls.csv', index=False, header=None,encoding='utf-8-sig')
+    print(f'items so far... {len(items)}')
 
     #  Setup Data
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
