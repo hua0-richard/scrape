@@ -1,4 +1,3 @@
-**Duplication URL Locations**
 TODO (Scraping)
 - [x] URL Locations
 - [ ] 4,5,6,7 (Walmart)
