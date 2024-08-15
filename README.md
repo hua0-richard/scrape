@@ -1,6 +1,6 @@
 **Duplication URL Locations**
 TODO (Scraping)
-- [ ] URL Locations
+- [x] URL Locations
 - [ ] 4,5,6,7 (Walmart)
 - [ ] 8,9 (Sobeys Canada Voila)
 - [ ] 12,13,14,15,16 (Kroger)
