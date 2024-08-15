@@ -1,10 +1,14 @@
-# Scrape
-
-# Time 
- - 7/23/2024 3 - 4 pm
- - 7/23/2024 5 - 6 pm
- - 7/23/2024 1 - 3 am
- - 7/31/2024 10 - 11 am
- - 7/31/2024 4 - 7:30 pm 
- - 7/31/2-24 10 - 11pm
- - 8/2/2024 3 - 5pm
+**Duplication URL Locations**
+TODO (Scraping)
+- [ ] URL Locations
+- [ ] 4,5,6,7 (Walmart)
+- [ ] 8,9 (Sobeys Canada Voila)
+- [ ] 12,13,14,15,16 (Kroger)
+- [ ] 17 (Walmart)
+- [ ] 40,41,42,43,44 (Unimarc, url issue)
+- [ ] 49,50,51,52 (Woolworths)
+- [ ] 53,54,55,56 (Coles)
+- [ ] 57,58,59,60 (IGA)
+- [ ] 61,62,63,64 (Tesco)
+- [ ] 65,66,67,68 (Sainbury)
+- [ ] 69,70,71,72 (Asada)
