@@ -84,6 +84,34 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
 
     input('Continue? [Y] / [N]')
 
+    # Set Location
+    for _ in range(5):
+        try:
+            time.sleep(GEN_TIMEOUT)
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.LINK_TEXT, "Store Locator"))).click()
+            print('Found Store Locator Button')
+            break
+        except Exception as e:
+            print('Failed to find Store Locator Button')
+
+    # Must Accept Cookies
+    try:
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
+        print('Cookies Button Found')
+    except Exception as e:
+        print('No Cookies Button')
+    # Input Location
+    for _ in range(5):
+        try:
+            time.sleep(GEN_TIMEOUT)
+            location_text_field = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.ID, "storeLocatorSearchInput")))
+            print('Found Location Input')
+            location_text_field.send_keys("123")
+            break
+        except Exception as e:
+            print('Could Not Find Location Input')
+
+
     time.sleep(FAVNUM)
 
 
