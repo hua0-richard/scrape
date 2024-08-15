@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 15 00:52:39 2023
-
-@author: j53vande
-"""
-
-# Packages for scrapping
 from selenium.webdriver.common.by import By
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
@@ -88,29 +80,70 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
     for _ in range(5):
         try:
             time.sleep(GEN_TIMEOUT)
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.LINK_TEXT, "Store Locator"))).click()
-            print('Found Store Locator Button')
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "svg[data-test-id='book-collect-icon']"))).click()
+            print('Found Delivery Options')
+            css_selector = (
+                'input#store-search'
+                '[aria-describedby="store-searchInfo store-searchValidation"]'
+                '[data-test-id="cnc__store-search"]'
+                '[style="text-transform: uppercase;"]'
+                '[name="store-search"]'
+                '[type="text"]'
+                '.ln-c-text-input.ln-c-input-group__control'
+                '[required]'
+                '[maxlength="8"]'
+            )
+            # Postal Code
+            input_field = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
+            input_field.send_keys("E1 7HT")
+            time.sleep(GEN_TIMEOUT)
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-test-id='cnc__search-submit']"))).click()
+            print('Location Done')
+            store_list = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CLASS_NAME, "store-card__list")))
+            store = store_list.find_element(By.CSS_SELECTOR, "li[data-test-id='cnc-store-card']")
+            store.find_element(By.CSS_SELECTOR, "div[data-test-id='store-card']").click()
+            print('Store Done')
             break
         except Exception as e:
-            print('Failed to find Store Locator Button')
+            print('Failed to find Delivery Options')
 
-    # Must Accept Cookies
-    try:
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))).click()
-        print('Cookies Button Found')
-    except Exception as e:
-        print('No Cookies Button')
-    # Input Location
+    # Reserve Delivery Slot
+    for _ in range(5):
+        try:
+            print('Finding Delivery Slot')
+            table = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "slot-table"))
+            )
+            print('Found Table')
+            time.sleep(GEN_TIMEOUT)
+            button = WebDriverWait(table, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.XPATH, ".//button[not(@disabled)]"))
+            )
+            if (button):
+                print('Found Button')
+                button.click()
+            print('Obtained Delivery Slot')
+            break
+        except Exception as e:
+            print(f'Failed to get Delivery Slot. Trying again... Attempt {_}')
+
     for _ in range(5):
         try:
             time.sleep(GEN_TIMEOUT)
-            location_text_field = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.ID, "storeLocatorSearchInput")))
-            print('Found Location Input')
-            location_text_field.send_keys("123")
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-test-id='cnc-modal-reserve-button']"))
+            ).click()
             break
         except Exception as e:
-            print('Could Not Find Location Input')
+            print(f'Trying again... Attempt {_}')
 
+    for _ in range(5):
+        try:
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[data-test-id="cnc-booking-confirmation-continue-shopping"]'))).click()
+            print('Booking Confirmed')
+            break
+        except:
+            print(f'Trying again. Attempt {_}')
 
     time.sleep(FAVNUM)
 
