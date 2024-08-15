@@ -289,47 +289,61 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     pack = None
 
     try:
-        name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        name = WebDriverWait(driver, GEN_TIMEOUT).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
         ).text
     except:
-        print('Error')
+        print('No Name')
 
     try:
-        brand = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        brand = WebDriverWait(driver, GEN_TIMEOUT).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
         ).text.split()[0]
     except:
-        print('Error')
+        print('No Brand')
 
     try:
-        price = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        price = WebDriverWait(driver, GEN_TIMEOUT).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-retail-price"]'))
         ).text
     except:
-        print('Error')
+        print('No Price')
 
     try:
-        description = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        description = WebDriverWait(driver, GEN_TIMEOUT).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '.pd__description'))
         ).text
     except:
-        print('Error')
+        print('No Description')
 
     try:
-        price = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-retail-price"]'))
-        ).text
-    except:
-        print('Error')
-
-    try:
-        item_label = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        item_label = WebDriverWait(driver, GEN_TIMEOUT).until(
             EC.presence_of_element_located((By.CLASS_NAME, "nutritionTable"))
         ).text
     except:
         print('No Nutrition Label')
 
+    try:
+        item_ingredients = WebDriverWait(driver, GEN_TIMEOUT).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "productIngredients"))
+        ).text
+    except:
+        print('No Ingredients')
+
+    try:
+        itemNum = WebDriverWait(driver, GEN_TIMEOUT).until(EC.presence_of_element_located((By.ID, "productSKU"))).text
+    except:
+        print("No SKU")
+
+    try:
+        match = re.search(r'Per (\d+)ml', item_label)
+        if match:
+            serving = match.group(1)
+        else:
+            match = re.search(r'(\d+) servings of (\d+)ml', item_label)
+            serving =  match.group(2)
+    except:
+        print("No Serving Size")
 
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
