@@ -147,79 +147,7 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
 
     print('Set Location Complete')
 
-def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=None,
-                        site_location_df=None):
-    subaisles = []
-    items = []
-    # Get Aisle
-    for _ in range(5):
-        try:
-            # Get Grocery Aisles Menu
-            time.sleep(GEN_TIMEOUT)
-            grocery_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-test-id="desktop-nav-item-link"][aria-label="Groceries"]')))
-            actions = ActionChains(driver)
-            actions.move_to_element(grocery_element)
-            actions.perform()
-            print('Found Grocery Menu')
-            time.sleep(GEN_TIMEOUT)
-            # Get Specific Aisle
-            nav_list = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "ul[data-test-id='desktop-nav-list']")))
-            nav_items = nav_list.find_elements(By.CSS_SELECTOR, "li.ln-o-bare-list__item a.desktop-nav__item")
-            aisle_element = next((item for item in nav_items if item.find_element(By.CSS_SELECTOR,"div.desktop-nav__item-wrapper").text.strip() == aisle),None)
-            print('Found Aisle')
-            if aisle_element:
-                href = aisle_element.get_attribute('href')
-                print(href)
-                driver.get(href)
-                print(f'At Aisle {aisle}')
-            break
-        except Exception as e:
-            print(f'Trying again... Attempt {_}')
-
-    # Get subaisles
-    for _ in range(5):
-        try:
-            divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
-            )
-            for div in divs:
-                anchors = div.find_elements(By.TAG_NAME, 'a')
-                for anchor in anchors:
-                    href = anchor.get_attribute('href')
-                    if href:
-                        subaisles.append(href)
-            print(subaisles)
-            print('Found Subaisles')
-            break
-        except Exception as e:
-            print(f'Trying again... Attempt {_}')
-
-    for s in subaisles:
-        driver.get(s)
-        time.sleep(GEN_TIMEOUT)
-        while True:
-            ul = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'ul.ln-o-grid.ln-o-grid--matrix.ln-o-grid--equal-height'))
-            )
-            pt_links = ul.find_elements(By.CLASS_NAME, 'pt__link')
-            for link in pt_links:
-                href = link.get_attribute('href')
-                if href:
-                    items.append(href)
-
-            try:
-                WebDriverWait(driver, GEN_TIMEOUT).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, 'a.ln-c-pagination__link[rel="next"][aria-label="Next page"]'))
-                ).click()
-            except Exception as e:
-                print('No Next Page')
-                break
-
-    pd.DataFrame(items).to_csv('output/tmp/ind' + str(ind) + aisle + '_item_urls.csv', index=False, header=None,encoding='utf-8-sig')
-    print(f'items so far... {len(items)}')
-
-    #  Setup Data
+def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=None):
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
                                           'size', 'price', 'multi_price',
                                           'old_price', 'pricePerUnit', 'itemNum',
@@ -227,11 +155,122 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
                                           'item_label', 'item_ingredients',
                                           'pack',
                                           'url', 'timeStamp'])
+    subaisles = []
+    items = []
+
+    # check for previous items
+    try:
+        items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
+        items = items.iloc[:, 0].tolist()
+        print('Found Prior Items')
+    except Exception as e:
+        print(e)
+        print('No Prior Data URLs Found... ')
+        # Get Aisle
+        for _ in range(5):
+            try:
+                # Get Grocery Aisles Menu
+                time.sleep(GEN_TIMEOUT)
+                grocery_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-test-id="desktop-nav-item-link"][aria-label="Groceries"]')))
+                actions = ActionChains(driver)
+                actions.move_to_element(grocery_element)
+                actions.perform()
+                print('Found Grocery Menu')
+                time.sleep(GEN_TIMEOUT)
+                # Get Specific Aisle
+                nav_list = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "ul[data-test-id='desktop-nav-list']")))
+                nav_items = nav_list.find_elements(By.CSS_SELECTOR, "li.ln-o-bare-list__item a.desktop-nav__item")
+                aisle_element = next((item for item in nav_items if item.find_element(By.CSS_SELECTOR,"div.desktop-nav__item-wrapper").text.strip() == aisle),None)
+                print('Found Aisle')
+                if aisle_element:
+                    href = aisle_element.get_attribute('href')
+                    print(href)
+                    driver.get(href)
+                    print(f'At Aisle {aisle}')
+                break
+            except Exception as e:
+                print(f'Trying again... Attempt {_}')
+
+        # Get subaisles
+        for _ in range(5):
+            try:
+                divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
+                )
+                for div in divs:
+                    anchors = div.find_elements(By.TAG_NAME, 'a')
+                    for anchor in anchors:
+                        href = anchor.get_attribute('href')
+                        if href:
+                            subaisles.append(href)
+                print(subaisles)
+                print('Found Subaisles')
+                break
+            except Exception as e:
+                print(f'Trying again... Attempt {_}')
+
+        for s in subaisles:
+            driver.get(s)
+            time.sleep(GEN_TIMEOUT)
+            while True:
+                ul = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, 'ul.ln-o-grid.ln-o-grid--matrix.ln-o-grid--equal-height'))
+                )
+                pt_links = ul.find_elements(By.CLASS_NAME, 'pt__link')
+                for link in pt_links:
+                    href = link.get_attribute('href')
+                    if href:
+                        items.append(href)
+
+                try:
+                    WebDriverWait(driver, GEN_TIMEOUT).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, 'a.ln-c-pagination__link[rel="next"][aria-label="Next page"]'))
+                    ).click()
+                except Exception as e:
+                    print('No Next Page')
+                    break
+
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,encoding='utf-8-sig')
+        print(f'items so far... {len(items)}')
+
+    # check for previous items
+    df_data = pd.DataFrame()
+    site_items_df = pd.DataFrame()
+    try:
+        df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv")
+        site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+    except:
+        print('No Prior Data Found... ')
+
+    for item_index in range(len(items)):
+        item_url = items[item_index]
+        if not df_data.empty and items[item_index] in df_data['url'].values:
+            print(f'{ind}-{item_index} Item Already Exists!')
+            continue
+
+        for v in range(5):
+            try:
+                time.sleep(GEN_TIMEOUT)
+                driver.get(item_url)
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index)
+                site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+                site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+                print(new_row)
+                break
+            except Exception as e:
+                print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
+                print(e)
+
+            if (item_index % 10 == 0):
+                site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
+
+        site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_soriana_data.csv', index=False)
 
     time.sleep(FAVNUM)
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
-    itemIdx = None
+    itemIdx = ind
     name = None
     brand = None
     subaisle = None
@@ -244,10 +283,28 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     itemNum = None
     description = None
     serving = None
-    img_urls = None
+    img_urls = []
     item_label = None
     item_ingredients = None
     pack = None
+
+    name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
+    ).text
+
+    brand = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
+    ).text.split()[0]
+
+    price = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-retail-price"]'))
+    ).text
+
+    description = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '.pd__description'))
+    ).text
+
+
 
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
