@@ -149,6 +149,9 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
 
 def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=None,
                         site_location_df=None):
+    subaisles = []
+    items = []
+    # Get Aisle
     for _ in range(5):
         try:
             # Get Grocery Aisles Menu
@@ -174,14 +177,12 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
         except Exception as e:
             print(f'Trying again... Attempt {_}')
 
-
     # Get subaisles
     for _ in range(5):
         try:
             divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
             )
-            subaisles = []
             for div in divs:
                 anchors = div.find_elements(By.TAG_NAME, 'a')
                 for anchor in anchors:
@@ -193,6 +194,29 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
             break
         except Exception as e:
             print(f'Trying again... Attempt {_}')
+
+
+    for s in subaisles:
+        driver.get(s)
+        time.sleep(GEN_TIMEOUT)
+        while True:
+            ul = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'ul.ln-o-grid.ln-o-grid--matrix.ln-o-grid--equal-height'))
+            )
+            pt_links = ul.find_elements(By.CLASS_NAME, 'pt__link')
+            for link in pt_links:
+                href = link.get_attribute('href')
+                if href:
+                    items.append(href)
+
+            try:
+                WebDriverWait(driver, GEN_TIMEOUT).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, 'a.ln-c-pagination__link[rel="next"][aria-label="Next page"]'))
+                ).click()
+            except Exception as e:
+                print(e)
+                print('No Next Page')
+                break
 
     #  Setup Data
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
