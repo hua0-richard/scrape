@@ -145,12 +145,48 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
         except:
             print(f'Trying again. Attempt {_}')
 
-    time.sleep(FAVNUM)
+    print('Set Location Complete')
 
-
-
-def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=None,
+def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=None,
                         site_location_df=None):
+    for _ in range(5):
+        try:
+            # Get Grocery Aisles Menu
+            time.sleep(GEN_TIMEOUT)
+            grocery_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-test-id="desktop-nav-item-link"][aria-label="Groceries"]')))
+            actions = ActionChains(driver)
+            actions.move_to_element(grocery_element)
+            actions.perform()
+            print('Found Grocery Menu')
+            time.sleep(GEN_TIMEOUT)
+            # Get Specific Aisle
+            nav_list = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "ul[data-test-id='desktop-nav-list']")))
+            nav_items = nav_list.find_elements(By.CSS_SELECTOR, "li.ln-o-bare-list__item a.desktop-nav__item")
+            aisle_element = next((item for item in nav_items if item.find_element(By.CSS_SELECTOR,"div.desktop-nav__item-wrapper").text.strip() == aisle),None)
+            print('Found Aisle')
+            if aisle_element:
+                href = aisle_element.get_attribute('href')
+                print(href)
+                driver.get(href)
+                print(f'At Aisle {aisle}')
+            break
+        except Exception as e:
+            print(f'Trying again... Attempt {_}')
+
+    # Get subaisles
+    divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
+    )
+    subaisles = []
+    for div in divs:
+        anchors = div.find_elements(By.TAG_NAME, 'a')
+        for anchor in anchors:
+            href = anchor.get_attribute('href')
+            if href:
+                subaisles.append(href)
+    print(subaisles)
+
     #  Setup Data
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
                                           'size', 'price', 'multi_price',
@@ -159,6 +195,9 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisles=[], ind=
                                           'item_label', 'item_ingredients',
                                           'pack',
                                           'url', 'timeStamp'])
+
+    time.sleep(FAVNUM)
+
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):

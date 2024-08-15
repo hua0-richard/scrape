@@ -38,7 +38,7 @@ def main():
         driver.get(url)
 
         sainbury.setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
-        sainbury.scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisles=['Lácteos y huevo'],ind=ind)
+        sainbury.scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks',ind=ind)
 
 if __name__ == '__main__':
     res = main()
