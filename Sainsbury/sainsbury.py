@@ -19,10 +19,11 @@ import random
 import re
 
 FAVNUM = 22222
-GEN_TIMEOUT = 15
+GEN_TIMEOUT = 5
 
 def setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_sainbury(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
+
 
 def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
     # Reject Cookies Button
@@ -241,39 +242,38 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
-    ## CHANGE HERE
     # check for previous items
-    # df_data = pd.DataFrame()
-    # site_items_df = pd.DataFrame()
-    # try:
-    #     df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv")
-    #     site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
-    # except:
-    #     print('No Prior Data Found... ')
-    #
-    # for item_index in range(len(items)):
-    #     item_url = items[item_index]
-    #     if not df_data.empty and items[item_index] in df_data['url'].values:
-    #         print(f'{ind}-{item_index} Item Already Exists!')
-    #         continue
-    #
-    #     for v in range(5):
-    #         try:
-    #             time.sleep(GEN_TIMEOUT)
-    #             driver.get(item_url)
-    #             new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index)
-    #             site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
-    #             site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
-    #             print(new_row)
-    #             break
-    #         except Exception as e:
-    #             print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
-    #             print(e)
-    #
-    #     if (item_index % 10 == 0):
-    #         site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
-    #
-    # site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
+    df_data = pd.DataFrame()
+    site_items_df = pd.DataFrame()
+    try:
+        df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv")
+        site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+    except:
+        print('No Prior Data Found... ')
+
+    for item_index in range(len(items)):
+        item_url = items[item_index]
+        if not df_data.empty and items[item_index] in df_data['url'].values:
+            print(f'{ind}-{item_index} Item Already Exists!')
+            continue
+
+        for v in range(5):
+            try:
+                time.sleep(GEN_TIMEOUT)
+                driver.get(item_url)
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index)
+                site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+                site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+                print(new_row)
+                break
+            except Exception as e:
+                print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
+                print(e)
+
+        if (item_index % 10 == 0):
+            site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
+
+    site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     itemIdx = f'{ind}-{index}-{aisle.upper()[:3]}'
@@ -342,12 +342,20 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print("No SKU")
 
     try:
-        match = re.search(r'Per (\d+)ml', item_label)
-        if match:
-            serving = match.group(1)
-        else:
-            match = re.search(r'(\d+) servings of (\d+)ml', item_label)
-            serving =  match.group(2)
+        indicators = [
+            r'Per (\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))',
+            r'(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))(?:\s*=\s*1 serving)',
+            r'Serving size:\s*(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))',
+            r'1 serving\s*=\s*(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack))',
+            r'(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))(?:\s*\(\d+%\))?$',
+            r'This pack contains (\d+) servings',
+            r'(\d+)\s*servings per container',
+            r'Contains (\d+) servings'
+        ]
+        for indicator in indicators:
+            match = re.search(indicator, item_label, re.IGNORECASE)
+            if match:
+                serving = match.group(1).strip()
     except:
         print("No Serving Size")
 
@@ -368,7 +376,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     try:
         pattern = r'(\d+(?:\.\d+)?)\s*(L|ML|l|ml)'
-        match = re.search(pattern, description, re.IGNORECASE)
+        match = re.search(pattern, name, re.IGNORECASE)
         if match:
             volume = match.group(1)
             unit = match.group(2).upper()
@@ -382,7 +390,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Price per Unit Error')
 
     try:
-        match = re.search(r'(\d+)x', description)
+        match = re.search(r'(\d+)x', name)
         if match:
             no_units = int(match.group(1))
             multi_price = f"{no_units} for {price}"
@@ -390,7 +398,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Multi Price Error / No Multi Price')
 
     try:
-        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', description, re.IGNORECASE)
+        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', name, re.IGNORECASE)
         if match:
             full_quantity = match.group(1)
             pack_size_match = re.search(r'(\d+)x', full_quantity)
