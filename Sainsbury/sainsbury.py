@@ -19,7 +19,7 @@ import random
 import re
 
 FAVNUM = 22222
-GEN_TIMEOUT = 5
+GEN_TIMEOUT = 15
 
 def setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_sainbury(driver, site_location_df.loc[ind, 1], EXPLICIT_WAIT_TIME)
@@ -74,7 +74,8 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
     except Exception as e:
         print('Did not find Login Button')
 
-    input('Continue? [Y] / [N]')
+    # input('Continue? [Y] / [N]')
+    time.sleep(GEN_TIMEOUT)
 
     # Set Location
     for _ in range(5):
@@ -95,7 +96,13 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
             )
             # Postal Code
             input_field = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
-            input_field.send_keys("E1 7HT")
+            print(address)
+            uk_postcode_pattern = r'\b[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}\b'
+            match = re.search(uk_postcode_pattern, address)
+            postal_code = ''
+            if match:
+                postal_code = match.group()
+            input_field.send_keys(postal_code)
             time.sleep(GEN_TIMEOUT)
             WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-test-id='cnc__search-submit']"))).click()
             print('Location Done')
@@ -106,6 +113,7 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
             break
         except Exception as e:
             print('Failed to find Delivery Options')
+
 
     # Reserve Delivery Slot
     for _ in range(5):
@@ -147,7 +155,7 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
 
     print('Set Location Complete')
 
-def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=None):
+def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
                                           'size', 'price', 'multi_price',
                                           'old_price', 'pricePerUnit', 'itemNum',
@@ -262,15 +270,13 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME=10, idx=None, aisle='', ind=N
                 print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
                 print(e)
 
-            if (item_index % 10 == 0):
-                site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
+        if (item_index % 10 == 0):
+            site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
 
     site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
 
-    time.sleep(FAVNUM)
-
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
-    itemIdx = ind
+    itemIdx = f'{ind}-{index}-{aisle.upper()[:3]}'
     name = None
     brand = None
     subaisle = None
@@ -345,6 +351,71 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     except:
         print("No Serving Size")
 
+    try:
+        aisle_texts = []
+        aisle_label_container = WebDriverWait(driver, GEN_TIMEOUT).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'li.ln-c-breadcrumbs__item')))
+        for t in aisle_label_container:
+            link = t.find_element(By.TAG_NAME, 'a')
+            aisle_texts.append(link.text)
+        aisle_texts = aisle_texts[1:]
+        aisle_texts = list(reversed(aisle_texts))
+        if (len(aisle_texts) > 0):
+            subaisle = aisle_texts.pop()
+        if (len(aisle_texts) > 0):
+            subsubaisle = aisle_texts.pop()
+    except:
+        print("Aisle Error")
+
+    try:
+        pattern = r'(\d+(?:\.\d+)?)\s*(L|ML|l|ml)'
+        match = re.search(pattern, description, re.IGNORECASE)
+        if match:
+            volume = match.group(1)
+            unit = match.group(2).upper()
+            size = f"{volume}{unit}"
+    except:
+        print("Size Error")
+
+    try:
+        pricePerUnit = WebDriverWait(driver, GEN_TIMEOUT).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'span[data-test-id="pd-unit-price"]'))).text
+    except:
+        print('Price per Unit Error')
+
+    try:
+        match = re.search(r'(\d+)x', description)
+        if match:
+            no_units = int(match.group(1))
+            multi_price = f"{no_units} for {price}"
+    except:
+        print('Multi Price Error / No Multi Price')
+
+    try:
+        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', description, re.IGNORECASE)
+        if match:
+            full_quantity = match.group(1)
+            pack_size_match = re.search(r'(\d+)x', full_quantity)
+            if pack_size_match:
+                pack_size = int(pack_size_match.group(1))
+                pack = f"{pack_size} x {full_quantity}"
+    except:
+        print("No Pack")
+
+    try:
+        old_price = WebDriverWait(driver, GEN_TIMEOUT).until(
+            EC.presence_of_element_located((By.XPATH, "//span[@data-test-id='contextual-price-text']"))
+        ).text
+    except:
+        print('No Nectar (Discount) Price')
+
+    try:
+        images = WebDriverWait(driver, GEN_TIMEOUT).until(EC.presence_of_element_located((By.CSS_SELECTOR, "img.pd__image.pd__image__nocursor")))
+        src = images.get_attribute("src")
+        img_urls.append(src)
+        print(src)
+        images.screenshot('output/images/' + str(ind) + '/' + itemIdx + str(0) + '.png')
+    except:
+        print('Images Error')
+
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
                'aisle': aisle, 'subaisle': subaisle,
@@ -357,7 +428,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                'pack': pack,
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
     return (new_row)
-
 
 def getItem_urls(driver, EXPLICIT_WAIT_TIME):
     None

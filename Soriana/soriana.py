@@ -252,7 +252,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     # Scrape pictures
     imgs = driver.find_element(By.CLASS_NAME, 'primary-images')
-    imgs = imgs.find_elements(By.XPATH, './/img')
+    imgs = imgs.find_elements(By.XPATH, './/images')
     img_urls = []
     for img_idx in range(len(imgs)):
         src = imgs[img_idx].get_attribute('src')
