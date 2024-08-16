@@ -6,7 +6,7 @@ import woolworths
 
 
 def main():
-    EXPLICIT_WAIT_TIME = 10
+    EXPLICIT_WAIT_TIME = 20
     site_location_df = pd.read_excel('urlLocations.xlsx', header=None)
 
     for _ in [49, 50, 51, 52]:

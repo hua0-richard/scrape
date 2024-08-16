@@ -20,7 +20,7 @@ import random
 import re
 
 FAVNUM = 22222
-GEN_TIMEOUT = 5
+GEN_TIMEOUT = 5 * 3
 STORE_NAME = 'woolworths'
 
 
@@ -74,53 +74,86 @@ def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
 def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     subaisles = []
     items = []
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "div.hamburger[fetchpriority='high']"))
-    ).click()
-    aisle_text = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.element_to_be_clickable(
-            (By.XPATH, f"//div[contains(@class, 'description') and contains(text(), '{aisle}')]"))
-    )
-    aisle_link = aisle_text.find_element(By.XPATH, "..")
-    driver.get(aisle_link.get_attribute('href'))
 
-    # Wait for the elements to be present
-    elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
-    sub_aisle_links = [element.get_attribute("href") for element in elements[1:]]
-    print(sub_aisle_links)
-    sub_sub_aisle_links = []
-    for s in sub_aisle_links:
-        driver.get(s)
-        sub_sub_aisle_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
-        tmp = [element.get_attribute("href") for element in sub_sub_aisle_element[1:]]
-        for t in tmp:
-            sub_sub_aisle_links.append(t)
-
-    for s in sub_sub_aisle_links:
-        driver.get(s)
-        bread_crumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".breadcrumbs-link")))
-        breadcrumb_texts = ", ".join([element.text.strip() for element in bread_crumb[2:]])
-        while True:
-            try:
-                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.element_to_be_clickable((By.XPATH, "//span[@class='next-marker' and text()='Next']"))
-                ).click()
-                print('Next Button')
-            except:
-                print('No Next Button')
-                break
-
-    time.sleep(FAVNUM)
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
         items = items.iloc[:, 0].tolist()
         print('Found Prior Items')
     except Exception as e:
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "div.hamburger[fetchpriority='high']"))
+        ).click()
+        aisle_text = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, f"//div[contains(@class, 'description') and contains(text(), '{aisle}')]"))
+        )
+        aisle_link = aisle_text.find_element(By.XPATH, "..")
+        driver.get(aisle_link.get_attribute('href'))
+
+        # Wait for the elements to be present
+        elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
+        sub_aisle_links = [element.get_attribute("href") for element in elements[1:]]
+        print(sub_aisle_links)
+        sub_sub_aisle_links = []
+        for s in sub_aisle_links:
+            driver.get(s)
+            sub_sub_aisle_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
+            tmp = [element.get_attribute("href") for element in sub_sub_aisle_element[1:]]
+            for t in tmp:
+                sub_sub_aisle_links.append(t)
+
+        for s in sub_sub_aisle_links:
+            driver.get(s)
+            bread_crumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".breadcrumbs-link")))
+            breadcrumb_texts = ", ".join([element.text.strip() for element in bread_crumb[2:]])
+            time.sleep(GEN_TIMEOUT)
+            while True:
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 2).until(EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
+                # Use JavaScript to extract product information
+                script = """
+                    const products = [];
+                    const tiles = document.querySelectorAll('wc-product-tile');
+                    tiles.forEach(tile => {
+                        const shadowRoot = tile.shadowRoot;
+                        if (shadowRoot) {
+                            const link = shadowRoot.querySelector('a');
+                            if (link) {
+                                products.push({
+                                    url: link.href,
+                                });
+                            }
+                        }
+                    });
+                    return products;
+                """
+                # This returns an array
+                product_info = driver.execute_script(script)
+                for product in product_info:
+                    items.append({product['url'], breadcrumb_texts})
+
+                # Next Page
+                try:
+                    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                        EC.element_to_be_clickable((By.XPATH, "//span[@class='next-marker' and text()='Next']"))
+                    ).click()
+                    print('Found Next Button')
+                except:
+                    print('No Next Button')
+                    print(items)
+                    break
+
+        aisle_item_list = [tuple(s) for s in items]
+        items = pd.DataFrame(aisle_item_list)
+        items.columns = [None, None]
 
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
                                    encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
+        time.sleep(FAVNUM)
 
     # check for previous scrape
     df_data = pd.DataFrame()
