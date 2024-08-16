@@ -29,46 +29,88 @@ def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
 
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.wx-header__drawer-button.signIn"))).click()
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-email"))).send_keys("u2894478@gmail.com")
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-password"))).send_keys("notme123!")
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, "span.login-button-label"))).click()
-    input("Follow Instructions On-Screen for 2FA")
-    try:
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, "//button[contains(@class, 'edit-button') and contains(text(), 'Edit')]"))
-        ).click()
-    except:
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, "span#wx-label-fulfilment-action"))).click()
+    for _ in range(5):
+        try:
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.wx-header__drawer-button.signIn"))).click()
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-email"))).send_keys(
+                "u2894478@gmail.com")
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-password"))).send_keys("notme123!")
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "span.login-button-label"))).click()
+            input("Follow Instructions On-Screen for 2FA")
+            try:
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable(
+                        (By.XPATH, "//button[contains(@class, 'edit-button') and contains(text(), 'Edit')]"))
+                ).click()
+            except:
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.visibility_of_element_located((By.CSS_SELECTOR, "span#wx-label-fulfilment-action"))).click()
 
-    pattern = r'\b(\d{4})(?:\s*,?\s*Australia)?$'
-    match = re.search(pattern, address)
-    postcode = None
-    if match:
-        postcode = match.group(1)
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, "input#pickupAddressSelector"))).send_keys(postcode)
-        time.sleep(GEN_TIMEOUT)
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "shared-button.fulfilment-button"))).click()
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".time-slot-line1.mobile"))).click()
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH,
-                                                                                    "//shared-button[@buttonclass='shopper-action']//button[contains(text(), 'Reserve time')]"))).click()
+            pattern = r'\b(\d{4})(?:\s*,?\s*Australia)?$'
+            match = re.search(pattern, address)
+            postcode = None
+            if match:
+                postcode = match.group(1)
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.visibility_of_element_located((By.CSS_SELECTOR, "input#pickupAddressSelector"))).send_keys(
+                    postcode)
+                time.sleep(GEN_TIMEOUT)
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "shared-button.fulfilment-button"))).click()
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, ".time-slot-line1.mobile"))).click()
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH,
+                                                                                            "//shared-button[@buttonclass='shopper-action']//button[contains(text(), 'Reserve time')]"))).click()
+                break
+        except:
+            print(f'Error Setting Location... Trying Again... Attempt {_}')
     print('Set Location Complete')
-    time.sleep(FAVNUM)
 
 
 def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     subaisles = []
     items = []
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "div.hamburger[fetchpriority='high']"))
+    ).click()
+    aisle_text = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, f"//div[contains(@class, 'description') and contains(text(), '{aisle}')]"))
+    )
+    aisle_link = aisle_text.find_element(By.XPATH, "..")
+    driver.get(aisle_link.get_attribute('href'))
 
+    # Wait for the elements to be present
+    elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
+    sub_aisle_links = [element.get_attribute("href") for element in elements[1:]]
+    print(sub_aisle_links)
+    sub_sub_aisle_links = []
+    for s in sub_aisle_links:
+        driver.get(s)
+        sub_sub_aisle_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
+        tmp = [element.get_attribute("href") for element in sub_sub_aisle_element[1:]]
+        for t in tmp:
+            sub_sub_aisle_links.append(t)
+
+    for s in sub_sub_aisle_links:
+        driver.get(s)
+        bread_crumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".breadcrumbs-link")))
+        breadcrumb_texts = ", ".join([element.text.strip() for element in bread_crumb[2:]])
+        while True:
+            try:
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable((By.XPATH, "//span[@class='next-marker' and text()='Next']"))
+                ).click()
+                print('Next Button')
+            except:
+                print('No Next Button')
+                break
+
+    time.sleep(FAVNUM)
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
