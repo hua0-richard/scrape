@@ -72,7 +72,6 @@ def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
 
 
 def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
-    subaisles = []
     items = []
 
     # check for previous items
@@ -105,7 +104,11 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             for t in tmp:
                 sub_sub_aisle_links.append(t)
 
+        count = 0
         for s in sub_sub_aisle_links:
+            count = count + 1
+            if (count > 2):
+                break
             driver.get(s)
             bread_crumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".breadcrumbs-link")))
@@ -133,7 +136,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                 # This returns an array
                 product_info = driver.execute_script(script)
                 for product in product_info:
-                    items.append({product['url'], breadcrumb_texts})
+                    items.append([product['url'], breadcrumb_texts])
 
                 # Next Page
                 try:
