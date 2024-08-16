@@ -155,7 +155,6 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                                    encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
-    time.sleep(FAVNUM)
     # check for previous scrape
     df_data = pd.DataFrame()
     site_items_df = pd.DataFrame()
@@ -167,7 +166,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
 
     # scrape items and check for already scraped
     for item_index in range(len(items)):
-        item_url = items[item_index]
+        item_url = items[item_index][0]
         if not df_data.empty and items[item_index] in df_data['url'].values:
             print(f'{ind}-{item_index} Item Already Exists!')
             continue
@@ -209,6 +208,16 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     item_label = None
     item_ingredients = None
     pack = None
+
+    try:
+        name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
+    except:
+        print('Failed to get Name')
+
+    try:
+        None
+    except:
+        print('Failed to get Brand')
 
     new_row = {'idx': itemIdx,
                'name': name, 'brand': brand,
