@@ -134,8 +134,11 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                 # This returns an array
                 product_info = driver.execute_script(script)
                 for product in product_info:
-                    items.append([product['url'], breadcrumb_texts])
-
+                    for i in items:
+                        if product['url'] == i[0]:
+                            break
+                    else:
+                        items.append([product['url'], breadcrumb_texts])
                 # Next Page
                 try:
                     WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -175,7 +178,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             try:
                 time.sleep(GEN_TIMEOUT)
                 driver.get(item_url)
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index)
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
                 site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
                 site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
                 print(new_row)
@@ -190,7 +193,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
     site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
 
 
-def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
+def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
     itemIdx = f'{ind}-{index}-{aisle.upper()[:3]}'
     name = None
     brand = None
@@ -208,6 +211,15 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     item_label = None
     item_ingredients = None
     pack = None
+
+    try:
+        split_cat = sub_aisles_string.split(',')
+        split_cat.reverse()
+        subaisle = split_cat.pop()
+        if (len(split_cat) > 0):
+            subsubaisle = split_cat.pop()
+    except:
+        print('Failed to get Sub Aisles')
 
     try:
         name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
