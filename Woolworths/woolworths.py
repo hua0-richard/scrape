@@ -72,12 +72,14 @@ def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
 
 
 def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
+    # i in items
+    # i[0] is url
+    # i[1] is aisle
     items = []
-
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
-        items = items.iloc[:, 0].tolist()
+        items = items.values.tolist()
         print('Found Prior Items')
     except Exception as e:
         WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -104,11 +106,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             for t in tmp:
                 sub_sub_aisle_links.append(t)
 
-        count = 0
         for s in sub_sub_aisle_links:
-            count = count + 1
-            if (count > 2):
-                break
             driver.get(s)
             bread_crumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".breadcrumbs-link")))
@@ -156,8 +154,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
                                    encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
-        time.sleep(FAVNUM)
 
+    time.sleep(FAVNUM)
     # check for previous scrape
     df_data = pd.DataFrame()
     site_items_df = pd.DataFrame()
