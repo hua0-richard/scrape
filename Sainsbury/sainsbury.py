@@ -22,7 +22,7 @@ FAVNUM = 22222
 GEN_TIMEOUT = 5
 
 def setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
-    setLocation_sainbury(driver, site_location_df.loc[ind, 1], EXPLICIT_WAIT_TIME)
+    setLocation_sainbury(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
 
 
 def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
