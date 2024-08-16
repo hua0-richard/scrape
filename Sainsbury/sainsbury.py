@@ -19,7 +19,7 @@ import random
 import re
 
 FAVNUM = 22222
-GEN_TIMEOUT = 15
+GEN_TIMEOUT = 5
 
 def setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_sainbury(driver, site_location_df.loc[ind, 1], EXPLICIT_WAIT_TIME)
@@ -342,12 +342,20 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print("No SKU")
 
     try:
-        match = re.search(r'Per (\d+)ml', item_label)
-        if match:
-            serving = match.group(1)
-        else:
-            match = re.search(r'(\d+) servings of (\d+)ml', item_label)
-            serving =  match.group(2)
+        indicators = [
+            r'Per (\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))',
+            r'(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))(?:\s*=\s*1 serving)',
+            r'Serving size:\s*(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))',
+            r'1 serving\s*=\s*(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack))',
+            r'(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))(?:\s*\(\d+%\))?$',
+            r'This pack contains (\d+) servings',
+            r'(\d+)\s*servings per container',
+            r'Contains (\d+) servings'
+        ]
+        for indicator in indicators:
+            match = re.search(indicator, item_label, re.IGNORECASE)
+            if match:
+                serving = match.group(1).strip()
     except:
         print("No Serving Size")
 
@@ -368,7 +376,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     try:
         pattern = r'(\d+(?:\.\d+)?)\s*(L|ML|l|ml)'
-        match = re.search(pattern, description, re.IGNORECASE)
+        match = re.search(pattern, name, re.IGNORECASE)
         if match:
             volume = match.group(1)
             unit = match.group(2).upper()
@@ -382,7 +390,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Price per Unit Error')
 
     try:
-        match = re.search(r'(\d+)x', description)
+        match = re.search(r'(\d+)x', name)
         if match:
             no_units = int(match.group(1))
             multi_price = f"{no_units} for {price}"
@@ -390,7 +398,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Multi Price Error / No Multi Price')
 
     try:
-        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', description, re.IGNORECASE)
+        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', name, re.IGNORECASE)
         if match:
             full_quantity = match.group(1)
             pack_size_match = re.search(r'(\d+)x', full_quantity)
