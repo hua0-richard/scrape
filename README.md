@@ -1,7 +1,7 @@
 TODO (Scraping)
 - [x] URL Locations
 - [ ] 4,5,6,7 (Walmart)
-- [ ] 8,9 (Sobeys Canada Voila)
+- [ ] 8,9,10,11 (Sobeys Canada Voila)
 - [ ] 12,13,14,15,16 (Kroger)
 - [ ] 17 (Walmart)
 - [ ] 40,41,42,43,44 (Unimarc, url issue)
