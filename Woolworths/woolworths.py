@@ -1,3 +1,4 @@
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
@@ -27,8 +28,31 @@ def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
 
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
-    # Reject Cookies Button
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.wx-header__drawer-button.signIn"))).click()
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-email"))).send_keys("u2894478@gmail.com")
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-password"))).send_keys("notme123!")
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "span.login-button-label"))).click()
+    input("Follow Instructions On-Screen for 2FA")
+    try:
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'edit-button') and contains(text(), 'Edit')]"))
+        ).click()
+    except:
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, "span#wx-label-fulfilment-action"))).click()
+
+    pattern = r'\b(\d{4})(?:\s*,?\s*Australia)?$'
+    match = re.search(pattern, address)
+    postcode = None
+    if match:
+        postcode = match.group(1)
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input#pickupAddressSelector"))).send_keys(postcode)
+        time.sleep(GEN_TIMEOUT)
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "shared-button.fulfilment-button"))).click()
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".time-slot-line1.mobile"))).click()
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH,"//shared-button[@buttonclass='shopper-action']//button[contains(text(), 'Reserve time')]"))).click()
     print('Set Location Complete')
+    time.sleep(FAVNUM)
 
 def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     subaisles = []
