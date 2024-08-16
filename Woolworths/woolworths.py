@@ -23,19 +23,25 @@ FAVNUM = 22222
 GEN_TIMEOUT = 5
 STORE_NAME = 'woolworths'
 
+
 def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
 
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.wx-header__drawer-button.signIn"))).click()
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-email"))).send_keys("u2894478@gmail.com")
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-password"))).send_keys("notme123!")
-    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "span.login-button-label"))).click()
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.wx-header__drawer-button.signIn"))).click()
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-email"))).send_keys("u2894478@gmail.com")
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "input#signInForm-password"))).send_keys("notme123!")
+    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, "span.login-button-label"))).click()
     input("Follow Instructions On-Screen for 2FA")
     try:
         WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'edit-button') and contains(text(), 'Edit')]"))
+            EC.element_to_be_clickable(
+                (By.XPATH, "//button[contains(@class, 'edit-button') and contains(text(), 'Edit')]"))
         ).click()
     except:
         WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -46,13 +52,18 @@ def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
     postcode = None
     if match:
         postcode = match.group(1)
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input#pickupAddressSelector"))).send_keys(postcode)
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, "input#pickupAddressSelector"))).send_keys(postcode)
         time.sleep(GEN_TIMEOUT)
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "shared-button.fulfilment-button"))).click()
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".time-slot-line1.mobile"))).click()
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH,"//shared-button[@buttonclass='shopper-action']//button[contains(text(), 'Reserve time')]"))).click()
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "shared-button.fulfilment-button"))).click()
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".time-slot-line1.mobile"))).click()
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH,
+                                                                                    "//shared-button[@buttonclass='shopper-action']//button[contains(text(), 'Reserve time')]"))).click()
     print('Set Location Complete')
     time.sleep(FAVNUM)
+
 
 def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     subaisles = []
@@ -65,7 +76,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
         print('Found Prior Items')
     except Exception as e:
 
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,encoding='utf-8-sig')
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
+                                   encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
     # check for previous scrape
@@ -101,6 +113,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
 
     site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
+
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     itemIdx = f'{ind}-{index}-{aisle.upper()[:3]}'

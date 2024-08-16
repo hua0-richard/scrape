@@ -1,5 +1,5 @@
 # Packages for scrapping
-#from selenium import webdriver as uc
+# from selenium import webdriver as uc
 import undetected_chromedriver as uc
 import pandas as pd
 import woolworths
@@ -30,6 +30,7 @@ def main():
         woolworths.scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks', ind=ind)
 
         driver.quit()
+
 
 if __name__ == '__main__':
     res = main()
