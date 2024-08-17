@@ -164,38 +164,41 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
         print(f'items so far... {len(items)}')
 
     # check for previous scrape
-    df_data = pd.DataFrame()
-    site_items_df = pd.DataFrame()
-    try:
-        df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv")
-        site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
-    except:
-        print('No Prior Data Found... ')
 
-    # scrape items and check for already scraped
-    for item_index in range(len(items)):
-        item_url = items[item_index][0]
-        if not df_data.empty and items[item_index] in df_data['url'].values:
-            print(f'{ind}-{item_index} Item Already Exists!')
-            continue
+    # UNCOMMENT BELOW
 
-        for v in range(5):
-            try:
-                time.sleep(GEN_TIMEOUT)
-                driver.get(item_url)
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
-                site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
-                site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
-                print(new_row)
-                break
-            except Exception as e:
-                print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
-                print(e)
-
-        if (item_index % 10 == 0):
-            site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
-
-    site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
+    # df_data = pd.DataFrame()
+    # site_items_df = pd.DataFrame()
+    # try:
+    #     df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv")
+    #     site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+    # except:
+    #     print('No Prior Data Found... ')
+    #
+    # # scrape items and check for already scraped
+    # for item_index in range(len(items)):
+    #     item_url = items[item_index][0]
+    #     if not df_data.empty and items[item_index] in df_data['url'].values:
+    #         print(f'{ind}-{item_index} Item Already Exists!')
+    #         continue
+    #
+    #     for v in range(5):
+    #         try:
+    #             time.sleep(GEN_TIMEOUT)
+    #             driver.get(item_url)
+    #             new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
+    #             site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+    #             site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+    #             print(new_row)
+    #             break
+    #         except Exception as e:
+    #             print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
+    #             print(e)
+    #
+    #     if (item_index % 10 == 0):
+    #         site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
+    #
+    # site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
