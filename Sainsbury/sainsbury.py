@@ -252,6 +252,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                         items.append(href)
 
                 try:
+                    time.sleep(GEN_TIMEOUT)
                     WebDriverWait(driver, GEN_TIMEOUT).until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, 'a.ln-c-pagination__link[rel="next"][aria-label="Next page"]'))
                     ).click()
@@ -437,7 +438,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         src = images.get_attribute("src")
         img_urls.append(src)
         print(src)
-        images.screenshot('output/images/' + str(ind) + '/' + itemIdx + str(0) + '.png')
+        images.screenshot('output/images/' + str(ind) + '/' + itemIdx + '-' + str(0) + '.png')
     except:
         print('Images Error')
 
