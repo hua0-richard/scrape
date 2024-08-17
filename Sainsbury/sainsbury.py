@@ -201,27 +201,47 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                 print(f'Trying again... Attempt {_}')
 
         # Get subaisles
-        for _ in range(5):
-            try:
-                divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
-                )
-                for div in divs:
-                    anchors = div.find_elements(By.TAG_NAME, 'a')
-                    for anchor in anchors:
-                        href = anchor.get_attribute('href')
-                        if href:
-                            subaisles.append(href)
-                print(subaisles)
-                print('Found Subaisles')
-                break
-            except Exception as e:
-                print(f'Trying again... Attempt {_}')
+        if aisle == 'Drinks':
+            for _ in range(5):
+                try:
+                    divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.M052styles__Container-sc-1cubg5c-2.bEpIHz'))
+                    )
+                    for div in divs:
+                        anchors = div.find_elements(By.TAG_NAME, 'a')
+                        for anchor in anchors:
+                            href = anchor.get_attribute('href')
+                            if href:
+                                subaisles.append(href)
+                    print(subaisles)
+                    print('Found Subaisles')
+                    break
+                except Exception as e:
+                    print(f'Trying again... Attempt {_}')
+
+        if aisle == 'Dairy, eggs & chilled':
+            for _ in range(5):
+                try:
+                    ul_element_links = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                        EC.presence_of_element_located(
+                            (By.CSS_SELECTOR, "ul.browse-pill-list.browse-pill-list__disable-scrollbars"))
+                    )
+                    li_elements = ul_element_links.find_elements(By.TAG_NAME, "li")
+                    for index, li in enumerate(li_elements, start=1):
+                        a_tag = li.find_element(By.TAG_NAME, "a")
+                        href = a_tag.get_attribute("href")
+                        subaisles.append(href)
+                    print(subaisles)
+                    break
+                except:
+                    print(f'Trying again... Attempt {_}')
+
 
         for s in subaisles:
             driver.get(s)
             time.sleep(GEN_TIMEOUT)
             while True:
+                time.sleep(GEN_TIMEOUT)
                 ul = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, 'ul.ln-o-grid.ln-o-grid--matrix.ln-o-grid--equal-height'))
                 )
@@ -232,6 +252,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                         items.append(href)
 
                 try:
+                    time.sleep(GEN_TIMEOUT)
                     WebDriverWait(driver, GEN_TIMEOUT).until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, 'a.ln-c-pagination__link[rel="next"][aria-label="Next page"]'))
                     ).click()
@@ -417,7 +438,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         src = images.get_attribute("src")
         img_urls.append(src)
         print(src)
-        images.screenshot('output/images/' + str(ind) + '/' + itemIdx + str(0) + '.png')
+        images.screenshot('output/images/' + str(ind) + '/' + itemIdx + '-' + str(0) + '.png')
     except:
         print('Images Error')
 
