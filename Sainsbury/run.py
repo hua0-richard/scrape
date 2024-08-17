@@ -12,7 +12,7 @@ def main():
     EXPLICIT_WAIT_TIME = 10
     site_location_df = pd.read_excel('urlLocations.xlsx', header=None)
 
-    for _ in [66, 67, 68]:
+    for _ in [65, 66, 67, 68]:
         ind = _
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
@@ -34,7 +34,7 @@ def main():
 
         driver.get(url)
 
-        #sainsbury.setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
+        sainsbury.setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
         sainsbury.scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks',ind=ind)
 
         driver.quit()
