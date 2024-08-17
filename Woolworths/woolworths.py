@@ -82,6 +82,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
         items = items.values.tolist()
         print('Found Prior Items')
     except Exception as e:
+        print('No Prior Items')
+        time.sleep(GEN_TIMEOUT)
         WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "div.hamburger[fetchpriority='high']"))
         ).click()
@@ -92,28 +94,31 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
         aisle_link = aisle_text.find_element(By.XPATH, "..")
         driver.get(aisle_link.get_attribute('href'))
 
-        # Wait for the elements to be present
+        time.sleep(GEN_TIMEOUT)
         elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
-        sub_aisle_links = [element.get_attribute("href") for element in elements[1:]]
+        sub_aisle_links = [element.get_attribute("href") for element in elements[2:]]
         print(sub_aisle_links)
+
         sub_sub_aisle_links = []
         for s in sub_aisle_links:
             driver.get(s)
+            time.sleep(GEN_TIMEOUT)
             sub_sub_aisle_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
-            tmp = [element.get_attribute("href") for element in sub_sub_aisle_element[1:]]
+            tmp = [element.get_attribute("href") for element in sub_sub_aisle_element[2:]]
             for t in tmp:
                 sub_sub_aisle_links.append(t)
 
         for s in sub_sub_aisle_links:
+            print(f"items so far... {len(items)}")
             driver.get(s)
             bread_crumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".breadcrumbs-link")))
             breadcrumb_texts = ", ".join([element.text.strip() for element in bread_crumb[2:]])
-            time.sleep(GEN_TIMEOUT)
             while True:
-                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 2).until(EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
+                time.sleep(GEN_TIMEOUT)
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 3).until(EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
                 # Use JavaScript to extract product information
                 script = """
                     const products = [];
