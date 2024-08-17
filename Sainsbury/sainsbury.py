@@ -6,6 +6,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import urllib.request
 from bs4 import BeautifulSoup
+import os
+import glob
 
 # Special Package to scrap and aids in avoiding more stringent sites
 import undetected_chromedriver as uc
@@ -20,11 +22,22 @@ import re
 
 FAVNUM = 22222
 GEN_TIMEOUT = 5
+def custom_sort_key(value):
+    parts = value.split('-')
+    return int(parts[1])
 
+def cache_strategy():
+    folder_path = 'output/tmp'
+    item_urls_csvs = glob.glob(os.path.join(folder_path, '*data.csv'))
+    reference_df_list = []
+    for file in item_urls_csvs:
+        df = pd.read_csv(file)
+        reference_df_list.append(df)
+    combined_reference_df = pd.concat(reference_df_list, ignore_index=True)
+    combined_reference_df.drop_duplicates(subset='url', keep='first', inplace=True)
+    return combined_reference_df
 def setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_sainbury(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
-
-
 def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
     # Reject Cookies Button
     try:
@@ -154,7 +167,6 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
             print(f'Trying again. Attempt {_}')
 
     print('Set Location Complete')
-
 def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     site_items_df = pd.DataFrame(columns=['idx', 'name', 'brand', 'aisle', 'subaisle', 'subsubaisle',
                                           'size', 'price', 'multi_price',
@@ -260,6 +272,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                     print('No Next Page')
                     break
 
+        items = list(dict.fromkeys(items))
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
@@ -271,6 +284,31 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
         site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
     except:
         print('No Prior Data Found... ')
+
+    # Cache Strategy
+    try:
+        seen_items = cache_strategy()
+        print(seen_items)
+        new_rows = []
+        for cache_index in range(len(items)):
+            item_url = items[cache_index]
+            matching_rows = seen_items[seen_items['url'] == item_url]
+            if (len(matching_rows) > 0):
+                row = matching_rows.iloc[0].copy()
+                row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                print(cache_index)
+                print('Found Cached Entry')
+        if new_rows:
+            new_rows_df = pd.DataFrame(new_rows)
+            df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
+            df_data = df_data.drop_duplicates(subset=['url'], keep='last')
+            site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.reset_index(drop=True)
+
+    except Exception as e:
+        print(e)
+        print('Cache Failed')
 
     for item_index in range(len(items)):
         item_url = items[item_index]
@@ -292,10 +330,11 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                 print(e)
 
         if (item_index % 10 == 0):
+            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.reset_index(drop=True)
             site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
 
     site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
-
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     itemIdx = f'{ind}-{index}-{aisle.upper()[:3]}'
     name = None
@@ -454,6 +493,5 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                'pack': pack,
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
     return (new_row)
-
 def getItem_urls(driver, EXPLICIT_WAIT_TIME):
     None
