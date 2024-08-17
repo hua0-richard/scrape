@@ -342,20 +342,17 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print("No SKU")
 
     try:
-        indicators = [
-            r'Per (\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))',
-            r'(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))(?:\s*=\s*1 serving)',
-            r'Serving size:\s*(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))',
-            r'1 serving\s*=\s*(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack))',
-            r'(\d+(?:\.\d+)?\s*(?:ml|g|slice|can|bottle|pack|serving))(?:\s*\(\d+%\))?$',
-            r'This pack contains (\d+) servings',
-            r'(\d+)\s*servings per container',
-            r'Contains (\d+) servings'
+        size_patterns = [
+            r'(\d+(\.\d+)?)\s*(ml|g|kg|oz|fl\s*oz)\s*(?:serving|per\s*serving)',
+            r'Serving\s*size:?\s*(\d+(\.\d+)?)\s*(ml|g|kg|oz|fl\s*oz)',
+            r'1\s*serving\s*=\s*(\d+(\.\d+)?)\s*(ml|g|kg|oz|fl\s*oz)',
         ]
-        for indicator in indicators:
-            match = re.search(indicator, item_label, re.IGNORECASE)
-            if match:
-                serving = match.group(1).strip()
+
+        for pattern in size_patterns:
+            size_match = re.search(pattern, item_label, re.IGNORECASE)
+            if size_match:
+                serving = f"{size_match.group(1)} {size_match.group(3)}"
+                break
     except:
         print("No Serving Size")
 
