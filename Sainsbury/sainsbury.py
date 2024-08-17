@@ -22,6 +22,9 @@ import re
 
 FAVNUM = 22222
 GEN_TIMEOUT = 5
+def custom_sort_key(value):
+    parts = value.split('-')
+    return int(parts[1])
 
 def cache_strategy():
     folder_path = 'output/tmp'
@@ -269,6 +272,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                     print('No Next Page')
                     break
 
+        items = list(dict.fromkeys(items))
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
@@ -284,15 +288,26 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
     # Cache Strategy
     try:
         seen_items = cache_strategy()
-        for item_url in items:
+        print(seen_items)
+        new_rows = []
+        for cache_index in range(len(items)):
+            item_url = items[cache_index]
             matching_rows = seen_items[seen_items['url'] == item_url]
             if (len(matching_rows) > 0):
-                row = matching_rows.iloc[0]
-                row['itemIdx'] = f'{ind}-{index}-{aisle.upper()[:3]}'
-                site_items_df = pd.concat([site_items_df, row], ignore_index=True)
+                row = matching_rows.iloc[0].copy()
+                row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                print(cache_index)
                 print('Found Cached Entry')
-                print(row)
-    except:
+        if new_rows:
+            new_rows_df = pd.DataFrame(new_rows)
+            df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
+            df_data = df_data.drop_duplicates(subset=['url'], keep='last')
+            site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.reset_index(drop=True)
+
+    except Exception as e:
+        print(e)
         print('Cache Failed')
 
     for item_index in range(len(items)):
@@ -315,6 +330,8 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                 print(e)
 
         if (item_index % 10 == 0):
+            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.reset_index(drop=True)
             site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
 
     site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_sainsbury_data.csv', index=False)
