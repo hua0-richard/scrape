@@ -1,3 +1,4 @@
+import requests
 from selenium.webdriver.common.by import By
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
@@ -262,9 +263,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                     href = link.get_attribute('href')
                     if href:
                         items.append(href)
-
                 try:
-                    time.sleep(GEN_TIMEOUT)
                     WebDriverWait(driver, GEN_TIMEOUT).until(
                         EC.presence_of_element_located((By.CSS_SELECTOR, 'a.ln-c-pagination__link[rel="next"][aria-label="Next page"]'))
                     ).click()
@@ -288,16 +287,23 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
     # Cache Strategy
     try:
         seen_items = cache_strategy()
-        print(seen_items)
         new_rows = []
         for cache_index in range(len(items)):
             item_url = items[cache_index]
             matching_rows = seen_items[seen_items['url'] == item_url]
-            if (len(matching_rows) > 0):
+            if len(matching_rows) > 0:
                 row = matching_rows.iloc[0].copy()
                 row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
-                print(cache_index)
-                print('Found Cached Entry')
+                index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                print(f'Found Cached Entry {cache_index}')
+                try:
+                    response = requests.get(row['img_urls'])
+                    if response.status_code == 200:
+                        full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
+                        with open(full_path, 'wb') as file:
+                            file.write(response.content)
+                except:
+                    print('Images Error Cache')
         if new_rows:
             new_rows_df = pd.DataFrame(new_rows)
             df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
@@ -477,7 +483,11 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         src = images.get_attribute("src")
         img_urls.append(src)
         print(src)
-        images.screenshot('output/images/' + str(ind) + '/' + itemIdx + '-' + str(0) + '.png')
+        response = requests.get(src)
+        if response.status_code == 200:
+            full_path = 'output/images/' + str(ind) + '/' + str(itemIdx) + '-' + str(0) + '.png'
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
     except:
         print('Images Error')
 
