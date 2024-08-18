@@ -37,8 +37,10 @@ def cache_strategy():
     combined_reference_df = pd.concat(reference_df_list, ignore_index=True)
     combined_reference_df.drop_duplicates(subset='url', keep='first', inplace=True)
     return combined_reference_df
+
 def setup_sainbury(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_sainbury(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
+
 def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
     # Reject Cookies Button
     try:
@@ -227,6 +229,8 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                             if href:
                                 subaisles.append(href)
                     print(subaisles)
+                    # Don't Scrape Special Offers
+                    subaisles.pop(0)
                     print('Found Subaisles')
                     break
                 except Exception as e:
@@ -296,6 +300,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                 row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
                 index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
                 print(f'Found Cached Entry {cache_index}')
+                new_rows.append(row)
                 try:
                     response = requests.get(row['img_urls'])
                     if response.status_code == 200:

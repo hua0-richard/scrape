@@ -12,7 +12,7 @@ def main():
     EXPLICIT_WAIT_TIME = 10
     site_location_df = pd.read_excel('urlLocations.xlsx', header=None)
 
-    for _ in [66, 67, 68]:
+    for _ in [65, 66, 67, 68]:
         ind = _
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
