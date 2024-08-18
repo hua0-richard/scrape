@@ -480,8 +480,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             full_quantity = match.group(1)
             pack_size_match = re.search(r'(\d+)x', full_quantity)
             if pack_size_match:
-                pack_size = int(pack_size_match.group(1))
-                pack = f"{pack_size} x {full_quantity}"
+                # pack_size = int(pack_size_match.group(1))
+                pack = f"{full_quantity}"
     except:
         print("No Pack")
 
