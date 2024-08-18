@@ -302,10 +302,10 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                 print(f'Found Cached Entry {cache_index}')
                 new_rows.append(row)
                 try:
-                    response = requests.get(row['img_urls'])
-                    if response.status_code == 200:
-                        full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
-                        if not os.path.isfile(full_path):
+                    full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
+                    if not os.path.isfile(full_path):
+                        response = requests.get(row['img_urls'])
+                        if response.status_code == 200:
                             with open(full_path, 'wb') as file:
                                 file.write(response.content)
                 except:
@@ -406,7 +406,15 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             EC.presence_of_element_located((By.CLASS_NAME, "productIngredients"))
         ).text
     except:
-        print('No Ingredients')
+        print('Trying Secondary Ingredient Parse')
+        try:
+            ingredients_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located(
+                    (By.XPATH, "//strong[contains(text(), 'INGREDIENTS:')]/following-sibling::p"))
+            )
+            item_ingredients = ingredients_element.text
+        except:
+            print('No Ingredients')
 
     try:
         itemNum = WebDriverWait(driver, GEN_TIMEOUT).until(EC.presence_of_element_located((By.ID, "productSKU"))).text
