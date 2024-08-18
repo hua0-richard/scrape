@@ -305,8 +305,9 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                     response = requests.get(row['img_urls'])
                     if response.status_code == 200:
                         full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
-                        with open(full_path, 'wb') as file:
-                            file.write(response.content)
+                        if not os.path.isfile(full_path):
+                            with open(full_path, 'wb') as file:
+                                file.write(response.content)
                 except:
                     print('Images Error Cache')
         if new_rows:
