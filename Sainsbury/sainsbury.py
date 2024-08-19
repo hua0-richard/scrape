@@ -56,7 +56,7 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
         try:
             time.sleep(GEN_TIMEOUT)
             WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "a.top-right-links--login[data-test-id='login-register-link']"))
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "a.top-right-links--login"))
             ).click()
             print('Login Button')
             break
@@ -97,12 +97,11 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
     for _ in range(5):
         try:
             time.sleep(GEN_TIMEOUT)
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "svg[data-test-id='book-collect-icon']"))).click()
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "svg.book-delivery__icon.ln-c-icon"))).click()
             print('Found Delivery Options')
             css_selector = (
                 'input#store-search'
                 '[aria-describedby="store-searchInfo store-searchValidation"]'
-                '[data-test-id="cnc__store-search"]'
                 '[style="text-transform: uppercase;"]'
                 '[name="store-search"]'
                 '[type="text"]'
@@ -110,6 +109,7 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
                 '[required]'
                 '[maxlength="8"]'
             )
+            print('Found Address Input')
             # Postal Code
             input_field = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
             print(address)
@@ -120,16 +120,15 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
                 postal_code = match.group()
             input_field.send_keys(postal_code)
             time.sleep(GEN_TIMEOUT)
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-test-id='cnc__search-submit']"))).click()
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.ln-c-button.ln-c-button--filled.ln-c-input-group__button"))).click()
             print('Location Done')
             store_list = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CLASS_NAME, "store-card__list")))
-            store = store_list.find_element(By.CSS_SELECTOR, "li[data-test-id='cnc-store-card']")
-            store.find_element(By.CSS_SELECTOR, "div[data-test-id='store-card']").click()
+            store = store_list.find_element(By.CSS_SELECTOR, "li.store-card__list--item")
+            store.find_element(By.CSS_SELECTOR, "div.store-card").click()
             print('Store Done')
             break
         except Exception as e:
             print('Failed to find Delivery Options')
-
 
     # Reserve Delivery Slot
     for _ in range(5):
@@ -155,7 +154,7 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
         try:
             time.sleep(GEN_TIMEOUT)
             WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button[data-test-id='cnc-modal-reserve-button']"))
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.ln-c-button.ln-c-button--filled.ln-c-button--full.cnc-reserve-modal__primary-button.ln-u-display-inline-flex.ln-u-justify-content-center.ln-u-align-items-center"))
             ).click()
             break
         except Exception as e:
@@ -163,7 +162,7 @@ def setLocation_sainbury(driver, address, EXPLICIT_WAIT_TIME):
 
     for _ in range(5):
         try:
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[data-test-id="cnc-booking-confirmation-continue-shopping"]'))).click()
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.ln-c-button.ln-c-button--filled.cnc-booking-confirmation__button'))).click()
             print('Booking Confirmed')
             break
         except:
@@ -288,39 +287,39 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
     except:
         print('No Prior Data Found... ')
 
-    # Cache Strategy
-    try:
-        seen_items = cache_strategy()
-        new_rows = []
-        for cache_index in range(len(items)):
-            item_url = items[cache_index]
-            matching_rows = seen_items[seen_items['url'] == item_url]
-            if len(matching_rows) > 0:
-                row = matching_rows.iloc[0].copy()
-                row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
-                index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
-                print(f'Found Cached Entry {cache_index}')
-                new_rows.append(row)
-                try:
-                    full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
-                    if not os.path.isfile(full_path):
-                        response = requests.get(row['img_urls'])
-                        if response.status_code == 200:
-                            with open(full_path, 'wb') as file:
-                                file.write(response.content)
-                except:
-                    print('Images Error Cache')
-        if new_rows:
-            new_rows_df = pd.DataFrame(new_rows)
-            df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
-            df_data = df_data.drop_duplicates(subset=['url'], keep='last')
-            site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
-            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
-            site_items_df = site_items_df.reset_index(drop=True)
-
-    except Exception as e:
-        print(e)
-        print('Cache Failed')
+    # # Cache Strategy
+    # try:
+    #     seen_items = cache_strategy()
+    #     new_rows = []
+    #     for cache_index in range(len(items)):
+    #         item_url = items[cache_index]
+    #         matching_rows = seen_items[seen_items['url'] == item_url]
+    #         if len(matching_rows) > 0:
+    #             row = matching_rows.iloc[0].copy()
+    #             row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+    #             index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+    #             print(f'Found Cached Entry {cache_index}')
+    #             new_rows.append(row)
+    #             try:
+    #                 full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
+    #                 if not os.path.isfile(full_path):
+    #                     response = requests.get(row['img_urls'])
+    #                     if response.status_code == 200:
+    #                         with open(full_path, 'wb') as file:
+    #                             file.write(response.content)
+    #             except:
+    #                 print('Images Error Cache')
+    #     if new_rows:
+    #         new_rows_df = pd.DataFrame(new_rows)
+    #         df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
+    #         df_data = df_data.drop_duplicates(subset=['url'], keep='last')
+    #         site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+    #         site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+    #         site_items_df = site_items_df.reset_index(drop=True)
+    #
+    # except Exception as e:
+    #     print(e)
+    #     print('Cache Failed')
 
     for item_index in range(len(items)):
         item_url = items[item_index]
@@ -368,21 +367,21 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     try:
         name = WebDriverWait(driver, GEN_TIMEOUT).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.pd__header'))
         ).text
     except:
         print('No Name')
 
     try:
         brand = WebDriverWait(driver, GEN_TIMEOUT).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-product-title"]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'h1.pd__header'))
         ).text.split()[0]
     except:
         print('No Brand')
 
     try:
         price = WebDriverWait(driver, GEN_TIMEOUT).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pd-retail-price"]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'span.pd__cost__retail-price'))
         ).text
     except:
         print('No Price')
@@ -485,7 +484,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print("Size Error")
 
     try:
-        pricePerUnit = WebDriverWait(driver, GEN_TIMEOUT).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'span[data-test-id="pd-unit-price"]'))).text
+        pricePerUnit = WebDriverWait(driver, GEN_TIMEOUT).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'span.pd__cost__unit-price-per-measure'))).text
     except:
         print('Price per Unit Error')
 
@@ -510,7 +509,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     try:
         old_price = WebDriverWait(driver, GEN_TIMEOUT).until(
-            EC.presence_of_element_located((By.XPATH, "//span[@data-test-id='contextual-price-text']"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "span.pd__cost--price"))
         ).text
     except:
         print('No Nectar (Discount) Price')
