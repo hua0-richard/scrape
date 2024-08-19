@@ -1,5 +1,9 @@
 import pandas as pd
-filepath = ''
+import parse_test_cals_servsize
+import parse_test_carbs
+import parse_test_sugars
+
+filepath = '/Users/richardhua/Projects/scrape/Sainsbury/output/tmp/index_66_Drinks_sainsbury_data.csv'
 
 clean_df = pd.DataFrame(columns=[
     # idx
@@ -97,23 +101,33 @@ clean_df = pd.DataFrame(columns=[
     "Notes", ])
 raw_df = pd.read_csv(filepath)
 
-clean_df['ID'] = raw_df['idx']
+# clean_df['ID'] = raw_df['idx']
+#
+# clean_df['ProductAisle'] = raw_df['aisle']
+# clean_df['ProductCategory'] = raw_df['subaisle']
+# clean_df['ProductImages'] = raw_df['img_urls']
+# clean_df['ProductBrand'] = raw_df['brand']
+# clean_df['ProductName'] = raw_df['name']
+#
+# clean_df['ProductVariety'] = None
+# clean_df['ProductFlavour'] = None
+#
+# clean_df['Packsize_org'] = raw_df['pack']
+# clean_df['Unitpp'] = None
+#
+# clean_df['Containersize_org'] = raw_df['size']
+# clean_df['Containersize_val'] = None
+# clean_df['Containersize_unit'] = None
+#
+# clean_df['Description'] = raw_df['description']
+# clean_df['Ingredients'] = raw_df['ingredients']
 
-clean_df['ProductAisle'] = raw_df['aisle']
-clean_df['ProductCategory'] = raw_df['subaisle']
-clean_df['ProductImages'] = raw_df['img_urls']
-clean_df['ProductBrand'] = raw_df['brand']
-clean_df['ProductName'] = raw_df['name']
-
-clean_df['ProductVariety'] = None
-clean_df['ProductFlavour'] = None
-
-clean_df['Packsize_org'] = raw_df['pack']
-clean_df['Unitpp'] = None
-
-clean_df['Containersize_org'] = raw_df['size']
-clean_df['Containersize_val'] = None
-clean_df['Containersize_unit'] = None
-
-clean_df['Description'] = raw_df['description']
-clean_df['Ingredients'] = raw_df['ingredients']
+for index, row in raw_df.iterrows():
+    print(row['idx'])
+    try:
+        value = row['item_label']
+        result = parse_test_cals_servsize.extract_nutrition_data([value])
+        print(result)
+    except:
+        print("Error")
+    print("\n")
