@@ -3,6 +3,24 @@ import parse_test_cals_servsize
 import parse_test_carbs
 import parse_test_sugars
 
+def parse_nutrition_info(table_text):
+    lines = table_text.strip().split('\n')
+    nutrition_info = {}
+
+    for line in lines:
+        parts = line.split('\t')
+
+        if len(parts) >= 2:
+            key = parts[0].strip()
+            values = [part.strip() for part in parts[1:] if part.strip()]
+
+            if len(values) == 1:
+                nutrition_info[key] = values[0]
+            else:
+                nutrition_info[key] = values
+
+    return nutrition_info
+
 filepath = '/Users/richardhua/Projects/scrape/Sainsbury/output/tmp/index_66_Drinks_sainsbury_data.csv'
 
 clean_df = pd.DataFrame(columns=[
@@ -98,6 +116,7 @@ clean_df = pd.DataFrame(columns=[
     "UPC",
     "URL",
     "DataCaptureTimeStamp",
+    "Confidence",
     "Notes", ])
 raw_df = pd.read_csv(filepath)
 
@@ -123,11 +142,11 @@ raw_df = pd.read_csv(filepath)
 # clean_df['Ingredients'] = raw_df['ingredients']
 
 for index, row in raw_df.iterrows():
-    print(row['idx'])
     try:
         value = row['item_label']
-        result = parse_test_cals_servsize.extract_nutrition_data([value])
-        print(result)
+        dict = parse_nutrition_info(value)
+        #print(dict)
+        print(parse_test_cals_servsize.extract_nutrition_info(dict))
     except:
-        print("Error")
-    print("\n")
+        print('Error')
+
