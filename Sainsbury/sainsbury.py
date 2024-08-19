@@ -395,9 +395,32 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('No Description')
 
     try:
-        item_label = WebDriverWait(driver, GEN_TIMEOUT).until(
+        table = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_element_located((By.CLASS_NAME, "nutritionTable"))
-        ).text
+        )
+
+        # Extract headers
+        headers = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//th[@scope='col']"))
+        )
+        headers = [header.text for header in headers]
+
+        # Extract rows
+        rows = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//table[@class='nutritionTable']/tbody/tr"))
+        )
+
+        output = "Nutrient\t" + "\t".join(headers[1:]) + "\n"
+
+        for row in rows:
+            cells = row.find_elements(By.TAG_NAME, "td")
+            if cells:
+                nutrient = row.find_element(By.TAG_NAME, "th").text
+                values = [cell.text.replace('\n', ' ') for cell in cells]
+                output += f"{nutrient}\t" + "\t".join(values) + "\n"
+
+        item_label = output.strip()
+
     except:
         print('No Nutrition Label')
 
