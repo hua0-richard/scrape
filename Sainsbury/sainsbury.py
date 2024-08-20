@@ -287,39 +287,39 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
     except:
         print('No Prior Data Found... ')
 
-    # # Cache Strategy
-    # try:
-    #     seen_items = cache_strategy()
-    #     new_rows = []
-    #     for cache_index in range(len(items)):
-    #         item_url = items[cache_index]
-    #         matching_rows = seen_items[seen_items['url'] == item_url]
-    #         if len(matching_rows) > 0:
-    #             row = matching_rows.iloc[0].copy()
-    #             row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
-    #             index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
-    #             print(f'Found Cached Entry {cache_index}')
-    #             new_rows.append(row)
-    #             try:
-    #                 full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
-    #                 if not os.path.isfile(full_path):
-    #                     response = requests.get(row['img_urls'])
-    #                     if response.status_code == 200:
-    #                         with open(full_path, 'wb') as file:
-    #                             file.write(response.content)
-    #             except:
-    #                 print('Images Error Cache')
-    #     if new_rows:
-    #         new_rows_df = pd.DataFrame(new_rows)
-    #         df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
-    #         df_data = df_data.drop_duplicates(subset=['url'], keep='last')
-    #         site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
-    #         site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
-    #         site_items_df = site_items_df.reset_index(drop=True)
-    #
-    # except Exception as e:
-    #     print(e)
-    #     print('Cache Failed')
+    # Cache Strategy
+    try:
+        seen_items = cache_strategy()
+        new_rows = []
+        for cache_index in range(len(items)):
+            item_url = items[cache_index]
+            matching_rows = seen_items[seen_items['url'] == item_url]
+            if len(matching_rows) > 0:
+                row = matching_rows.iloc[0].copy()
+                row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                print(f'Found Cached Entry {cache_index}')
+                new_rows.append(row)
+                try:
+                    full_path = 'output/images/' + str(ind) + '/' + str(index_for_here)+ '-' + str(0) + '.png'
+                    if not os.path.isfile(full_path):
+                        response = requests.get(row['img_urls'])
+                        if response.status_code == 200:
+                            with open(full_path, 'wb') as file:
+                                file.write(response.content)
+                except:
+                    print('Images Error Cache')
+        if new_rows:
+            new_rows_df = pd.DataFrame(new_rows)
+            df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
+            df_data = df_data.drop_duplicates(subset=['url'], keep='last')
+            site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.reset_index(drop=True)
+
+    except Exception as e:
+        print(e)
+        print('Cache Failed')
 
     for item_index in range(len(items)):
         item_url = items[item_index]
@@ -430,7 +430,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     except:
         print('Trying Secondary Ingredient Parse')
         try:
-            ingredients_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            ingredients_element = WebDriverWait(driver, 3).until(
                 EC.presence_of_element_located(
                     (By.XPATH, "//strong[contains(text(), 'INGREDIENTS:')]/following-sibling::p"))
             )
