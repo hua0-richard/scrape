@@ -1,3 +1,7 @@
+import glob
+import os
+
+import requests
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 import pandas as pd
@@ -22,11 +26,23 @@ import re
 FAVNUM = 22222
 GEN_TIMEOUT = 5 * 3
 STORE_NAME = 'woolworths'
+def custom_sort_key(value):
+    parts = value.split('-')
+    return int(parts[1])
 
+def cache_strategy():
+    folder_path = 'output/tmp'
+    item_urls_csvs = glob.glob(os.path.join(folder_path, '*data.csv'))
+    reference_df_list = []
+    for file in item_urls_csvs:
+        df = pd.read_csv(file)
+        reference_df_list.append(df)
+    combined_reference_df = pd.concat(reference_df_list, ignore_index=True)
+    combined_reference_df.drop_duplicates(subset='url', keep='first', inplace=True)
+    return combined_reference_df
 
 def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
-
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
     for _ in range(5):
@@ -163,46 +179,78 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                                    encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
-    # check for previous scrape
 
-    # UNCOMMENT BELOW
+    df_data = pd.DataFrame()
+    site_items_df = pd.DataFrame()
 
-    # df_data = pd.DataFrame()
-    # site_items_df = pd.DataFrame()
-    # try:
-    #     df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv")
-    #     site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
-    # except:
-    #     print('No Prior Data Found... ')
-    #
-    # # scrape items and check for already scraped
-    # for item_index in range(len(items)):
-    #     item_url = items[item_index][0]
-    #     if not df_data.empty and items[item_index] in df_data['url'].values:
-    #         print(f'{ind}-{item_index} Item Already Exists!')
-    #         continue
-    #
-    #     for v in range(5):
-    #         try:
-    #             time.sleep(GEN_TIMEOUT)
-    #             driver.get(item_url)
-    #             new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
-    #             site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
-    #             site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
-    #             print(new_row)
-    #             break
-    #         except Exception as e:
-    #             print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
-    #             print(e)
-    #
-    #     if (item_index % 10 == 0):
-    #         site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
-    #
-    # site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
+    # Cache Strategy
+    try:
+        seen_items = cache_strategy()
+        new_rows = []
+        for cache_index in range(len(items)):
+            item_url = items[cache_index]
+            matching_rows = seen_items[seen_items['url'] == item_url]
+            if len(matching_rows) > 0:
+                row = matching_rows.iloc[0].copy()
+                row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                print(f'Found Cached Entry {cache_index}')
+                new_rows.append(row)
+                try:
+                    full_path = 'output/images/' + str(ind) + '/' + str(index_for_here) + '-' + str(0) + '.png'
+                    if not os.path.isfile(full_path):
+                        response = requests.get(row['img_urls'])
+                        if response.status_code == 200:
+                            with open(full_path, 'wb') as file:
+                                file.write(response.content)
+                except:
+                    print('Images Error Cache')
+        if new_rows:
+            new_rows_df = pd.DataFrame(new_rows)
+            df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
+            df_data = df_data.drop_duplicates(subset=['url'], keep='last')
+            site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.reset_index(drop=True)
+
+    except Exception as e:
+        print(e)
+        print('Cache Failed')
+
+    try:
+        df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv")
+        site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+    except:
+        print('No Prior Data Found... ')
+
+    # scrape items and check for already scraped
+    for item_index in range(len(items)):
+        item_url = items[item_index][0]
+        if not df_data.empty and items[item_index] in df_data['url'].values:
+            print(f'{ind}-{item_index} Item Already Exists!')
+            continue
+
+        for v in range(5):
+            try:
+                time.sleep(GEN_TIMEOUT)
+                driver.get(item_url)
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
+                site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+                site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+                print(new_row)
+                break
+            except Exception as e:
+                print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
+                print(e)
+
+        if (item_index % 10 == 0):
+            site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
+
+    site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
-    itemIdx = f'{ind}-{index}-{aisle.upper()[:3]}'
+    ID = f'{ind}-{index}-{aisle.upper()[:3]}'
     name = None
     brand = None
     subaisle = None
@@ -217,8 +265,76 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     serving = None
     img_urls = []
     item_label = None
+    item_warning = None
     item_ingredients = None
     pack = None
+
+    Cals_org_pp = None
+    Cals_value_pp = None
+    Cals_unit_pp = None
+    TotalCarb_g_pp = None
+    TotalCarb_pct_pp = None
+    TotalSugars_g_pp = None
+    TotalSugars_pct_pp = None
+    AddedSugars_g_pp = None
+    AddedSugars_pct_pp = None
+    Cals_value_p100g = None
+    Cals_unit_p100g = None
+    TotalCarb_g_p100g = None
+    TotalCarb_pct_p100g = None
+    TotalSugars_g_p100g = None
+    TotalSugars_pct_p100g = None
+    AddedSugars_g_p100g = None
+    AddedSugars_pct_p100g = None
+
+
+    try:
+        servings_data = None
+        servings_size_data = None
+
+        script = """
+        function getElementFromShadowRoot(selector) {
+            let element = document.querySelector(selector);
+            while (element && element.shadowRoot) {
+                element = element.shadowRoot.querySelector(selector);
+            }
+            return element;
+        }
+        const element = getElementFromShadowRoot('ar-product-details-nutrition-table.ar-product-details-nutrition-table');
+        return element ? element.outerHTML : null;
+        """
+        try:
+            nutrition_table_html = driver.execute_script(script)
+            soup = BeautifulSoup(nutrition_table_html, 'html.parser')
+            try:
+                serving_size_div = soup.find('div', attrs={'*ngif': 'productServingSize'})
+                print(serving_size_div.text)
+                None
+            except:
+                print('Failed to get Serving Size')
+
+            try:
+                nutrition_info = {}
+                nutrition_rows = soup.find_all('ul', class_='nutrition-row')
+                for row in nutrition_rows:
+                    columns = row.find_all('li', class_='nutrition-column')
+                    if len(columns) == 3:
+                        nutrient = columns[0].text.strip()
+                        per_serving = columns[1].text.strip()
+                        per_100 = columns[2].text.strip()
+                        nutrition_info[nutrient] = {
+                            'Per Serving': per_serving,
+                            'Per 100g / 100mL': per_100
+                        }
+                print(nutrition_info)
+            except:
+                print('Failed to get Nutrition Label')
+
+        except Exception as e:
+            print(f"Error finding Nutrition Label")
+            return None
+    except:
+        print('Failed to Get Nutrition Label')
 
     try:
         split_cat = sub_aisles_string.split(',')
@@ -239,7 +355,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     except:
         print('Failed to get Brand')
 
-    new_row = {'idx': itemIdx,
+    new_row = {'ID': ID,
                'name': name, 'brand': brand,
                'aisle': aisle, 'subaisle': subaisle,
                'subsubaisle': subsubaisle,
@@ -248,6 +364,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
                'itemNum': itemNum, 'description': description, 'serving': serving,
                'img_urls': ', '.join(img_urls), 'item_label': item_label,
                'item_ingredients': item_ingredients, 'url': item_url,
-               'pack': pack,
+               'pack': pack, 'item_warning': item_warning,
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
     return (new_row)
