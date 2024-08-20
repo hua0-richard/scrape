@@ -1,3 +1,7 @@
+import glob
+import os
+
+import requests
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 import pandas as pd
@@ -22,13 +26,102 @@ import re
 FAVNUM = 22222
 GEN_TIMEOUT = 5 * 3
 STORE_NAME = 'woolworths'
+LOCATION = ''
 
+city_state_map = {
+    'Sydney': 'NSW',
+    'Melbourne': 'VIC',
+    'Brisbane': 'QLD',
+    'Perth': 'WA',
+    'Adelaide': 'SA',
+    'Gold Coast': 'QLD',
+    'Newcastle': 'NSW',
+    'Canberra': 'ACT',
+    'Wollongong': 'NSW',
+    'Geelong': 'VIC',
+    'Hobart': 'TAS',
+    'Townsville': 'QLD',
+    'Cairns': 'QLD',
+    'Darwin': 'NT',
+}
+
+def parse_city_region(address):
+    # Regular expression pattern to match state and postcode
+    pattern = r'([A-Z]{2,3})\s+(\d{4})'
+
+    # Remove 'Australia' from the end if present
+    address = address.replace(', Australia', '').strip()
+
+    match = re.search(pattern, address)
+    if match:
+        state, postcode = match.groups()
+        region = f"{state} {postcode}"
+
+        # Search for known cities in the address
+        city = "Unknown"
+        for known_city, known_state in city_state_map.items():
+            if known_city in address and known_state == state:
+                city = known_city
+                break
+
+        # If no known city found, try to extract the last location name before the state
+        if city == "Unknown":
+            city_match = re.search(r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+' + state, address)
+            if city_match:
+                city = city_match.group(1)
+
+        return city, region
+    else:
+        return "Unable to parse", "Unable to parse"
+
+def format_nutrition_label(nutrition_data):
+    # Find all unique columns
+    columns = set()
+    for values in nutrition_data.values():
+        columns.update(values.keys())
+    columns = sorted(list(columns))
+
+    # Create the header
+    label = "Nutrition Information\n"
+    label += "=" * (15 + 15 * len(columns)) + "\n"
+    header = "Nutrient".ljust(15)
+    for col in columns:
+        header += col.ljust(15)
+    label += header + "\n"
+    label += "-" * (15 + 15 * len(columns)) + "\n"
+
+    # Add each nutrient row
+    for nutrient, values in nutrition_data.items():
+        row = nutrient.ljust(15)
+        if nutrient.startswith('–'):
+            row = "  " + nutrient.ljust(13)
+        for col in columns:
+            row += values.get(col, "N/A").ljust(15)
+        label += row + "\n"
+
+    return label
+
+def custom_sort_key(value):
+    parts = value.split('-')
+    return int(parts[1])
+
+def cache_strategy():
+    folder_path = 'output/tmp'
+    item_urls_csvs = glob.glob(os.path.join(folder_path, '*data.csv'))
+    reference_df_list = []
+    for file in item_urls_csvs:
+        df = pd.read_csv(file)
+        reference_df_list.append(df)
+    combined_reference_df = pd.concat(reference_df_list, ignore_index=True)
+    combined_reference_df.drop_duplicates(subset='url', keep='first', inplace=True)
+    return combined_reference_df
 
 def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
 
-
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
+    global LOCATION
+    LOCATION = address
     for _ in range(5):
         try:
             WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -163,74 +256,220 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                                    encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
-    # check for previous scrape
 
-    # UNCOMMENT BELOW
+    df_data = pd.DataFrame()
+    site_items_df = pd.DataFrame()
 
-    # df_data = pd.DataFrame()
-    # site_items_df = pd.DataFrame()
-    # try:
-    #     df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv")
-    #     site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
-    # except:
-    #     print('No Prior Data Found... ')
-    #
-    # # scrape items and check for already scraped
-    # for item_index in range(len(items)):
-    #     item_url = items[item_index][0]
-    #     if not df_data.empty and items[item_index] in df_data['url'].values:
-    #         print(f'{ind}-{item_index} Item Already Exists!')
-    #         continue
-    #
-    #     for v in range(5):
-    #         try:
-    #             time.sleep(GEN_TIMEOUT)
-    #             driver.get(item_url)
-    #             new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
-    #             site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
-    #             site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
-    #             print(new_row)
-    #             break
-    #         except Exception as e:
-    #             print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
-    #             print(e)
-    #
-    #     if (item_index % 10 == 0):
-    #         site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
-    #
-    # site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
+    # Cache Strategy
+    try:
+        seen_items = cache_strategy()
+        new_rows = []
+        for cache_index in range(len(items)):
+            item_url = items[cache_index]
+            matching_rows = seen_items[seen_items['url'] == item_url]
+            if len(matching_rows) > 0:
+                row = matching_rows.iloc[0].copy()
+                row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                print(f'Found Cached Entry {cache_index}')
+                new_rows.append(row)
+                try:
+                    full_path = 'output/images/' + str(ind) + '/' + str(index_for_here) + '-' + str(0) + '.png'
+                    if not os.path.isfile(full_path):
+                        response = requests.get(row['img_urls'])
+                        if response.status_code == 200:
+                            with open(full_path, 'wb') as file:
+                                file.write(response.content)
+                except:
+                    print('Images Error Cache')
+        if new_rows:
+            new_rows_df = pd.DataFrame(new_rows)
+            df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
+            df_data = df_data.drop_duplicates(subset=['url'], keep='last')
+            site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.reset_index(drop=True)
+
+    except Exception as e:
+        print(e)
+        print('Cache Failed')
+
+    try:
+        df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv")
+        site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
+    except:
+        print('No Prior Data Found... ')
+
+    # scrape items and check for already scraped
+    for item_index in range(len(items)):
+        item_url = items[item_index][0]
+        if not df_data.empty and items[item_index] in df_data['url'].values:
+            print(f'{ind}-{item_index} Item Already Exists!')
+            continue
+
+        for v in range(5):
+            try:
+                time.sleep(GEN_TIMEOUT)
+                driver.get(item_url)
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
+                site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
+                site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
+                print(new_row)
+                break
+            except Exception as e:
+                print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
+                print(e)
+
+        if (item_index % 10 == 0):
+            site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
+
+    site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
-    itemIdx = f'{ind}-{index}-{aisle.upper()[:3]}'
-    name = None
-    brand = None
-    subaisle = None
-    subsubaisle = None
+    ID = f'{ind}-{index}-{aisle.upper()[:3]}'
+    Region = None
+    City = None
+    ProductName = None
+    ProductBrand = None
+    ProductCategory = None
+    ProductSubCategory = None
+    ProductImages = None
+    Description = None
     size = None
     price = None
     multi_price = None
     old_price = None
     pricePerUnit = None
     itemNum = None
-    description = None
     serving = None
     img_urls = []
-    item_label = None
-    item_ingredients = None
+    Nutr_label = None
+    item_warning = None
+    Ingredients = None
     pack = None
+
+    Servsize_portion_org = None
+
+    Cals_org_pp = None
+    Cals_value_pp = None
+    Cals_unit_pp = None
+    TotalCarb_g_pp = None
+    TotalCarb_pct_pp = None
+    TotalSugars_g_pp = None
+    TotalSugars_pct_pp = 'N/A'
+    AddedSugars_g_pp = 'N/A'
+    AddedSugars_pct_pp = 'N/A'
+    Cals_value_p100g = None
+    Cals_unit_p100g = None
+    TotalCarb_g_p100g = None
+    TotalCarb_pct_p100g = 'N/A'
+    TotalSugars_g_p100g = None
+    TotalSugars_pct_p100g = 'N/A'
+    AddedSugars_g_p100g = None
+    AddedSugars_pct_p100g = 'N/A'
+
+    try:
+        global LOCATION
+        City, Region = parse_city_region(LOCATION)
+    except:
+        print('Failed to set Location Data')
+
+
+    try:
+        servings_data = None
+        servings_size_data = None
+
+        script = """
+        function getElementFromShadowRoot(selector) {
+            let element = document.querySelector(selector);
+            while (element && element.shadowRoot) {
+                element = element.shadowRoot.querySelector(selector);
+            }
+            return element;
+        }
+        const element = getElementFromShadowRoot('ar-product-details-nutrition-table.ar-product-details-nutrition-table');
+        return element ? element.outerHTML : null;
+        """
+        try:
+            nutrition_table_html = driver.execute_script(script)
+            soup = BeautifulSoup(nutrition_table_html, 'html.parser')
+            try:
+                serving_size_div = soup.find('div', attrs={'*ngif': 'productServingSize'})
+                print(serving_size_div.text)
+                Servsize_portion_org = serving_size_div.text
+
+            except:
+                print('Failed to get Serving Size')
+
+            try:
+                pattern = r'([\d.]+)([a-zA-Z]+)'
+                nutrition_info = {}
+                nutrition_rows = soup.find_all('ul', class_='nutrition-row')
+                for row in nutrition_rows:
+                    columns = row.find_all('li', class_='nutrition-column')
+                    if len(columns) == 3:
+                        nutrient = columns[0].text.strip()
+                        per_serving = columns[1].text.strip()
+                        per_100 = columns[2].text.strip()
+                        nutrition_info[nutrient] = {
+                            'Per Serving': per_serving,
+                            'Per 100g / 100mL': per_100
+                        }
+                print('Obtained Nutrition Info.')
+                print(nutrition_info)
+                Nutr_label = format_nutrition_label(nutrition_info)
+
+                try:
+                    Cals_org_pp = nutrition_info['Energy']['Per Serving']
+                    match = re.match(pattern, Cals_org_pp)
+                    if match:
+                        Cals_value_pp = match.group(1)
+                        Cals_unit_pp = match.group(2)
+                except:
+                    print('Failed to get Calories')
+
+                try:
+                    _cals_org_p100g = nutrition_info['Energy']['Per 100g / 100mL']
+                    match = re.match(pattern, _cals_org_p100g)
+                    if match:
+                        Cals_value_p100g = match.group(1)
+                        Cals_unit_p100g = match.group(2)
+                except:
+                    print('Failed to get Calories')
+
+                try:
+                    TotalCarb_g_pp = nutrition_info['Carbohydrate']['Per Serving']
+                    TotalCarb_g_p100g = nutrition_info['Carbohydrate']['Per 100g / 100mL']
+                except:
+                    print('Failed to get Total Carb')
+
+                try:
+                    TotalSugars_g_pp = nutrition_info['– Sugars']['Per Serving']
+                    TotalSugars_g_p100g = nutrition_info['– Sugars']['Per 100g / 100mL']
+                except:
+                    print('Failed to get Total Sugars')
+
+            except:
+                print('Failed to get Nutrition Label')
+
+        except Exception as e:
+            print(f"Error finding Nutrition Label")
+            return None
+    except:
+        print('Failed to Get Nutrition Label')
 
     try:
         split_cat = sub_aisles_string.split(',')
         split_cat.reverse()
-        subaisle = split_cat.pop()
+        ProductCategory = split_cat.pop()
         if (len(split_cat) > 0):
-            subsubaisle = split_cat.pop()
+            ProductSubCategory = split_cat.pop()
     except:
         print('Failed to get Sub Aisles')
 
     try:
-        name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
+        ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
     except:
         print('Failed to get Name')
 
@@ -239,15 +478,107 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     except:
         print('Failed to get Brand')
 
-    new_row = {'idx': itemIdx,
-               'name': name, 'brand': brand,
-               'aisle': aisle, 'subaisle': subaisle,
-               'subsubaisle': subsubaisle,
-               'size': size, 'price': price, 'multi_price': multi_price,
-               'old_price': old_price, 'pricePerUnit': pricePerUnit,
-               'itemNum': itemNum, 'description': description, 'serving': serving,
-               'img_urls': ', '.join(img_urls), 'item_label': item_label,
-               'item_ingredients': item_ingredients, 'url': item_url,
-               'pack': pack,
-               'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
+    try:
+        script = """
+        function getElementFromShadowRoot(selector) {
+            let element = document.querySelector(selector);
+            while (element && element.shadowRoot) {
+                element = element.shadowRoot.querySelector(selector);
+            }
+            return element;
+        }
+        const element = getElementFromShadowRoot('section.ingredients');
+        return element ? element.outerHTML : null;
+        """
+        ingredients_html = driver.execute_script(script)
+        soup = BeautifulSoup(ingredients_html, 'html.parser')
+        Ingredients = soup.find('div', class_='view-more-content').text
+    except:
+        print('Failed to get Ingredients')
+
+    try:
+        DescriptionContainer = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.bottom-container.margin-ar-fix")))
+        description_html = DescriptionContainer.get_attribute('outerHTML')
+        soup = BeautifulSoup(description_html, 'html.parser')
+        description_text = soup.find('div', class_ ='view-more-content').text
+        if (description_text == ''):
+            Description = 'None'
+        else:
+            Description = description_text
+    except:
+        print('Failed to get Description')
+
+    try:
+        if (not ProductName == None):
+            ProductBrand = ProductName.split(' ')[0]
+        else:
+            print('Failed to get Brand')
+    except:
+        print('Failed to get Brand')
+
+
+    try:
+        images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
+
+        images_arr_src = [image.get_attribute('src') for image in images_arr]
+        ProductImages = ','.join(images_arr_src)
+
+        for index in range(len(images_arr_src)):
+            response = requests.get(images_arr_src[index])
+            if response.status_code == 200:
+                if not os.path.exists(f'output/images/{str(ind)}/{str(ID)}'):
+                    os.makedirs(f'output/images/{str(ind)}/{str(ID)}', exist_ok=True)
+                full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
+                with open(full_path, 'wb') as file:
+                    file.write(response.content)
+
+    except Exception as e:
+        print('Failed to get Product Images')
+        print(e)
+
+    new_row = {
+                'ID': ID,
+                'Country' : 'Australia',
+                'Store' : 'Woolworths',
+                'Region' : Region,
+                'City' : City,
+                'ProductName': ProductName,
+                'ProductBrand': ProductBrand,
+                'ProductAisle': aisle,
+                'ProductCategory': ProductCategory,
+                'ProductSubCategory': ProductSubCategory,
+                'ProductImages': ProductImages,
+                'Cals_org_pp' : Cals_org_pp,
+                'Cals_value_pp' : Cals_value_pp,
+                'Cals_unit_pp' : Cals_unit_pp,
+                'TotalCarb_g_pp' : TotalCarb_g_pp,
+                'TotalCarb_pct_pp' : TotalCarb_pct_pp,
+                'TotalSugars_g_pp' : TotalSugars_g_pp,
+                'TotalSugars_pct_pp' : TotalSugars_pct_pp,
+                'AddedSugars_g_pp' : AddedSugars_g_pp,
+                'AddedSugars_pct_pp' : AddedSugars_pct_pp,
+                'Cals_value_p100g' : Cals_value_p100g,
+                'Cals_unit_p100g' : Cals_unit_p100g,
+                'TotalCarb_g_p100g' : TotalCarb_g_p100g,
+                'TotalCarb_pct_p100g' : TotalCarb_pct_p100g,
+                'TotalSugars_g_p100g' : TotalSugars_g_p100g,
+                'TotalSugars_pct_p100g' : TotalSugars_pct_p100g,
+                'AddedSugars_g_p100g' : AddedSugars_g_p100g,
+                'AddedSugars_pct_p100g' : AddedSugars_pct_p100g,
+                'size': size,
+                'price': price,
+                'multi_price': multi_price,
+                'old_price': old_price,
+                'pricePerUnit': pricePerUnit,
+                'itemNum': itemNum,
+                'Description': Description,
+                'serving': serving,
+                'img_urls': ', '.join(img_urls),
+                'Nutr_label': Nutr_label,
+                'Ingredients': Ingredients,
+                'url': item_url,
+                'pack': pack,
+                'item_warning': item_warning,
+                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()
+               }
     return (new_row)
