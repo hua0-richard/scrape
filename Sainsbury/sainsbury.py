@@ -430,7 +430,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     except:
         print('Trying Secondary Ingredient Parse')
         try:
-            ingredients_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            ingredients_element = WebDriverWait(driver, 3).until(
                 EC.presence_of_element_located(
                     (By.XPATH, "//strong[contains(text(), 'INGREDIENTS:')]/following-sibling::p"))
             )
