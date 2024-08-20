@@ -26,6 +26,54 @@ import re
 FAVNUM = 22222
 GEN_TIMEOUT = 5 * 3
 STORE_NAME = 'woolworths'
+LOCATION = ''
+
+city_state_map = {
+    'Sydney': 'NSW',
+    'Melbourne': 'VIC',
+    'Brisbane': 'QLD',
+    'Perth': 'WA',
+    'Adelaide': 'SA',
+    'Gold Coast': 'QLD',
+    'Newcastle': 'NSW',
+    'Canberra': 'ACT',
+    'Wollongong': 'NSW',
+    'Geelong': 'VIC',
+    'Hobart': 'TAS',
+    'Townsville': 'QLD',
+    'Cairns': 'QLD',
+    'Darwin': 'NT',
+}
+
+def parse_city_region(address):
+    # Regular expression pattern to match state and postcode
+    pattern = r'([A-Z]{2,3})\s+(\d{4})'
+
+    # Remove 'Australia' from the end if present
+    address = address.replace(', Australia', '').strip()
+
+    match = re.search(pattern, address)
+    if match:
+        state, postcode = match.groups()
+        region = f"{state} {postcode}"
+
+        # Search for known cities in the address
+        city = "Unknown"
+        for known_city, known_state in city_state_map.items():
+            if known_city in address and known_state == state:
+                city = known_city
+                break
+
+        # If no known city found, try to extract the last location name before the state
+        if city == "Unknown":
+            city_match = re.search(r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+' + state, address)
+            if city_match:
+                city = city_match.group(1)
+
+        return city, region
+    else:
+        return "Unable to parse", "Unable to parse"
+
 def format_nutrition_label(nutrition_data):
     # Find all unique columns
     columns = set()
@@ -72,6 +120,8 @@ def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
+    global LOCATION
+    LOCATION = address
     for _ in range(5):
         try:
             WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -284,6 +334,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     ProductBrand = None
     ProductCategory = None
     ProductSubCategory = None
+    ProductImages = None
     Description = None
     size = None
     price = None
@@ -298,8 +349,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     Ingredients = None
     pack = None
 
-    ProductImages = None
-
     Servsize_portion_org = None
 
     Cals_org_pp = None
@@ -308,17 +357,23 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     TotalCarb_g_pp = None
     TotalCarb_pct_pp = None
     TotalSugars_g_pp = None
-    TotalSugars_pct_pp = None
-    AddedSugars_g_pp = None
-    AddedSugars_pct_pp = None
+    TotalSugars_pct_pp = 'N/A'
+    AddedSugars_g_pp = 'N/A'
+    AddedSugars_pct_pp = 'N/A'
     Cals_value_p100g = None
     Cals_unit_p100g = None
     TotalCarb_g_p100g = None
-    TotalCarb_pct_p100g = None
+    TotalCarb_pct_p100g = 'N/A'
     TotalSugars_g_p100g = None
-    TotalSugars_pct_p100g = None
+    TotalSugars_pct_p100g = 'N/A'
     AddedSugars_g_p100g = None
-    AddedSugars_pct_p100g = None
+    AddedSugars_pct_p100g = 'N/A'
+
+    try:
+        global LOCATION
+        City, Region = parse_city_region(LOCATION)
+    except:
+        print('Failed to set Location Data')
 
 
     try:
@@ -452,6 +507,34 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             Description = description_text
     except:
         print('Failed to get Description')
+
+    try:
+        if (not ProductName == None):
+            ProductBrand = ProductName.split(' ')[0]
+        else:
+            print('Failed to get Brand')
+    except:
+        print('Failed to get Brand')
+
+
+    try:
+        images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
+
+        images_arr_src = [image.get_attribute('src') for image in images_arr]
+        ProductImages = ','.join(images_arr_src)
+
+        for index in range(len(images_arr_src)):
+            response = requests.get(images_arr_src[index])
+            if response.status_code == 200:
+                if not os.path.exists(f'output/images/{str(ind)}/{str(ID)}'):
+                    os.makedirs(f'output/images/{str(ind)}/{str(ID)}', exist_ok=True)
+                full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
+                with open(full_path, 'wb') as file:
+                    file.write(response.content)
+
+    except Exception as e:
+        print('Failed to get Product Images')
+        print(e)
 
     new_row = {
                 'ID': ID,
