@@ -278,6 +278,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
     ID = f'{ind}-{index}-{aisle.upper()[:3]}'
+    Region = None
+    City = None
     ProductName = None
     ProductBrand = None
     ProductCategory = None
@@ -295,6 +297,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     item_warning = None
     Ingredients = None
     pack = None
+
+    ProductImages = None
 
     Servsize_portion_org = None
 
@@ -449,15 +453,49 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     except:
         print('Failed to get Description')
 
-    new_row = {'ID': ID,
-               'ProductName': ProductName, 'ProductBrand': ProductBrand,
-               'ProductAisle': aisle, 'ProductCategory': ProductCategory,
-               'ProductSubCategory': ProductSubCategory,
-               'size': size, 'price': price, 'multi_price': multi_price,
-               'old_price': old_price, 'pricePerUnit': pricePerUnit,
-               'itemNum': itemNum, 'Description': Description, 'serving': serving,
-               'img_urls': ', '.join(img_urls), 'Nutr_label': Nutr_label,
-               'Ingredients': Ingredients, 'url': item_url,
-               'pack': pack, 'item_warning': item_warning,
-               'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
+    new_row = {
+                'ID': ID,
+                'Country' : 'Australia',
+                'Store' : 'Woolworths',
+                'Region' : Region,
+                'City' : City,
+                'ProductName': ProductName,
+                'ProductBrand': ProductBrand,
+                'ProductAisle': aisle,
+                'ProductCategory': ProductCategory,
+                'ProductSubCategory': ProductSubCategory,
+                'ProductImages': ProductImages,
+                'Cals_org_pp' : Cals_org_pp,
+                'Cals_value_pp' : Cals_value_pp,
+                'Cals_unit_pp' : Cals_unit_pp,
+                'TotalCarb_g_pp' : TotalCarb_g_pp,
+                'TotalCarb_pct_pp' : TotalCarb_pct_pp,
+                'TotalSugars_g_pp' : TotalSugars_g_pp,
+                'TotalSugars_pct_pp' : TotalSugars_pct_pp,
+                'AddedSugars_g_pp' : AddedSugars_g_pp,
+                'AddedSugars_pct_pp' : AddedSugars_pct_pp,
+                'Cals_value_p100g' : Cals_value_p100g,
+                'Cals_unit_p100g' : Cals_unit_p100g,
+                'TotalCarb_g_p100g' : TotalCarb_g_p100g,
+                'TotalCarb_pct_p100g' : TotalCarb_pct_p100g,
+                'TotalSugars_g_p100g' : TotalSugars_g_p100g,
+                'TotalSugars_pct_p100g' : TotalSugars_pct_p100g,
+                'AddedSugars_g_p100g' : AddedSugars_g_p100g,
+                'AddedSugars_pct_p100g' : AddedSugars_pct_p100g,
+                'size': size,
+                'price': price,
+                'multi_price': multi_price,
+                'old_price': old_price,
+                'pricePerUnit': pricePerUnit,
+                'itemNum': itemNum,
+                'Description': Description,
+                'serving': serving,
+                'img_urls': ', '.join(img_urls),
+                'Nutr_label': Nutr_label,
+                'Ingredients': Ingredients,
+                'url': item_url,
+                'pack': pack,
+                'item_warning': item_warning,
+                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()
+               }
     return (new_row)
