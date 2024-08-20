@@ -26,6 +26,33 @@ import re
 FAVNUM = 22222
 GEN_TIMEOUT = 5 * 3
 STORE_NAME = 'woolworths'
+def format_nutrition_label(nutrition_data):
+    # Find all unique columns
+    columns = set()
+    for values in nutrition_data.values():
+        columns.update(values.keys())
+    columns = sorted(list(columns))
+
+    # Create the header
+    label = "Nutrition Information\n"
+    label += "=" * (15 + 15 * len(columns)) + "\n"
+    header = "Nutrient".ljust(15)
+    for col in columns:
+        header += col.ljust(15)
+    label += header + "\n"
+    label += "-" * (15 + 15 * len(columns)) + "\n"
+
+    # Add each nutrient row
+    for nutrient, values in nutrition_data.items():
+        row = nutrient.ljust(15)
+        if nutrient.startswith('–'):
+            row = "  " + nutrient.ljust(13)
+        for col in columns:
+            row += values.get(col, "N/A").ljust(15)
+        label += row + "\n"
+
+    return label
+
 def custom_sort_key(value):
     parts = value.split('-')
     return int(parts[1])
@@ -251,23 +278,25 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
     ID = f'{ind}-{index}-{aisle.upper()[:3]}'
-    name = None
-    brand = None
-    subaisle = None
-    subsubaisle = None
+    ProductName = None
+    ProductBrand = None
+    ProductCategory = None
+    ProductSubCategory = None
+    Description = None
     size = None
     price = None
     multi_price = None
     old_price = None
     pricePerUnit = None
     itemNum = None
-    description = None
     serving = None
     img_urls = []
-    item_label = None
+    Nutr_label = None
     item_warning = None
-    item_ingredients = None
+    Ingredients = None
     pack = None
+
+    Servsize_portion_org = None
 
     Cals_org_pp = None
     Cals_value_pp = None
@@ -309,11 +338,13 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             try:
                 serving_size_div = soup.find('div', attrs={'*ngif': 'productServingSize'})
                 print(serving_size_div.text)
-                None
+                Servsize_portion_org = serving_size_div.text
+
             except:
                 print('Failed to get Serving Size')
 
             try:
+                pattern = r'([\d.]+)([a-zA-Z]+)'
                 nutrition_info = {}
                 nutrition_rows = soup.find_all('ul', class_='nutrition-row')
                 for row in nutrition_rows:
@@ -326,7 +357,40 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
                             'Per Serving': per_serving,
                             'Per 100g / 100mL': per_100
                         }
+                print('Obtained Nutrition Info.')
                 print(nutrition_info)
+                Nutr_label = format_nutrition_label(nutrition_info)
+
+                try:
+                    Cals_org_pp = nutrition_info['Energy']['Per Serving']
+                    match = re.match(pattern, Cals_org_pp)
+                    if match:
+                        Cals_value_pp = match.group(1)
+                        Cals_unit_pp = match.group(2)
+                except:
+                    print('Failed to get Calories')
+
+                try:
+                    _cals_org_p100g = nutrition_info['Energy']['Per 100g / 100mL']
+                    match = re.match(pattern, _cals_org_p100g)
+                    if match:
+                        Cals_value_p100g = match.group(1)
+                        Cals_unit_p100g = match.group(2)
+                except:
+                    print('Failed to get Calories')
+
+                try:
+                    TotalCarb_g_pp = nutrition_info['Carbohydrate']['Per Serving']
+                    TotalCarb_g_p100g = nutrition_info['Carbohydrate']['Per 100g / 100mL']
+                except:
+                    print('Failed to get Total Carb')
+
+                try:
+                    TotalSugars_g_pp = nutrition_info['– Sugars']['Per Serving']
+                    TotalSugars_g_p100g = nutrition_info['– Sugars']['Per 100g / 100mL']
+                except:
+                    print('Failed to get Total Sugars')
+
             except:
                 print('Failed to get Nutrition Label')
 
@@ -339,14 +403,14 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     try:
         split_cat = sub_aisles_string.split(',')
         split_cat.reverse()
-        subaisle = split_cat.pop()
+        ProductCategory = split_cat.pop()
         if (len(split_cat) > 0):
-            subsubaisle = split_cat.pop()
+            ProductSubCategory = split_cat.pop()
     except:
         print('Failed to get Sub Aisles')
 
     try:
-        name = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
+        ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
     except:
         print('Failed to get Name')
 
@@ -355,15 +419,45 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     except:
         print('Failed to get Brand')
 
+    try:
+        script = """
+        function getElementFromShadowRoot(selector) {
+            let element = document.querySelector(selector);
+            while (element && element.shadowRoot) {
+                element = element.shadowRoot.querySelector(selector);
+            }
+            return element;
+        }
+        const element = getElementFromShadowRoot('section.ingredients');
+        return element ? element.outerHTML : null;
+        """
+        ingredients_html = driver.execute_script(script)
+        soup = BeautifulSoup(ingredients_html, 'html.parser')
+        Ingredients = soup.find('div', class_='view-more-content').text
+    except:
+        print('Failed to get Ingredients')
+
+    try:
+        DescriptionContainer = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.bottom-container.margin-ar-fix")))
+        description_html = DescriptionContainer.get_attribute('outerHTML')
+        soup = BeautifulSoup(description_html, 'html.parser')
+        description_text = soup.find('div', class_ ='view-more-content').text
+        if (description_text == ''):
+            Description = 'None'
+        else:
+            Description = description_text
+    except:
+        print('Failed to get Description')
+
     new_row = {'ID': ID,
-               'name': name, 'brand': brand,
-               'aisle': aisle, 'subaisle': subaisle,
-               'subsubaisle': subsubaisle,
+               'ProductName': ProductName, 'ProductBrand': ProductBrand,
+               'ProductAisle': aisle, 'ProductCategory': ProductCategory,
+               'ProductSubCategory': ProductSubCategory,
                'size': size, 'price': price, 'multi_price': multi_price,
                'old_price': old_price, 'pricePerUnit': pricePerUnit,
-               'itemNum': itemNum, 'description': description, 'serving': serving,
-               'img_urls': ', '.join(img_urls), 'item_label': item_label,
-               'item_ingredients': item_ingredients, 'url': item_url,
+               'itemNum': itemNum, 'Description': Description, 'serving': serving,
+               'img_urls': ', '.join(img_urls), 'Nutr_label': Nutr_label,
+               'Ingredients': Ingredients, 'url': item_url,
                'pack': pack, 'item_warning': item_warning,
                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()}
     return (new_row)
