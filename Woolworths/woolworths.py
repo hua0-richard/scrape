@@ -418,9 +418,12 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
                 print(serving_size_div.text)
                 servings_cont_text = serving_cont_div.text.strip()
                 print(servings_cont_text)
-                Servsize_portion_org = servings_cont_text
+                Servsize_portion_org = serving_size_div.text
+                Servings_cont = servings_cont_text
+                servesize_ref = Servsize_portion_org.replace("Serving Size:", "").strip()
+
                 pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
-                match = re.search(pattern, Servsize_portion_org)
+                match = re.search(pattern, servesize_ref)
                 if match:
                     Servsize_portion_val = float(match.group(1))
                     Servsize_portion_unit = match.group(2).upper()
@@ -765,10 +768,10 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             Netcontent_org = f"{result:.10g}{unit}"
             Netcontent_val = result
             Netcontent_unit = unit
-        elif (not Containersize_val == None):
-            Netcontent_org = Containersize_val
+        elif (not Containersize_org == None):
+            Netcontent_org = Containersize_org
             pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
-            match = re.match(pattern, Containersize_val)
+            match = re.match(pattern, Containersize_org)
             if match:
                 Netcontent_val = float(match.group(1))
                 Netcontent_unit = match.group(2)
