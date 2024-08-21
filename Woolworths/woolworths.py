@@ -769,9 +769,9 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             Netcontent_val = result
             Netcontent_unit = unit
         elif (not Containersize_org == None):
-            Netcontent_org = Containersize_val
+            Netcontent_org = Containersize_org
             pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
-            match = re.match(pattern, Containersize_val)
+            match = re.match(pattern, Containersize_org)
             if match:
                 Netcontent_val = float(match.group(1))
                 Netcontent_unit = match.group(2)
