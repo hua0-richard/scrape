@@ -1,5 +1,5 @@
 # Packages for scrapping
-#import undetected_chromedriver as uc
+import undetected_chromedriver as uc
 import time
 
 import pandas as pd
@@ -39,7 +39,7 @@ def main():
     #
     #     driver.quit()
 
-    for _ in [65, 66, 67, 68]:
+    for _ in [66, 67, 68]:
         ind = _
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
@@ -52,11 +52,12 @@ def main():
         print(scrape_store)
         ind = _ + 1
 
-        driver_options = uc.chrome.options.Options()
-        driver_options.add_argument("--disable-notifications")
-        driver_options.add_argument("--disable-infobars")
-        driver_options.add_argument("--disable-extensions")
-        driver = uc.Chrome(driver_options)
+        # driver_options = uc.chrome.options.Options()
+        # driver_options.add_argument("--disable-notifications")
+        # driver_options.add_argument("--disable-infobars")
+        # driver_options.add_argument("--disable-extensions")
+        # driver = uc.Chrome(driver_options)
+        driver = uc.Chrome()
         driver.maximize_window()
 
         driver.get(url)

@@ -193,7 +193,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
             try:
                 # Get Grocery Aisles Menu
                 time.sleep(GEN_TIMEOUT)
-                grocery_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-test-id="desktop-nav-item-link"][aria-label="Groceries"]')))
+                grocery_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.nav__menu-link[aria-label='Groceries']")))
                 actions = ActionChains(driver)
                 actions.move_to_element(grocery_element)
                 actions.perform()
