@@ -276,12 +276,12 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             matching_rows = seen_items[seen_items['url'] == item_url]
             if len(matching_rows) > 0:
                 row = matching_rows.iloc[0].copy()
-                row['idx'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
+                row['ID'] = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
                 index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
                 print(f'Found Cached Entry {cache_index}')
                 new_rows.append(row)
                 try:
-                    full_path = 'output/images/' + str(ind) + '/' + str(row['idx']) + '/' + str(
+                    full_path = 'output/images/' + str(ind) + '/' + str(row['ID']) + '/' + str(
                         index_for_here) + '-' + str(0) + '.png'
                     if not os.path.isfile(full_path):
                         response = requests.get(row['img_urls'])
@@ -295,7 +295,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
             df_data = df_data.drop_duplicates(subset=['url'], keep='last')
             site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
-            site_items_df = site_items_df.sort_values(by='idx', key=lambda x: x.map(custom_sort_key))
+            site_items_df = site_items_df.sort_values(by='ID', key=lambda x: x.map(custom_sort_key))
             site_items_df = site_items_df.reset_index(drop=True)
 
     except Exception as e:
@@ -388,6 +388,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     TotalSugars_pct_p100g = 'N/A'
     AddedSugars_g_p100g = 'N/A'
     AddedSugars_pct_p100g = 'N/A'
+    Notes = 'OK'
 
     try:
         global LOCATION
@@ -396,9 +397,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to set Location Data')
 
     try:
-        servings_data = None
-        servings_size_data = None
-
         script = """
         function getElementFromShadowRoot(selector) {
             let element = document.querySelector(selector);
@@ -501,11 +499,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
     except:
         print('Failed to get Name')
-
-    try:
-        None
-    except:
-        print('Failed to get Brand')
+        Notes = 'ERR'
 
     try:
         script = """
@@ -547,11 +541,27 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to get Brand')
 
     try:
+        img_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "img.main-image-v2.u-noOutline"))
+        )
+        src = img_element.get_attribute('src')
+        ProductImages = f'{src},'
+        response = requests.get(src)
+        if response.status_code == 200:
+            if not os.path.exists(f'output/images/{str(ind)}/{str(ID)}'):
+                os.makedirs(f'output/images/{str(ind)}/{str(ID)}', exist_ok=True)
+            full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
+    except:
+        print('Failed to get Main Image')
+
+    try:
         images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
 
         images_arr_src = [image.get_attribute('src') for image in images_arr]
-        ProductImages = ','.join(images_arr_src)
+        ProductImages += ','.join(images_arr_src)
 
         for index in range(len(images_arr_src)):
             response = requests.get(images_arr_src[index])
@@ -563,7 +573,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
                     file.write(response.content)
 
     except Exception as e:
-        print('Failed to get Product Images')
+        print('Failed to get Additional Product Images')
         print(e)
 
     try:
@@ -824,6 +834,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         'UPC': 'N/A',
         'url': item_url,
         'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
-        'Notes': 'N/A'
+        'Notes': Notes
     }
     return (new_row)
