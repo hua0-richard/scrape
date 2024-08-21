@@ -507,6 +507,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     except:
         print("No Pack")
 
+
+
     try:
         old_price = WebDriverWait(driver, GEN_TIMEOUT).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "span.pd__cost--price"))

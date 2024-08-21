@@ -45,6 +45,7 @@ city_state_map = {
     'Darwin': 'NT',
 }
 
+
 def parse_city_region(address):
     # Regular expression pattern to match state and postcode
     pattern = r'([A-Z]{2,3})\s+(\d{4})'
@@ -74,6 +75,7 @@ def parse_city_region(address):
     else:
         return "Unable to parse", "Unable to parse"
 
+
 def format_nutrition_label(nutrition_data):
     # Find all unique columns
     columns = set()
@@ -101,9 +103,11 @@ def format_nutrition_label(nutrition_data):
 
     return label
 
+
 def custom_sort_key(value):
     parts = value.split('-')
     return int(parts[1])
+
 
 def cache_strategy():
     folder_path = 'output/tmp'
@@ -116,8 +120,10 @@ def cache_strategy():
     combined_reference_df.drop_duplicates(subset='url', keep='first', inplace=True)
     return combined_reference_df
 
+
 def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
+
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
     global LOCATION
@@ -211,7 +217,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             breadcrumb_texts = ", ".join([element.text.strip() for element in bread_crumb[2:]])
             while True:
                 time.sleep(GEN_TIMEOUT)
-                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 3).until(EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 3).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
                 # Use JavaScript to extract product information
                 script = """
                     const products = [];
@@ -256,7 +263,6 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                                    encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
-
     df_data = pd.DataFrame()
     site_items_df = pd.DataFrame()
 
@@ -265,7 +271,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
         seen_items = cache_strategy()
         new_rows = []
         for cache_index in range(len(items)):
-            item_url = items[cache_index]
+            item_url = items[cache_index][0]
+            print(f"{cache_index} x {item_url}")
             matching_rows = seen_items[seen_items['url'] == item_url]
             if len(matching_rows) > 0:
                 row = matching_rows.iloc[0].copy()
@@ -274,7 +281,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                 print(f'Found Cached Entry {cache_index}')
                 new_rows.append(row)
                 try:
-                    full_path = 'output/images/' + str(ind) + '/' + str(index_for_here) + '-' + str(0) + '.png'
+                    full_path = 'output/images/' + str(ind) + '/' + str(row['idx']) + '/' + str(
+                        index_for_here) + '-' + str(0) + '.png'
                     if not os.path.isfile(full_path):
                         response = requests.get(row['img_urls'])
                         if response.status_code == 200:
@@ -303,6 +311,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
     # scrape items and check for already scraped
     for item_index in range(len(items)):
         item_url = items[item_index][0]
+
         if not df_data.empty and items[item_index] in df_data['url'].values:
             print(f'{ind}-{item_index} Item Already Exists!')
             continue
@@ -311,7 +320,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             try:
                 time.sleep(GEN_TIMEOUT)
                 driver.get(item_url)
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index,
+                                      items[item_index][1])
                 site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
                 site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
                 print(new_row)
@@ -336,26 +346,36 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     ProductSubCategory = None
     ProductImages = None
     Description = None
-    size = None
-    price = None
-    multi_price = None
-    old_price = None
-    pricePerUnit = None
-    itemNum = None
-    serving = None
-    img_urls = []
+    Price = None
     Nutr_label = None
-    item_warning = None
     Ingredients = None
-    pack = None
+    Unitpp = None
+    Netcontent_val = None
+    Netcontent_org = None
+    Netcontent_unit = None
+    NutrInfo_org = 'N/A'
+    Servsize_container_type_org = 'N/A'
+    Servsize_container_type_val = 'N/A'
+    Servsize_container_type_unit = 'N/A'
 
     Servsize_portion_org = None
+    Servsize_portion_val = None
+    Servsize_portion_unit = None
+    Servings_cont = None
+
+    Containersize_org = None
+    Containersize_val = None
+    Containersize_unit = None
+    Packsize_org = None
+    Pack_type = None
+    ProductVariety = None
+    ProductFlavor = None
 
     Cals_org_pp = None
     Cals_value_pp = None
     Cals_unit_pp = None
     TotalCarb_g_pp = None
-    TotalCarb_pct_pp = None
+    TotalCarb_pct_pp = 'N/A'
     TotalSugars_g_pp = None
     TotalSugars_pct_pp = 'N/A'
     AddedSugars_g_pp = 'N/A'
@@ -366,7 +386,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     TotalCarb_pct_p100g = 'N/A'
     TotalSugars_g_p100g = None
     TotalSugars_pct_p100g = 'N/A'
-    AddedSugars_g_p100g = None
+    AddedSugars_g_p100g = 'N/A'
     AddedSugars_pct_p100g = 'N/A'
 
     try:
@@ -374,7 +394,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         City, Region = parse_city_region(LOCATION)
     except:
         print('Failed to set Location Data')
-
 
     try:
         servings_data = None
@@ -396,8 +415,17 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             soup = BeautifulSoup(nutrition_table_html, 'html.parser')
             try:
                 serving_size_div = soup.find('div', attrs={'*ngif': 'productServingSize'})
+                serving_cont_div = soup.find('div', attrs={'*ngif': 'productServingsPerPack'})
+
                 print(serving_size_div.text)
-                Servsize_portion_org = serving_size_div.text
+                servings_cont_text = serving_cont_div.text.strip()
+                print(servings_cont_text)
+                Servsize_portion_org = servings_cont_text
+                pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
+                match = re.search(pattern, Servsize_portion_org)
+                if match:
+                    Servsize_portion_val = float(match.group(1))
+                    Servsize_portion_unit = match.group(2).upper()
 
             except:
                 print('Failed to get Serving Size')
@@ -469,7 +497,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to get Sub Aisles')
 
     try:
-        ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
+        ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
     except:
         print('Failed to get Name')
 
@@ -497,10 +526,11 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to get Ingredients')
 
     try:
-        DescriptionContainer = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.bottom-container.margin-ar-fix")))
+        DescriptionContainer = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div.bottom-container.margin-ar-fix")))
         description_html = DescriptionContainer.get_attribute('outerHTML')
         soup = BeautifulSoup(description_html, 'html.parser')
-        description_text = soup.find('div', class_ ='view-more-content').text
+        description_text = soup.find('div', class_='view-more-content').text
         if (description_text == ''):
             Description = 'None'
         else:
@@ -516,9 +546,9 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     except:
         print('Failed to get Brand')
 
-
     try:
-        images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
+        images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
 
         images_arr_src = [image.get_attribute('src') for image in images_arr]
         ProductImages = ','.join(images_arr_src)
@@ -536,49 +566,264 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to get Product Images')
         print(e)
 
+    try:
+        pattern = r'(\d+(?:\.\d+)?)\s*(L|ML|l|ml)'
+        match = re.search(pattern, ProductName, re.IGNORECASE)
+        if match:
+            volume = match.group(1)
+            unit = match.group(2).upper()
+            Containersize_org = f"{volume}{unit}"
+            Containersize_val = volume
+            Containersize_unit = unit
+    except:
+        print('Failed to get Container Size')
+
+    try:
+        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', ProductName, re.IGNORECASE)
+        if match:
+            full_quantity = match.group(1)
+            pack_size_match = re.search(r'(\d+)x', full_quantity)
+            if pack_size_match:
+                Unitpp = int(pack_size_match.group(1))
+                Packsize_org = f"{full_quantity}"
+    except:
+        print("Failed to get Packsize")
+
+    try:
+        pattern = r'\b(bottles?|cans?|cartons?|boxe?s?|pouche?s?|sachets?|' \
+                  r'flasks?|jugs?|pitchers?|tetra\s?paks?|kegs?|barrels?|casks?|' \
+                  r'cups?|glass(?:es)?|mugs?|tumblers?|goblets?|steins?|' \
+                  r'canisters?|thermos(?:es)?|vacuum\s?flasks?|' \
+                  r'six-packs?|twelve-packs?|cases?|packs?|' \
+                  r'tins?|containers?|tubs?|packets?|' \
+                  r'single-serves?|multi-packs?|variety\s?packs?|' \
+                  r'miniatures?|minis?|nips?|shooters?|' \
+                  r'pints?|quarts?|gallons?|liters?|ml|fl\s?oz|' \
+                  r'growlers?|crowlers?|howlers?|' \
+                  r'magnums?|jeroboams?|rehoboams?|methusela(?:hs?)?|' \
+                  r'salmanazars?|balthazars?|nebuchadnezzars?|' \
+                  r'melchiors?|solomons?|primats?|melchizedeks?|' \
+                  r'splits?|half\s?bottles?|standard\s?bottles?|double\s?magnums?|' \
+                  r'bags?-in-boxe?s?|beverage\s?dispensers?|soda\s?fountains?|' \
+                  r'kegerators?|draft\s?systems?|taps?|spouts?|nozzles?|' \
+                  r'straws?|lids?|caps?|corks?|stoppers?|seals?|' \
+                  r'wine\s?boxe?s?|beer\s?boxe?s?|soda\s?boxe?s?|juice\s?boxe?s?|' \
+                  r'aluminum\s?bottles?|plastic\s?bottles?|glass\s?bottles?|' \
+                  r'slim\s?cans?|tall\s?cans?|stubby\s?bottles?|longneck\s?bottles?|' \
+                  r'twist-off\s?caps?|pull-tabs?|pop-tops?|' \
+                  r'screw\s?caps?|crown\s?caps?|cork\s?closures?|' \
+                  r'sport\s?caps?|flip-tops?|push-pull\s?caps?|' \
+                  r'droppers?|pumps?|sprays?|misters?|atomizers?|' \
+                  r'wine\s?glass(?:es)?|champagne\s?flutes?|beer\s?glass(?:es)?|' \
+                  r'shot\s?glass(?:es)?|highball\s?glass(?:es)?|lowball\s?glass(?:es)?|' \
+                  r'collins\s?glass(?:es)?|martini\s?glass(?:es)?|margarita\s?glass(?:es)?|' \
+                  r'hurricane\s?glass(?:es)?|pilsner\s?glass(?:es)?|weizen\s?glass(?:es)?|' \
+                  r'snifters?|glencairns?|tulip\s?glass(?:es)?|' \
+                  r'coupe\s?glass(?:es)?|nick\s?and\s?nora\s?glass(?:es)?|' \
+                  r'rocks\s?glass(?:es)?|old\s?fashioned\s?glass(?:es)?|' \
+                  r'coffee\s?mugs?|tea\s?cups?|espresso\s?cups?|' \
+                  r'travel\s?mugs?|sippy\s?cups?|paper\s?cups?|' \
+                  r'red\s?solo\s?cups?|disposable\s?cups?|' \
+                  r'punch\s?bowls?|decanters?|carafes?|' \
+                  r'amphoras?|oak\s?barrels?|stainless\s?steel\s?tanks?|' \
+                  r'firkins?|pins?|tuns?|butts?|puncheons?|' \
+                  r'hogsheads?|barriques?|goon\s?bags?|' \
+                  r'beer\s?bottles?|wine\s?bottles?|liquor\s?bottles?|' \
+                  r'soda\s?bottles?|water\s?bottles?|juice\s?bottles?|' \
+                  r'energy\s?drink\s?cans?|seltzer\s?cans?|' \
+                  r'cocktail\s?shakers?|mixing\s?glass(?:es)?|' \
+                  r'water\s?coolers?|water\s?jugs?|dispensers?|' \
+                  r'soda\s?stream\s?bottles?|kombucha\s?bottles?|' \
+                  r'cold\s?brew\s?pitchers?|french\s?press(?:es)?|' \
+                  r'espresso\s?pods?|coffee\s?pods?|k-cups?|' \
+                  r'tea\s?bags?|loose\s?leaf\s?tins?|' \
+                  r'smoothie\s?bottles?|protein\s?shakers?|' \
+                  r'squeeze\s?bottles?|syrup\s?bottles?|' \
+                  r'boba\s?cups?|slushie\s?cups?|frozen\s?drink\s?cups?|' \
+                  r'wine\s?skins?|hip\s?flasks?|canteens?|' \
+                  r'hydration\s?packs?|water\s?bladders?)\b'
+
+        match = re.search(pattern, ProductName, re.IGNORECASE)
+        if match:
+            Pack_type = match.group(1).lower()
+    except:
+        print('Failed to find Pack Type')
+
+    try:
+        pattern = r'\b(zero\s?sugar|no\s?sugar|sugar\s?free|unsweetened|' \
+                  r'low\s?sugar|reduced\s?sugar|less\s?sugar|half\s?sugar|' \
+                  r'no\s?added\s?sugar|naturally\s?sweetened|artificially\s?sweetened|' \
+                  r'sweetened\s?with\s?stevia|aspartame\s?free|' \
+                  r'diet|light|lite|skinny|slim|' \
+                  r'low\s?calorie|calorie\s?free|zero\s?calorie|no\s?calorie|' \
+                  r'low\s?carb|no\s?carb|zero\s?carb|carb\s?free|' \
+                  r'keto\s?friendly|diabetic\s?friendly|' \
+                  r'decaf|caffeine\s?free|low\s?caffeine|' \
+                  r'regular|original|classic|traditional|' \
+                  r'extra\s?strong|strong|bold|intense|' \
+                  r'mild|smooth|mellow|light\s?roast|medium\s?roast|dark\s?roast|' \
+                  r'organic|non\s?gmo|all\s?natural|100%\s?natural|no\s?artificial|' \
+                  r'gluten\s?free|dairy\s?free|lactose\s?free|vegan|' \
+                  r'low\s?fat|fat\s?free|no\s?fat|skim|skimmed|' \
+                  r'full\s?fat|whole|creamy|rich|' \
+                  r'fortified|enriched|vitamin\s?enhanced|' \
+                  r'probiotic|prebiotic|gut\s?health|' \
+                  r'high\s?protein|protein\s?enriched|' \
+                  r'low\s?sodium|sodium\s?free|no\s?salt|salt\s?free|' \
+                  r'sparkling|carbonated|still|flat|' \
+                  r'flavored|unflavored|unsweetened|' \
+                  r'concentrate|from\s?concentrate|not\s?from\s?concentrate|' \
+                  r'fresh\s?squeezed|freshly\s?squeezed|cold\s?pressed|' \
+                  r'raw|unpasteurized|pasteurized|' \
+                  r'premium|luxury|gourmet|artisanal|craft|' \
+                  r'limited\s?edition|seasonal|special\s?edition|' \
+                  r'low\s?alcohol|non\s?alcoholic|alcohol\s?free|virgin|mocktail|' \
+                  r'sugar\s?alcohol|sugar\s?alcohols|' \
+                  r'high\s?fiber|fiber\s?enriched|' \
+                  r'antioxidant|superfood|nutrient\s?rich|' \
+                  r'energy|energizing|revitalizing|' \
+                  r'relaxing|calming|soothing|' \
+                  r'hydrating|isotonic|electrolyte|' \
+                  r'fermented|cultured|living|active|' \
+                  r'ultra\s?filtered|micro\s?filtered|nano\s?filtered|' \
+                  r'distilled|purified|spring|mineral|' \
+                  r'fair\s?trade|ethically\s?sourced|sustainably\s?sourced|' \
+                  r'local|imported|authentic|genuine)\b'
+
+        matches = re.findall(pattern, ProductName, re.IGNORECASE)
+        if matches:
+            ProductVariety = ", ".join(sorted(set(match.lower() for match in matches)))
+    except:
+        print('Failed to find Product Variety')
+
+    try:
+        pattern = r'\b(vanilla|chocolate|strawberry|raspberry|blueberry|blackberry|' \
+                  r'berry|mixed berry|wild berry|acai berry|goji berry|cranberry|' \
+                  r'apple|green apple|cinnamon apple|caramel apple|pear|peach|apricot|' \
+                  r'mango|pineapple|coconut|passion fruit|guava|papaya|lychee|' \
+                  r'orange|blood orange|tangerine|clementine|mandarin|grapefruit|' \
+                  r'lemon|lime|lemon-lime|key lime|cherry|black cherry|wild cherry|' \
+                  r'grape|white grape|concord grape|watermelon|honeydew|cantaloupe|' \
+                  r'kiwi|fig|pomegranate|dragonfruit|star fruit|jackfruit|durian|' \
+                  r'banana|plantain|avocado|almond|hazelnut|walnut|pecan|pistachio|' \
+                  r'peanut|cashew|macadamia|coffee|espresso|mocha|cappuccino|latte|' \
+                  r'caramel|butterscotch|toffee|cinnamon|nutmeg|ginger|turmeric|' \
+                  r'cardamom|clove|anise|licorice|fennel|mint|peppermint|spearmint|' \
+                  r'eucalyptus|lavender|rose|jasmine|hibiscus|chamomile|earl grey|' \
+                  r'bergamot|lemongrass|basil|rosemary|thyme|sage|oregano|' \
+                  r'green tea|black tea|white tea|oolong tea|pu-erh tea|rooibos|' \
+                  r'cola|root beer|cream soda|ginger ale|birch beer|sarsaparilla|' \
+                  r'bubblegum|cotton candy|marshmallow|toasted marshmallow|' \
+                  r'cookies and cream|cookie dough|birthday cake|red velvet|' \
+                  r'pumpkin spice|pumpkin pie|apple pie|pecan pie|key lime pie|' \
+                  r'cheesecake|tiramisu|creme brulee|custard|pudding|' \
+                  r'butter pecan|butter toffee|butterscotch ripple|' \
+                  r'salted caramel|sea salt caramel|dulce de leche|' \
+                  r'maple|maple syrup|honey|agave|molasses|brown sugar|' \
+                  r'vanilla bean|french vanilla|madagascar vanilla|' \
+                  r'dark chocolate|milk chocolate|white chocolate|cocoa|' \
+                  r'strawberries and cream|peaches and cream|berries and cream|' \
+                  r'tropical|tropical punch|fruit punch|citrus|citrus blend|' \
+                  r'melon|mixed melon|berry medley|forest fruits|' \
+                  r'blue raspberry|sour apple|sour cherry|sour patch|' \
+                  r'lemonade|pink lemonade|cherry lemonade|strawberry lemonade|' \
+                  r'iced tea|sweet tea|arnold palmer|' \
+                  r'horchata|tamarind|hibiscus|jamaica|' \
+                  r'pina colada|mojito|margarita|sangria|' \
+                  r'bubble tea|boba|taro|matcha|chai|masala chai|' \
+                  r'cucumber|celery|carrot|beet|tomato|' \
+                  r'vegetable|mixed vegetable|green vegetable|' \
+                  r'aloe vera|noni|acerola|guarana|yerba mate|' \
+                  r'bourbon vanilla|tahitian vanilla|mexican vanilla|' \
+                  r'dutch chocolate|swiss chocolate|belgian chocolate|' \
+                  r'neapolitan|spumoni|rocky road|' \
+                  r'unflavored|original|classic|traditional|' \
+                  r'mystery flavor|surprise flavor|limited edition flavor)\b'
+        matches = re.findall(pattern, ProductName, re.IGNORECASE)
+        if matches:
+            ProductFlavor = ", ".join(sorted(set(match.lower() for match in matches)))
+    except:
+        print('Failed to get Product Flavour')
+
+    try:
+        if (not Packsize_org == None):
+            match = re.match(r'([\d.]+x[\d.]+)([a-zA-Z]+)', Packsize_org)
+            if match:
+                numeric_part, unit = match.groups()
+                num1, num2 = map(float, numeric_part.split('x'))
+                result = num1 * num2
+            Netcontent_org = f"{result:.10g}{unit}"
+            Netcontent_val = result
+            Netcontent_unit = unit
+        elif (not Containersize_val == None):
+            Netcontent_org = Containersize_val
+            pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
+            match = re.match(pattern, Containersize_val)
+            if match:
+                Netcontent_val = float(match.group(1))
+                Netcontent_unit = match.group(2)
+    except:
+        print('Failed to get Net Content')
+
     new_row = {
-                'ID': ID,
-                'Country' : 'Australia',
-                'Store' : 'Woolworths',
-                'Region' : Region,
-                'City' : City,
-                'ProductName': ProductName,
-                'ProductBrand': ProductBrand,
-                'ProductAisle': aisle,
-                'ProductCategory': ProductCategory,
-                'ProductSubCategory': ProductSubCategory,
-                'ProductImages': ProductImages,
-                'Cals_org_pp' : Cals_org_pp,
-                'Cals_value_pp' : Cals_value_pp,
-                'Cals_unit_pp' : Cals_unit_pp,
-                'TotalCarb_g_pp' : TotalCarb_g_pp,
-                'TotalCarb_pct_pp' : TotalCarb_pct_pp,
-                'TotalSugars_g_pp' : TotalSugars_g_pp,
-                'TotalSugars_pct_pp' : TotalSugars_pct_pp,
-                'AddedSugars_g_pp' : AddedSugars_g_pp,
-                'AddedSugars_pct_pp' : AddedSugars_pct_pp,
-                'Cals_value_p100g' : Cals_value_p100g,
-                'Cals_unit_p100g' : Cals_unit_p100g,
-                'TotalCarb_g_p100g' : TotalCarb_g_p100g,
-                'TotalCarb_pct_p100g' : TotalCarb_pct_p100g,
-                'TotalSugars_g_p100g' : TotalSugars_g_p100g,
-                'TotalSugars_pct_p100g' : TotalSugars_pct_p100g,
-                'AddedSugars_g_p100g' : AddedSugars_g_p100g,
-                'AddedSugars_pct_p100g' : AddedSugars_pct_p100g,
-                'size': size,
-                'price': price,
-                'multi_price': multi_price,
-                'old_price': old_price,
-                'pricePerUnit': pricePerUnit,
-                'itemNum': itemNum,
-                'Description': Description,
-                'serving': serving,
-                'img_urls': ', '.join(img_urls),
-                'Nutr_label': Nutr_label,
-                'Ingredients': Ingredients,
-                'url': item_url,
-                'pack': pack,
-                'item_warning': item_warning,
-                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()
-               }
+        'ID': ID,
+        'Country': 'Australia',
+        'Store': 'Woolworths',
+        'Region': Region,
+        'City': City,
+        'ProductName': ProductName,
+        'ProductVariety': ProductVariety,
+        'ProductFlavor': ProductFlavor,
+        'Unitpp': Unitpp,
+        'ProductBrand': ProductBrand,
+        'ProductAisle': aisle,
+        'ProductCategory': ProductCategory,
+        'ProductSubCategory': ProductSubCategory,
+        'ProductImages': ProductImages,
+        'Containersize_org': Containersize_org,
+        'Containersize_val': Containersize_val,
+        'Containersize_unit': Containersize_unit,
+        'Cals_org_pp': Cals_org_pp,
+        'Cals_value_pp': Cals_value_pp,
+        'Cals_unit_pp': Cals_unit_pp,
+        'TotalCarb_g_pp': TotalCarb_g_pp,
+        'TotalCarb_pct_pp': TotalCarb_pct_pp,
+        'TotalSugars_g_pp': TotalSugars_g_pp,
+        'TotalSugars_pct_pp': TotalSugars_pct_pp,
+        'AddedSugars_g_pp': AddedSugars_g_pp,
+        'AddedSugars_pct_pp': AddedSugars_pct_pp,
+        'Cals_value_p100g': Cals_value_p100g,
+        'Cals_unit_p100g': Cals_unit_p100g,
+        'TotalCarb_g_p100g': TotalCarb_g_p100g,
+        'TotalCarb_pct_p100g': TotalCarb_pct_p100g,
+        'TotalSugars_g_p100g': TotalSugars_g_p100g,
+        'TotalSugars_pct_p100g': TotalSugars_pct_p100g,
+        'AddedSugars_g_p100g': AddedSugars_g_p100g,
+        'AddedSugars_pct_p100g': AddedSugars_pct_p100g,
+        'Packsize_org': Packsize_org,
+        'Pack_type': Pack_type,
+        'Netcontent_val': Netcontent_val,
+        'Netcontent_org': Netcontent_org,
+        'Netcontent_unit': Netcontent_unit,
+        'Price': Price,
+        'Description': Description,
+        'Nutr_label': Nutr_label,
+        'Ingredients': Ingredients,
+        'NutrInfo_org': NutrInfo_org,
+        'Servsize_container_type_org': Servsize_container_type_org,
+        'Servsize_container_type_val': Servsize_container_type_val,
+        'Servsize_container_type_unit': Servsize_container_type_unit,
+        'Servsize_portion_org': Servsize_portion_org,
+        'Servsize_portion_val': Servsize_portion_val,
+        'Servsize_portion_unit': Servsize_portion_unit,
+        'Servings_cont': Servings_cont,
+        'ProdType': 'N/A',
+        'StorType': 'N/A',
+        'ItemNum': 'N/A',
+        'SKU': 'N/A',
+        'UPC': 'N/A',
+        'url': item_url,
+        'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
+        'Notes': 'N/A'
+    }
     return (new_row)
