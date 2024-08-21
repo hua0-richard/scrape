@@ -193,7 +193,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
             try:
                 # Get Grocery Aisles Menu
                 time.sleep(GEN_TIMEOUT)
-                grocery_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.nav__menu-link[aria-label='Groceries']")))
+                grocery_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[href='/shop/gb/groceries'].nav__menu-link")))
                 actions = ActionChains(driver)
                 actions.move_to_element(grocery_element)
                 actions.perform()
@@ -201,7 +201,7 @@ def scrapeSite_sainbury(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None
                 time.sleep(GEN_TIMEOUT)
                 # Get Specific Aisle
                 nav_list = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, "ul[data-test-id='desktop-nav-list']")))
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "ul.ln-o-bare-list")))
                 nav_items = nav_list.find_elements(By.CSS_SELECTOR, "li.ln-o-bare-list__item a.desktop-nav__item")
                 aisle_element = next((item for item in nav_items if item.find_element(By.CSS_SELECTOR,"div.desktop-nav__item-wrapper").text.strip() == aisle),None)
                 print('Found Aisle')
