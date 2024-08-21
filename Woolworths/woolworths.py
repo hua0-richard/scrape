@@ -45,6 +45,7 @@ city_state_map = {
     'Darwin': 'NT',
 }
 
+
 def parse_city_region(address):
     # Regular expression pattern to match state and postcode
     pattern = r'([A-Z]{2,3})\s+(\d{4})'
@@ -74,6 +75,7 @@ def parse_city_region(address):
     else:
         return "Unable to parse", "Unable to parse"
 
+
 def format_nutrition_label(nutrition_data):
     # Find all unique columns
     columns = set()
@@ -101,9 +103,11 @@ def format_nutrition_label(nutrition_data):
 
     return label
 
+
 def custom_sort_key(value):
     parts = value.split('-')
     return int(parts[1])
+
 
 def cache_strategy():
     folder_path = 'output/tmp'
@@ -116,8 +120,10 @@ def cache_strategy():
     combined_reference_df.drop_duplicates(subset='url', keep='first', inplace=True)
     return combined_reference_df
 
+
 def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
+
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
     global LOCATION
@@ -211,7 +217,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             breadcrumb_texts = ", ".join([element.text.strip() for element in bread_crumb[2:]])
             while True:
                 time.sleep(GEN_TIMEOUT)
-                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 3).until(EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 3).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
                 # Use JavaScript to extract product information
                 script = """
                     const products = [];
@@ -256,7 +263,6 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                                    encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
-
     df_data = pd.DataFrame()
     site_items_df = pd.DataFrame()
 
@@ -275,7 +281,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                 print(f'Found Cached Entry {cache_index}')
                 new_rows.append(row)
                 try:
-                    full_path = 'output/images/' + str(ind) + '/' + str(row['idx']) + '/' + str(index_for_here) + '-' + str(0) + '.png'
+                    full_path = 'output/images/' + str(ind) + '/' + str(row['idx']) + '/' + str(
+                        index_for_here) + '-' + str(0) + '.png'
                     if not os.path.isfile(full_path):
                         response = requests.get(row['img_urls'])
                         if response.status_code == 200:
@@ -305,8 +312,6 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
     for item_index in range(len(items)):
         item_url = items[item_index][0]
 
-
-
         if not df_data.empty and items[item_index] in df_data['url'].values:
             print(f'{ind}-{item_index} Item Already Exists!')
             continue
@@ -315,7 +320,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             try:
                 time.sleep(GEN_TIMEOUT)
                 driver.get(item_url)
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index, items[item_index][1])
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index,
+                                      items[item_index][1])
                 site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
                 site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
                 print(new_row)
@@ -388,7 +394,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         City, Region = parse_city_region(LOCATION)
     except:
         print('Failed to set Location Data')
-
 
     try:
         servings_data = None
@@ -492,7 +497,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to get Sub Aisles')
 
     try:
-        ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
+        ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "h1.shelfProductTile-title"))).text
     except:
         print('Failed to get Name')
 
@@ -520,10 +526,11 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to get Ingredients')
 
     try:
-        DescriptionContainer = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.bottom-container.margin-ar-fix")))
+        DescriptionContainer = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div.bottom-container.margin-ar-fix")))
         description_html = DescriptionContainer.get_attribute('outerHTML')
         soup = BeautifulSoup(description_html, 'html.parser')
-        description_text = soup.find('div', class_ ='view-more-content').text
+        description_text = soup.find('div', class_='view-more-content').text
         if (description_text == ''):
             Description = 'None'
         else:
@@ -540,7 +547,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         print('Failed to get Brand')
 
     try:
-        images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
+        images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
 
         images_arr_src = [image.get_attribute('src') for image in images_arr]
         ProductImages = ','.join(images_arr_src)
@@ -757,66 +765,65 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     except:
         print('Failed to get Net Content')
 
-
     new_row = {
-                'ID': ID,
-                'Country' : 'Australia',
-                'Store' : 'Woolworths',
-                'Region' : Region,
-                'City' : City,
-                'ProductName': ProductName,
-                'ProductVariety' : ProductVariety,
-                'ProductFlavor' : ProductFlavor,
-                'Unitpp': Unitpp,
-                'ProductBrand': ProductBrand,
-                'ProductAisle': aisle,
-                'ProductCategory': ProductCategory,
-                'ProductSubCategory': ProductSubCategory,
-                'ProductImages': ProductImages,
-                'Containersize_org': Containersize_org,
-                'Containersize_val': Containersize_val,
-                'Containersize_unit': Containersize_unit,
-                'Cals_org_pp' : Cals_org_pp,
-                'Cals_value_pp' : Cals_value_pp,
-                'Cals_unit_pp' : Cals_unit_pp,
-                'TotalCarb_g_pp' : TotalCarb_g_pp,
-                'TotalCarb_pct_pp' : TotalCarb_pct_pp,
-                'TotalSugars_g_pp' : TotalSugars_g_pp,
-                'TotalSugars_pct_pp' : TotalSugars_pct_pp,
-                'AddedSugars_g_pp' : AddedSugars_g_pp,
-                'AddedSugars_pct_pp' : AddedSugars_pct_pp,
-                'Cals_value_p100g' : Cals_value_p100g,
-                'Cals_unit_p100g' : Cals_unit_p100g,
-                'TotalCarb_g_p100g' : TotalCarb_g_p100g,
-                'TotalCarb_pct_p100g' : TotalCarb_pct_p100g,
-                'TotalSugars_g_p100g' : TotalSugars_g_p100g,
-                'TotalSugars_pct_p100g' : TotalSugars_pct_p100g,
-                'AddedSugars_g_p100g' : AddedSugars_g_p100g,
-                'AddedSugars_pct_p100g' : AddedSugars_pct_p100g,
-                'Packsize_org' : Packsize_org,
-                'Pack_type' : Pack_type,
-                'Netcontent_val' : Netcontent_val,
-                'Netcontent_org' : Netcontent_org,
-                'Netcontent_unit' : Netcontent_unit,
-                'Price': Price,
-                'Description': Description,
-                'Nutr_label': Nutr_label,
-                'Ingredients': Ingredients,
-                'NutrInfo_org': NutrInfo_org,
-                'Servsize_container_type_org': Servsize_container_type_org,
-                'Servsize_container_type_val': Servsize_container_type_val,
-                'Servsize_container_type_unit':Servsize_container_type_unit,
-                'Servsize_portion_org' : Servsize_portion_org,
-                'Servsize_portion_val' : Servsize_portion_val,
-                'Servsize_portion_unit' : Servsize_portion_unit,
-                'Servings_cont': Servings_cont,
-                'ProdType' : 'N/A',
-                'StorType': 'N/A',
-                'ItemNum': 'N/A',
-                'SKU': 'N/A',
-                'UPC': 'N/A',
-                'url': item_url,
-                'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
-                'Notes' : 'N/A'
-               }
+        'ID': ID,
+        'Country': 'Australia',
+        'Store': 'Woolworths',
+        'Region': Region,
+        'City': City,
+        'ProductName': ProductName,
+        'ProductVariety': ProductVariety,
+        'ProductFlavor': ProductFlavor,
+        'Unitpp': Unitpp,
+        'ProductBrand': ProductBrand,
+        'ProductAisle': aisle,
+        'ProductCategory': ProductCategory,
+        'ProductSubCategory': ProductSubCategory,
+        'ProductImages': ProductImages,
+        'Containersize_org': Containersize_org,
+        'Containersize_val': Containersize_val,
+        'Containersize_unit': Containersize_unit,
+        'Cals_org_pp': Cals_org_pp,
+        'Cals_value_pp': Cals_value_pp,
+        'Cals_unit_pp': Cals_unit_pp,
+        'TotalCarb_g_pp': TotalCarb_g_pp,
+        'TotalCarb_pct_pp': TotalCarb_pct_pp,
+        'TotalSugars_g_pp': TotalSugars_g_pp,
+        'TotalSugars_pct_pp': TotalSugars_pct_pp,
+        'AddedSugars_g_pp': AddedSugars_g_pp,
+        'AddedSugars_pct_pp': AddedSugars_pct_pp,
+        'Cals_value_p100g': Cals_value_p100g,
+        'Cals_unit_p100g': Cals_unit_p100g,
+        'TotalCarb_g_p100g': TotalCarb_g_p100g,
+        'TotalCarb_pct_p100g': TotalCarb_pct_p100g,
+        'TotalSugars_g_p100g': TotalSugars_g_p100g,
+        'TotalSugars_pct_p100g': TotalSugars_pct_p100g,
+        'AddedSugars_g_p100g': AddedSugars_g_p100g,
+        'AddedSugars_pct_p100g': AddedSugars_pct_p100g,
+        'Packsize_org': Packsize_org,
+        'Pack_type': Pack_type,
+        'Netcontent_val': Netcontent_val,
+        'Netcontent_org': Netcontent_org,
+        'Netcontent_unit': Netcontent_unit,
+        'Price': Price,
+        'Description': Description,
+        'Nutr_label': Nutr_label,
+        'Ingredients': Ingredients,
+        'NutrInfo_org': NutrInfo_org,
+        'Servsize_container_type_org': Servsize_container_type_org,
+        'Servsize_container_type_val': Servsize_container_type_val,
+        'Servsize_container_type_unit': Servsize_container_type_unit,
+        'Servsize_portion_org': Servsize_portion_org,
+        'Servsize_portion_val': Servsize_portion_val,
+        'Servsize_portion_unit': Servsize_portion_unit,
+        'Servings_cont': Servings_cont,
+        'ProdType': 'N/A',
+        'StorType': 'N/A',
+        'ItemNum': 'N/A',
+        'SKU': 'N/A',
+        'UPC': 'N/A',
+        'url': item_url,
+        'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
+        'Notes': 'N/A'
+    }
     return (new_row)
