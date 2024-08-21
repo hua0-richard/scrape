@@ -265,7 +265,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
         seen_items = cache_strategy()
         new_rows = []
         for cache_index in range(len(items)):
-            item_url = items[cache_index]
+            item_url = items[cache_index][0]
+            print(f"{cache_index} x {item_url}")
             matching_rows = seen_items[seen_items['url'] == item_url]
             if len(matching_rows) > 0:
                 row = matching_rows.iloc[0].copy()
@@ -274,7 +275,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                 print(f'Found Cached Entry {cache_index}')
                 new_rows.append(row)
                 try:
-                    full_path = 'output/images/' + str(ind) + '/' + str(index_for_here) + '-' + str(0) + '.png'
+                    full_path = 'output/images/' + str(ind) + '/' + str(row['idx']) + '/' + str(index_for_here) + '-' + str(0) + '.png'
                     if not os.path.isfile(full_path):
                         response = requests.get(row['img_urls'])
                         if response.status_code == 200:
@@ -303,6 +304,9 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
     # scrape items and check for already scraped
     for item_index in range(len(items)):
         item_url = items[item_index][0]
+
+
+
         if not df_data.empty and items[item_index] in df_data['url'].values:
             print(f'{ind}-{item_index} Item Already Exists!')
             continue
@@ -336,20 +340,22 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     ProductSubCategory = None
     ProductImages = None
     Description = None
-    size = None
-    price = None
-    multi_price = None
-    old_price = None
-    pricePerUnit = None
-    itemNum = None
-    serving = None
-    img_urls = []
+    Price = None
     Nutr_label = None
-    item_warning = None
     Ingredients = None
-    pack = None
+    Unitpp = None
+    Netcontent_val = None
+    Netcontent_org = None
+    Netcontent_unit = None
+    NutrInfo_org = 'N/A'
+    Servsize_container_type_org = 'N/A'
+    Servsize_container_type_val = 'N/A'
+    Servsize_container_type_unit = 'N/A'
 
     Servsize_portion_org = None
+    Servsize_portion_val = None
+    Servsize_portion_unit = None
+    Servings_cont = None
 
     Containersize_org = None
     Containersize_val = None
@@ -404,8 +410,17 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             soup = BeautifulSoup(nutrition_table_html, 'html.parser')
             try:
                 serving_size_div = soup.find('div', attrs={'*ngif': 'productServingSize'})
+                serving_cont_div = soup.find('div', attrs={'*ngif': 'productServingsPerPack'})
+
                 print(serving_size_div.text)
-                Servsize_portion_org = serving_size_div.text
+                servings_cont_text = serving_cont_div.text.strip()
+                print(servings_cont_text)
+                Servsize_portion_org = servings_cont_text
+                pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
+                match = re.search(pattern, Servsize_portion_org)
+                if match:
+                    Servsize_portion_val = float(match.group(1))
+                    Servsize_portion_unit = match.group(2).upper()
 
             except:
                 print('Failed to get Serving Size')
@@ -561,7 +576,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
             full_quantity = match.group(1)
             pack_size_match = re.search(r'(\d+)x', full_quantity)
             if pack_size_match:
-                # pack_size = int(pack_size_match.group(1))
+                Unitpp = int(pack_size_match.group(1))
                 Packsize_org = f"{full_quantity}"
     except:
         print("Failed to get Packsize")
@@ -724,9 +739,21 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
 
     try:
         if (not Packsize_org == None):
-            None
-        if (not Containersize_val == None):
-            None
+            match = re.match(r'([\d.]+x[\d.]+)([a-zA-Z]+)', Packsize_org)
+            if match:
+                numeric_part, unit = match.groups()
+                num1, num2 = map(float, numeric_part.split('x'))
+                result = num1 * num2
+            Netcontent_org = f"{result:.10g}{unit}"
+            Netcontent_val = result
+            Netcontent_unit = unit
+        elif (not Containersize_val == None):
+            Netcontent_org = Containersize_val
+            pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
+            match = re.match(pattern, Containersize_val)
+            if match:
+                Netcontent_val = float(match.group(1))
+                Netcontent_unit = match.group(2)
     except:
         print('Failed to get Net Content')
 
@@ -740,6 +767,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
                 'ProductName': ProductName,
                 'ProductVariety' : ProductVariety,
                 'ProductFlavor' : ProductFlavor,
+                'Unitpp': Unitpp,
                 'ProductBrand': ProductBrand,
                 'ProductAisle': aisle,
                 'ProductCategory': ProductCategory,
@@ -767,13 +795,28 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
                 'AddedSugars_pct_p100g' : AddedSugars_pct_p100g,
                 'Packsize_org' : Packsize_org,
                 'Pack_type' : Pack_type,
-                'price': price,
-                'itemNum': itemNum,
+                'Netcontent_val' : Netcontent_val,
+                'Netcontent_org' : Netcontent_org,
+                'Netcontent_unit' : Netcontent_unit,
+                'Price': Price,
                 'Description': Description,
                 'Nutr_label': Nutr_label,
                 'Ingredients': Ingredients,
+                'NutrInfo_org': NutrInfo_org,
+                'Servsize_container_type_org': Servsize_container_type_org,
+                'Servsize_container_type_val': Servsize_container_type_val,
+                'Servsize_container_type_unit':Servsize_container_type_unit,
+                'Servsize_portion_org' : Servsize_portion_org,
+                'Servsize_portion_val' : Servsize_portion_val,
+                'Servsize_portion_unit' : Servsize_portion_unit,
+                'Servings_cont': Servings_cont,
+                'ProdType' : 'N/A',
+                'StorType': 'N/A',
+                'ItemNum': 'N/A',
+                'SKU': 'N/A',
+                'UPC': 'N/A',
                 'url': item_url,
-                'item_warning': item_warning,
-                'timeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()
+                'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
+                'Notes' : 'N/A'
                }
     return (new_row)
