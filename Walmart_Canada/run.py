@@ -2,14 +2,14 @@
 # from selenium import webdriver as uc
 import undetected_chromedriver as uc
 import pandas as pd
-import woolworths
+import walmart
 
 
 def main():
     EXPLICIT_WAIT_TIME = 10
     site_location_df = pd.read_excel('urlLocations.xlsx', header=None)
 
-    for _ in [49, 50, 51, 52]:
+    for _ in [4, 5, 6, 7]:
         ind = _
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
@@ -26,8 +26,8 @@ def main():
 
         driver.get(url)
 
-        #woolworths.setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
-        woolworths.scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks', ind=ind)
+        walmart.setup_walmart(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
+        walmart.scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks', ind=ind)
 
         driver.quit()
 

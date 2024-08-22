@@ -27,7 +27,7 @@ FAVNUM = 22222
 GEN_TIMEOUT = 5 * 3
 STORE_NAME = 'woolworths'
 LOCATION = ''
-
+MAX_RETRY = 10
 def custom_sort_key(value):
     parts = value.split('-')
     return int(parts[1])
@@ -51,14 +51,96 @@ def setup_walmart(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
 def setLocation_walmart(driver, address, EXPLICIT_WAIT_TIME):
     global LOCATION
     LOCATION = address
-    for _ in range(5):
+    for _ in range(MAX_RETRY):
         try:
-            None
+            time.sleep(1)
+            signin_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.mw3.mw4-hdkp.truncate.lh-title.f7")))
+            signin_button.click()
+            print('Button')
+            button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Sign in or create account']")))
+            button.click()
+            print('Sign In')
+
+            try:
+                email_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, '//input[@type="email" and @id="react-aria-1"]')))
+                email_input.send_keys('u2894478@gmail.com')
+                print('Email')
+            except Exception as e:
+                print('Email Error')
+                print(e)
+
+            try:
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_lgOn.w_jDfj.mv3"))).click()
+                password_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, '//input[@type="password" and @id="react-aria-1"]')))
+                password_input.send_keys('Notme123!')
+                print('Password')
+            except Exception as e:
+                print('Password Error')
+                print(e)
+
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_jDfj.w-100"))).click()
+
+            try:
+                no_number = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[link-identifier="notNow"][aria-label="Not now"]'))
+                )
+                no_number.click()
+            except Exception as e:
+                print('Number Message Not Present')
+            break
+        except Exception as e:
+            print(f'Error Setting Location... Trying Again... Attempt {_}')
+
+
+    for _ in range(MAX_RETRY):
+        try:
+            time.sleep(1)
+            set_loc_btn = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "span.f6.pointer.b")))
+            set_loc_btn.click()
+            print('Set Location')
             break
         except:
-            print(f'Error Setting Location... Trying Again... Attempt {_}')
+            print(f'Trying Again... Attempt{_}')
+
+    for _ in range(MAX_RETRY):
+        try:
+            time.sleep(1)
+            icon = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, 'i.ld.ld-ChevronRight[aria-hidden="true"][style*="font-size: 1.5rem"]'))
+            )
+            icon.click()
+            print('Set Location Button')
+            break
+        except:
+            print(f'Trying Again... Attempt{_}')
+
+    for _ in range(MAX_RETRY):
+        try:
+            time.sleep(1)
+            input_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable(
+                    (By.CSS_SELECTOR, 'input[data-automation-id="store-zip-code"][type="text"][maxlength="7"]'))
+            )
+            input_element.clear()
+            input_element.send_keys('N2L0C9')
+            break
+        except:
+            print('Postal Code Failed')
+            print(f'Trying Again... Attempt{_}')
+
+    for _ in range(MAX_RETRY):
+        try:
+            time.sleep(1)
+            save_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[data-automation-id="save-label"]'))
+            )
+            save_button.click()
+            break
+        except:
+            print('Postal Code Failed')
+            print(f'Trying Again... Attempt{_}')
     print('Set Location Complete')
-    time.sleep(FAVNUM)
 
 def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i in items
@@ -72,7 +154,46 @@ def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None)
         print('Found Prior Items')
     except Exception as e:
         print('No Prior Items')
-        time.sleep(GEN_TIMEOUT)
+        for _ in range(5):
+            try:
+                dep_menu = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable((By.XPATH,"//a[@link-identifier='Departments' and contains(@class, 'desktop-header-trigger')]"))
+                )
+                dep_menu.click()
+            except Exception as e:
+                print('Failed to find Departments Menu')
+
+        for _ in range(5):
+            try:
+                grocery_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable(
+                        (By.XPATH, "//button[@data-automation-id='header-departmentL1' and text()='Grocery']"))
+                )
+                grocery_button.click()
+            except:
+                print('Failed to get Grocery Button')
+
+        for _ in range(5):
+            try:
+                any_menu = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, f"//h2[text()='{aisle}']/ancestor::li")))
+                child_links = any_menu.find_elements(By.CSS_SELECTOR, "ul li a")
+                child_links.pop(0)
+
+                for link in child_links:
+                    link_text = link.text
+                    link_href = link.get_attribute("href")
+                    print(f"  URL: {link_href}")
+            except:
+                print(f'Failed to find {aisle} Menu')
+
+        for _ in range(5):
+            try:
+                None
+            except:
+                None
+
+        time.sleep(FAVNUM)
+
         WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "div.hamburger[fetchpriority='high']"))
         ).click()
