@@ -24,7 +24,7 @@ import random
 import re
 
 FAVNUM = 22222
-GEN_TIMEOUT = 5 * 3
+GEN_TIMEOUT = 5
 STORE_NAME = 'woolworths'
 LOCATION = ''
 
@@ -312,7 +312,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
     for item_index in range(len(items)):
         item_url = items[item_index][0]
 
-        if not df_data.empty and items[item_index] in df_data['url'].values:
+        if not df_data.empty and items[item_index][0] in df_data['url'].values:
             print(f'{ind}-{item_index} Item Already Exists!')
             continue
 
@@ -484,7 +484,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
 
         except Exception as e:
             print(f"Error finding Nutrition Label")
-            return None
     except:
         print('Failed to Get Nutrition Label')
 
@@ -839,4 +838,4 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
         'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
         'Notes': Notes
     }
-    return (new_row)
+    return new_row
