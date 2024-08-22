@@ -359,7 +359,16 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             modified_src = re.sub(r'odnHeight=80', 'odnHeight=612', src)
             modified_src = re.sub(r'odnWidth=80', 'odnWidth=612', modified_src)
             modified_sources.append(modified_src)
-        print(modified_sources)
+
+        for index in range(len(modified_sources)):
+            response = requests.get(modified_sources[index])
+            if response.status_code == 200:
+                if not os.path.exists(f'output/images/{str(ind)}/{str(ID)}'):
+                    os.makedirs(f'output/images/{str(ind)}/{str(ID)}', exist_ok=True)
+                full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
+                with open(full_path, 'wb') as file:
+                    file.write(response.content)
+
     except:
         print('Failed to get Product Images')
 
