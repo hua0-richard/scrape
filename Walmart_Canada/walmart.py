@@ -368,9 +368,193 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                 full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
                 with open(full_path, 'wb') as file:
                     file.write(response.content)
-
     except:
         print('Failed to get Product Images')
+
+    try:
+        pattern = r'(\d+(?:\.\d+)?)\s*(L|ML|l|ml)'
+        match = re.search(pattern, ProductName, re.IGNORECASE)
+        if match:
+            volume = match.group(1)
+            unit = match.group(2).upper()
+            Containersize_org = f"{volume}{unit}"
+            Containersize_val = volume
+            Containersize_unit = unit
+    except:
+        print('Failed to get Container Size')
+
+    try:
+        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', ProductName, re.IGNORECASE)
+        if match:
+            full_quantity = match.group(1)
+            pack_size_match = re.search(r'(\d+)x', full_quantity)
+            if pack_size_match:
+                Unitpp = int(pack_size_match.group(1))
+                Packsize_org = f"{full_quantity}"
+    except:
+        print("Failed to get Packsize")
+
+    try:
+        pattern = r'\b(bottles?|cans?|cartons?|boxe?s?|pouche?s?|sachets?|' \
+                  r'flasks?|jugs?|pitchers?|tetra\s?paks?|kegs?|barrels?|casks?|' \
+                  r'cups?|glass(?:es)?|mugs?|tumblers?|goblets?|steins?|' \
+                  r'canisters?|thermos(?:es)?|vacuum\s?flasks?|' \
+                  r'six-packs?|twelve-packs?|cases?|packs?|' \
+                  r'tins?|containers?|tubs?|packets?|' \
+                  r'single-serves?|multi-packs?|variety\s?packs?|' \
+                  r'miniatures?|minis?|nips?|shooters?|' \
+                  r'pints?|quarts?|gallons?|liters?|ml|fl\s?oz|' \
+                  r'growlers?|crowlers?|howlers?|' \
+                  r'magnums?|jeroboams?|rehoboams?|methusela(?:hs?)?|' \
+                  r'salmanazars?|balthazars?|nebuchadnezzars?|' \
+                  r'melchiors?|solomons?|primats?|melchizedeks?|' \
+                  r'splits?|half\s?bottles?|standard\s?bottles?|double\s?magnums?|' \
+                  r'bags?-in-boxe?s?|beverage\s?dispensers?|soda\s?fountains?|' \
+                  r'kegerators?|draft\s?systems?|taps?|spouts?|nozzles?|' \
+                  r'straws?|lids?|caps?|corks?|stoppers?|seals?|' \
+                  r'wine\s?boxe?s?|beer\s?boxe?s?|soda\s?boxe?s?|juice\s?boxe?s?|' \
+                  r'aluminum\s?bottles?|plastic\s?bottles?|glass\s?bottles?|' \
+                  r'slim\s?cans?|tall\s?cans?|stubby\s?bottles?|longneck\s?bottles?|' \
+                  r'twist-off\s?caps?|pull-tabs?|pop-tops?|' \
+                  r'screw\s?caps?|crown\s?caps?|cork\s?closures?|' \
+                  r'sport\s?caps?|flip-tops?|push-pull\s?caps?|' \
+                  r'droppers?|pumps?|sprays?|misters?|atomizers?|' \
+                  r'wine\s?glass(?:es)?|champagne\s?flutes?|beer\s?glass(?:es)?|' \
+                  r'shot\s?glass(?:es)?|highball\s?glass(?:es)?|lowball\s?glass(?:es)?|' \
+                  r'collins\s?glass(?:es)?|martini\s?glass(?:es)?|margarita\s?glass(?:es)?|' \
+                  r'hurricane\s?glass(?:es)?|pilsner\s?glass(?:es)?|weizen\s?glass(?:es)?|' \
+                  r'snifters?|glencairns?|tulip\s?glass(?:es)?|' \
+                  r'coupe\s?glass(?:es)?|nick\s?and\s?nora\s?glass(?:es)?|' \
+                  r'rocks\s?glass(?:es)?|old\s?fashioned\s?glass(?:es)?|' \
+                  r'coffee\s?mugs?|tea\s?cups?|espresso\s?cups?|' \
+                  r'travel\s?mugs?|sippy\s?cups?|paper\s?cups?|' \
+                  r'red\s?solo\s?cups?|disposable\s?cups?|' \
+                  r'punch\s?bowls?|decanters?|carafes?|' \
+                  r'amphoras?|oak\s?barrels?|stainless\s?steel\s?tanks?|' \
+                  r'firkins?|pins?|tuns?|butts?|puncheons?|' \
+                  r'hogsheads?|barriques?|goon\s?bags?|' \
+                  r'beer\s?bottles?|wine\s?bottles?|liquor\s?bottles?|' \
+                  r'soda\s?bottles?|water\s?bottles?|juice\s?bottles?|' \
+                  r'energy\s?drink\s?cans?|seltzer\s?cans?|' \
+                  r'cocktail\s?shakers?|mixing\s?glass(?:es)?|' \
+                  r'water\s?coolers?|water\s?jugs?|dispensers?|' \
+                  r'soda\s?stream\s?bottles?|kombucha\s?bottles?|' \
+                  r'cold\s?brew\s?pitchers?|french\s?press(?:es)?|' \
+                  r'espresso\s?pods?|coffee\s?pods?|k-cups?|' \
+                  r'tea\s?bags?|loose\s?leaf\s?tins?|' \
+                  r'smoothie\s?bottles?|protein\s?shakers?|' \
+                  r'squeeze\s?bottles?|syrup\s?bottles?|' \
+                  r'boba\s?cups?|slushie\s?cups?|frozen\s?drink\s?cups?|' \
+                  r'wine\s?skins?|hip\s?flasks?|canteens?|' \
+                  r'hydration\s?packs?|water\s?bladders?)\b'
+
+        match = re.search(pattern, ProductName, re.IGNORECASE)
+        if match:
+            Pack_type = match.group(1).lower()
+    except:
+        print('Failed to find Pack Type')
+
+    try:
+        pattern = r'\b(zero\s?sugar|no\s?sugar|sugar\s?free|unsweetened|' \
+                  r'low\s?sugar|reduced\s?sugar|less\s?sugar|half\s?sugar|' \
+                  r'no\s?added\s?sugar|naturally\s?sweetened|artificially\s?sweetened|' \
+                  r'sweetened\s?with\s?stevia|aspartame\s?free|' \
+                  r'diet|light|lite|skinny|slim|' \
+                  r'low\s?calorie|calorie\s?free|zero\s?calorie|no\s?calorie|' \
+                  r'low\s?carb|no\s?carb|zero\s?carb|carb\s?free|' \
+                  r'keto\s?friendly|diabetic\s?friendly|' \
+                  r'decaf|caffeine\s?free|low\s?caffeine|' \
+                  r'regular|original|classic|traditional|' \
+                  r'extra\s?strong|strong|bold|intense|' \
+                  r'mild|smooth|mellow|light\s?roast|medium\s?roast|dark\s?roast|' \
+                  r'organic|non\s?gmo|all\s?natural|100%\s?natural|no\s?artificial|' \
+                  r'gluten\s?free|dairy\s?free|lactose\s?free|vegan|' \
+                  r'low\s?fat|fat\s?free|no\s?fat|skim|skimmed|' \
+                  r'full\s?fat|whole|creamy|rich|' \
+                  r'fortified|enriched|vitamin\s?enhanced|' \
+                  r'probiotic|prebiotic|gut\s?health|' \
+                  r'high\s?protein|protein\s?enriched|' \
+                  r'low\s?sodium|sodium\s?free|no\s?salt|salt\s?free|' \
+                  r'sparkling|carbonated|still|flat|' \
+                  r'flavored|unflavored|unsweetened|' \
+                  r'concentrate|from\s?concentrate|not\s?from\s?concentrate|' \
+                  r'fresh\s?squeezed|freshly\s?squeezed|cold\s?pressed|' \
+                  r'raw|unpasteurized|pasteurized|' \
+                  r'premium|luxury|gourmet|artisanal|craft|' \
+                  r'limited\s?edition|seasonal|special\s?edition|' \
+                  r'low\s?alcohol|non\s?alcoholic|alcohol\s?free|virgin|mocktail|' \
+                  r'sugar\s?alcohol|sugar\s?alcohols|' \
+                  r'high\s?fiber|fiber\s?enriched|' \
+                  r'antioxidant|superfood|nutrient\s?rich|' \
+                  r'energy|energizing|revitalizing|' \
+                  r'relaxing|calming|soothing|' \
+                  r'hydrating|isotonic|electrolyte|' \
+                  r'fermented|cultured|living|active|' \
+                  r'ultra\s?filtered|micro\s?filtered|nano\s?filtered|' \
+                  r'distilled|purified|spring|mineral|' \
+                  r'fair\s?trade|ethically\s?sourced|sustainably\s?sourced|' \
+                  r'local|imported|authentic|genuine)\b'
+
+        matches = re.findall(pattern, ProductName, re.IGNORECASE)
+        if matches:
+            ProductVariety = ", ".join(sorted(set(match.lower() for match in matches)))
+    except:
+        print('Failed to find Product Variety')
+
+    try:
+        pattern = r'\b(vanilla|chocolate|strawberry|raspberry|blueberry|blackberry|' \
+                  r'berry|mixed berry|wild berry|acai berry|goji berry|cranberry|' \
+                  r'apple|green apple|cinnamon apple|caramel apple|pear|peach|apricot|' \
+                  r'mango|pineapple|coconut|passion fruit|guava|papaya|lychee|' \
+                  r'orange|blood orange|tangerine|clementine|mandarin|grapefruit|' \
+                  r'lemon|lime|lemon-lime|key lime|cherry|black cherry|wild cherry|' \
+                  r'grape|white grape|concord grape|watermelon|honeydew|cantaloupe|' \
+                  r'kiwi|fig|pomegranate|dragonfruit|star fruit|jackfruit|durian|' \
+                  r'banana|plantain|avocado|almond|hazelnut|walnut|pecan|pistachio|' \
+                  r'peanut|cashew|macadamia|coffee|espresso|mocha|cappuccino|latte|' \
+                  r'caramel|butterscotch|toffee|cinnamon|nutmeg|ginger|turmeric|' \
+                  r'cardamom|clove|anise|licorice|fennel|mint|peppermint|spearmint|' \
+                  r'eucalyptus|lavender|rose|jasmine|hibiscus|chamomile|earl grey|' \
+                  r'bergamot|lemongrass|basil|rosemary|thyme|sage|oregano|' \
+                  r'green tea|black tea|white tea|oolong tea|pu-erh tea|rooibos|' \
+                  r'cola|root beer|cream soda|ginger ale|birch beer|sarsaparilla|' \
+                  r'bubblegum|cotton candy|marshmallow|toasted marshmallow|' \
+                  r'cookies and cream|cookie dough|birthday cake|red velvet|' \
+                  r'pumpkin spice|pumpkin pie|apple pie|pecan pie|key lime pie|' \
+                  r'cheesecake|tiramisu|creme brulee|custard|pudding|' \
+                  r'butter pecan|butter toffee|butterscotch ripple|' \
+                  r'salted caramel|sea salt caramel|dulce de leche|' \
+                  r'maple|maple syrup|honey|agave|molasses|brown sugar|' \
+                  r'vanilla bean|french vanilla|madagascar vanilla|' \
+                  r'dark chocolate|milk chocolate|white chocolate|cocoa|' \
+                  r'strawberries and cream|peaches and cream|berries and cream|' \
+                  r'tropical|tropical punch|fruit punch|citrus|citrus blend|' \
+                  r'melon|mixed melon|berry medley|forest fruits|' \
+                  r'blue raspberry|sour apple|sour cherry|sour patch|' \
+                  r'lemonade|pink lemonade|cherry lemonade|strawberry lemonade|' \
+                  r'iced tea|sweet tea|arnold palmer|' \
+                  r'horchata|tamarind|hibiscus|jamaica|' \
+                  r'pina colada|mojito|margarita|sangria|' \
+                  r'bubble tea|boba|taro|matcha|chai|masala chai|' \
+                  r'cucumber|celery|carrot|beet|tomato|' \
+                  r'vegetable|mixed vegetable|green vegetable|' \
+                  r'aloe vera|noni|acerola|guarana|yerba mate|' \
+                  r'bourbon vanilla|tahitian vanilla|mexican vanilla|' \
+                  r'dutch chocolate|swiss chocolate|belgian chocolate|' \
+                  r'neapolitan|spumoni|rocky road|' \
+                  r'unflavored|original|classic|traditional|' \
+                  r'mystery flavor|surprise flavor|limited edition flavor)\b'
+        matches = re.findall(pattern, ProductName, re.IGNORECASE)
+        if matches:
+            ProductFlavor = ", ".join(sorted(set(match.lower() for match in matches)))
+    except:
+        print('Failed to get Product Flavour')
+
+    try:
+        # Get price and price / 100
+        None
+    except:
+        print('Failed to get Net Content')
 
     new_row = {
         'ID': ID,
@@ -433,4 +617,4 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
         'Notes': Notes
     }
-    return (new_row)
+    return new_row
