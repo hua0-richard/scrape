@@ -11,6 +11,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import urllib.request
 from bs4 import BeautifulSoup
+from PIL import Image
+import pytesseract
+
 
 # Special Package to scrap and aids in avoiding more stringent sites
 import undetected_chromedriver as uc
@@ -29,6 +32,9 @@ STORE_NAME = 'woolworths'
 LOCATION = ''
 MAX_RETRY = 10
 
+
+def remove_empty_lines(text):
+    return '\n'.join(line for line in text.splitlines() if line.strip())
 
 def custom_sort_key(value):
     parts = value.split('-')
@@ -368,6 +374,9 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                 full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
                 with open(full_path, 'wb') as file:
                     file.write(response.content)
+
+        ProductImages = ','.join(modified_sources)
+
     except:
         print('Failed to get Product Images')
 
@@ -551,10 +560,54 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Product Flavour')
 
     try:
-        # Get price and price / 100
-        None
+        if (not Packsize_org == None):
+            match = re.match(r'([\d.]+x[\d.]+)([a-zA-Z]+)', Packsize_org)
+            if match:
+                numeric_part, unit = match.groups()
+                num1, num2 = map(float, numeric_part.split('x'))
+                result = num1 * num2
+            Netcontent_org = f"{result:.10g}{unit}"
+            Netcontent_val = result
+            Netcontent_unit = unit
+        elif (not Containersize_org == None):
+            Netcontent_org = Containersize_org
+            pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
+            match = re.match(pattern, Containersize_org)
+            if match:
+                Netcontent_val = float(match.group(1))
+                Netcontent_unit = match.group(2)
     except:
         print('Failed to get Net Content')
+
+    try:
+        full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/'
+        entries = os.listdir(full_path)
+        print(entries)
+        for f in entries:
+            print(f)
+            image_path = full_path + f
+            img = Image.open(image_path)
+            text = pytesseract.image_to_string(img)
+            text = remove_empty_lines(text)
+            split_text = text.split('\n')
+            # check for Label
+            for s in split_text:
+                tmp_s = s.lower()
+                keyword = 'Nutrition Facts'
+                keyword = keyword.lower()
+                if keyword in tmp_s:
+                    Nutr_label = "Present"
+                    break
+            # check for Ingredients
+            for s in split_text:
+                tmp_s = s.lower()
+                keyword = 'Ingredients'
+                keyword = keyword.lower()
+                if keyword in tmp_s:
+                    Ingredients = text
+                    break
+    except:
+        print('Failed to get Ingredients and/or Nutrition Label')
 
     new_row = {
         'ID': ID,
@@ -617,4 +670,4 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
         'Notes': Notes
     }
-    return new_row
+    return (new_row)
