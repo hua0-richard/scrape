@@ -26,7 +26,7 @@ def main():
 
         driver.get(url)
 
-        walmart.setup_walmart(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
+        # walmart.setup_walmart(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
         walmart.scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks', ind=ind)
 
         driver.quit()

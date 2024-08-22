@@ -24,13 +24,16 @@ import random
 import re
 
 FAVNUM = 22222
-GEN_TIMEOUT = 5 * 3
+GEN_TIMEOUT = 3
 STORE_NAME = 'woolworths'
 LOCATION = ''
 MAX_RETRY = 10
+
+
 def custom_sort_key(value):
     parts = value.split('-')
     return int(parts[1])
+
 
 def cache_strategy():
     folder_path = 'output/tmp'
@@ -54,15 +57,18 @@ def setLocation_walmart(driver, address, EXPLICIT_WAIT_TIME):
     for _ in range(MAX_RETRY):
         try:
             time.sleep(1)
-            signin_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.mw3.mw4-hdkp.truncate.lh-title.f7")))
+            signin_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "div.mw3.mw4-hdkp.truncate.lh-title.f7")))
             signin_button.click()
             print('Button')
-            button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Sign in or create account']")))
+            button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[text()='Sign in or create account']")))
             button.click()
             print('Sign In')
 
             try:
-                email_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, '//input[@type="email" and @id="react-aria-1"]')))
+                email_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.presence_of_element_located((By.XPATH, '//input[@type="email" and @id="react-aria-1"]')))
                 email_input.send_keys('u2894478@gmail.com')
                 print('Email')
             except Exception as e:
@@ -70,15 +76,18 @@ def setLocation_walmart(driver, address, EXPLICIT_WAIT_TIME):
                 print(e)
 
             try:
-                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_lgOn.w_jDfj.mv3"))).click()
-                password_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, '//input[@type="password" and @id="react-aria-1"]')))
+                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_lgOn.w_jDfj.mv3"))).click()
+                password_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.presence_of_element_located((By.XPATH, '//input[@type="password" and @id="react-aria-1"]')))
                 password_input.send_keys('Notme123!')
                 print('Password')
             except Exception as e:
                 print('Password Error')
                 print(e)
 
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_jDfj.w-100"))).click()
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_jDfj.w-100"))).click()
 
             try:
                 no_number = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -91,11 +100,11 @@ def setLocation_walmart(driver, address, EXPLICIT_WAIT_TIME):
         except Exception as e:
             print(f'Error Setting Location... Trying Again... Attempt {_}')
 
-
     for _ in range(MAX_RETRY):
         try:
             time.sleep(1)
-            set_loc_btn = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "span.f6.pointer.b")))
+            set_loc_btn = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "span.f6.pointer.b")))
             set_loc_btn.click()
             print('Set Location')
             break
@@ -142,6 +151,7 @@ def setLocation_walmart(driver, address, EXPLICIT_WAIT_TIME):
             print(f'Trying Again... Attempt{_}')
     print('Set Location Complete')
 
+
 def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i in items
     # i[0] is url
@@ -150,139 +160,46 @@ def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None)
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
-        items = items.values.tolist()
+        items = items.iloc[:, 0].tolist()
         print('Found Prior Items')
     except Exception as e:
         print('No Prior Items')
-        for _ in range(5):
-            try:
-                dep_menu = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.element_to_be_clickable((By.XPATH,"//a[@link-identifier='Departments' and contains(@class, 'desktop-header-trigger')]"))
-                )
-                dep_menu.click()
-            except Exception as e:
-                print('Failed to find Departments Menu')
 
-        for _ in range(5):
-            try:
-                grocery_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.element_to_be_clickable(
-                        (By.XPATH, "//button[@data-automation-id='header-departmentL1' and text()='Grocery']"))
-                )
-                grocery_button.click()
-            except:
-                print('Failed to get Grocery Button')
-
-        for _ in range(5):
-            try:
-                any_menu = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, f"//h2[text()='{aisle}']/ancestor::li")))
-                child_links = any_menu.find_elements(By.CSS_SELECTOR, "ul li a")
-                child_links.pop(0)
-
-                for link in child_links:
-                    link_text = link.text
-                    link_href = link.get_attribute("href")
-                    print(f"  URL: {link_href}")
-            except:
-                print(f'Failed to find {aisle} Menu')
-
-        for _ in range(5):
-            try:
-                None
-            except:
-                None
-
-        time.sleep(FAVNUM)
-
-        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "div.hamburger[fetchpriority='high']"))
-        ).click()
-        aisle_text = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, f"//div[contains(@class, 'description') and contains(text(), '{aisle}')]"))
-        )
-        aisle_link = aisle_text.find_element(By.XPATH, "..")
-        driver.get(aisle_link.get_attribute('href'))
-
-        time.sleep(GEN_TIMEOUT)
-        elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
-        sub_aisle_links = [element.get_attribute("href") for element in elements[2:]]
-        print(sub_aisle_links)
-
-        sub_sub_aisle_links = []
-        for s in sub_aisle_links:
-            driver.get(s)
+        if aisle == 'Drinks':
+            driver.get('https://www.walmart.ca/en/browse/grocery/drinks/10019_6000194326336')
             time.sleep(GEN_TIMEOUT)
-            sub_sub_aisle_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "wow-category-chip a")))
-            tmp = [element.get_attribute("href") for element in sub_sub_aisle_element[2:]]
-            for t in tmp:
-                sub_sub_aisle_links.append(t)
-
-        for s in sub_sub_aisle_links:
-            print(f"items so far... {len(items)}")
-            driver.get(s)
-            bread_crumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".breadcrumbs-link")))
-            breadcrumb_texts = ", ".join([element.text.strip() for element in bread_crumb[2:]])
-            while True:
-                time.sleep(GEN_TIMEOUT)
-                WebDriverWait(driver, EXPLICIT_WAIT_TIME * 3).until(
-                    EC.presence_of_element_located((By.CLASS_NAME, "product-grid-v2")))
-                # Use JavaScript to extract product information
-                script = """
-                    const products = [];
-                    const tiles = document.querySelectorAll('wc-product-tile');
-                    tiles.forEach(tile => {
-                        const shadowRoot = tile.shadowRoot;
-                        if (shadowRoot) {
-                            const link = shadowRoot.querySelector('a');
-                            if (link) {
-                                products.push({
-                                    url: link.href,
-                                });
-                            }
-                        }
-                    });
-                    return products;
-                """
-                # This returns an array
-                product_info = driver.execute_script(script)
-                for product in product_info:
-                    for i in items:
-                        if product['url'] == i[0]:
-                            break
-                    else:
-                        items.append([product['url'], breadcrumb_texts])
-                # Next Page
-                try:
-                    WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                        EC.element_to_be_clickable((By.XPATH, "//span[@class='next-marker' and text()='Next']"))
-                    ).click()
-                    print('Found Next Button')
-                except:
-                    print('No Next Button')
-                    print(items)
-                    break
-
-        aisle_item_list = [tuple(s) for s in items]
-        items = pd.DataFrame(aisle_item_list)
-        items.columns = [None, None]
-
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
-                                   encoding='utf-8-sig')
+            target_divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located(
+                (By.CSS_SELECTOR, 'div.mb0.ph0-xl.pt0-xl.bb.b--near-white.w-25.pb3-m.ph1')))
+            for div in target_divs:
+                a_elements = div.find_elements(By.TAG_NAME, 'a')
+                div_hrefs = [element.get_attribute('href') for element in a_elements]
+                for dh in div_hrefs:
+                    items.append(dh)
+            max_pages = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR,                                                                                  'div.sans-serif.ph1.pv2.w4.h4.lh-copy.border-box.br-100.b--solid.mh2-m.db.tc.no-underline.gray.bg-white.b--white-90'))).text
+            print(f"pages {max_pages}")
+            for page in range(2, int(max_pages) + 1):
+                time.sleep(EXPLICIT_WAIT_TIME)
+                driver.get(f'https://www.walmart.ca/en/browse/grocery/drinks/10019_6000194326336?page={str(page)}')
+                target_divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located(
+                    (By.CSS_SELECTOR, 'div.mb0.ph0-xl.pt0-xl.bb.b--near-white.w-25.pb3-m.ph1')))
+                for div in target_divs:
+                    a_elements = div.find_elements(By.TAG_NAME, 'a')
+                    div_hrefs = [element.get_attribute('href') for element in a_elements]
+                    for dh in div_hrefs:
+                        items.append(dh)
+                print(items)
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
+
 
     df_data = pd.DataFrame()
     site_items_df = pd.DataFrame()
-
     # Cache Strategy
     try:
         seen_items = cache_strategy()
         new_rows = []
         for cache_index in range(len(items)):
-            item_url = items[cache_index][0]
+            item_url = items[cache_index]
             print(f"{cache_index} x {item_url}")
             matching_rows = seen_items[seen_items['url'] == item_url]
             if len(matching_rows) > 0:
@@ -308,21 +225,20 @@ def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None)
             site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
             site_items_df = site_items_df.sort_values(by='ID', key=lambda x: x.map(custom_sort_key))
             site_items_df = site_items_df.reset_index(drop=True)
-
     except Exception as e:
         print(e)
         print('Cache Failed')
 
+    # scrape items and check for already scraped
     try:
         df_data = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv")
         site_items_df = pd.concat([site_items_df, df_data], ignore_index=True).drop_duplicates()
     except:
         print('No Prior Data Found... ')
 
-    # scrape items and check for already scraped
     for item_index in range(len(items)):
-        item_url = items[item_index][0]
-
+        item_url = items[item_index]
+        print(item_url)
         if not df_data.empty and items[item_index] in df_data['url'].values:
             print(f'{ind}-{item_index} Item Already Exists!')
             continue
@@ -331,8 +247,9 @@ def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None)
             try:
                 time.sleep(GEN_TIMEOUT)
                 driver.get(item_url)
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index,
-                                      items[item_index][1])
+                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index)
+                if new_row is None:
+                    break
                 site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
                 site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
                 print(new_row)
@@ -347,14 +264,17 @@ def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None)
     site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
 
 
-def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
+def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
+    time.sleep(GEN_TIMEOUT)
     ID = f'{ind}-{index}-{aisle.upper()[:3]}'
     Region = None
     City = None
+
     ProductName = None
     ProductBrand = None
     ProductCategory = None
     ProductSubCategory = None
+
     ProductImages = None
     Description = None
     Price = None
@@ -368,12 +288,10 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     Servsize_container_type_org = 'N/A'
     Servsize_container_type_val = 'N/A'
     Servsize_container_type_unit = 'N/A'
-
     Servsize_portion_org = None
     Servsize_portion_val = None
     Servsize_portion_unit = None
     Servings_cont = None
-
     Containersize_org = None
     Containersize_val = None
     Containersize_unit = None
@@ -381,7 +299,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     Pack_type = None
     ProductVariety = None
     ProductFlavor = None
-
     Cals_org_pp = None
     Cals_value_pp = None
     Cals_unit_pp = None
@@ -391,21 +308,65 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     TotalSugars_pct_pp = 'N/A'
     AddedSugars_g_pp = 'N/A'
     AddedSugars_pct_pp = 'N/A'
-    Cals_value_p100g = None
-    Cals_unit_p100g = None
-    TotalCarb_g_p100g = None
+    Cals_value_p100g = 'N/A'
+    Cals_unit_p100g = 'N/A'
+    TotalCarb_g_p100g = 'N/A'
     TotalCarb_pct_p100g = 'N/A'
-    TotalSugars_g_p100g = None
+    TotalSugars_g_p100g = 'N/A'
     TotalSugars_pct_p100g = 'N/A'
     AddedSugars_g_p100g = 'N/A'
     AddedSugars_pct_p100g = 'N/A'
     Notes = 'OK'
 
+    for p_name in range(2):
+        try:
+            ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR,
+                                                'h1#main-title[data-pcss-show="true"][itemprop="name"][elementtiming="ip-main-title"]'))
+            ).text
+            break
+        except Exception as e:
+            print(f'Failed to get Product Name Attempt {p_name} of 2')
+            for timer in range(30):
+                print(f'Resuming in... {30 - timer}')
+                time.sleep(1)
+            return None
+
+    try:
+        ProductBrand = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'a.bg-transparent.bn.lh-solid.pa0.sans-serif.tc.underline.inline-button.mid-gray.pointer.f6'))).text
+    except:
+        print('Failed to get Product Brand')
+
+    try:
+        ol_element = driver.find_element(By.CSS_SELECTOR, 'ol.w_3Z__')
+        span_elements = ol_element.find_elements(By.CSS_SELECTOR, 'span[itemprop="name"]')
+        breadcrumb_text = [span.text for span in span_elements]
+        breadcrumb_text.pop(0)
+        breadcrumb_text.pop(0)
+        if len(breadcrumb_text) > 0:
+            ProductCategory = breadcrumb_text.pop(0)
+        if len(breadcrumb_text) > 0:
+            ProductSubCategory = breadcrumb_text.pop(0)
+    except:
+        print('Failed to get Product Categories')
+
+    try:
+        img_elements = driver.find_elements(By.CSS_SELECTOR, 'div[data-testid="vertical-carousel-container"] img')
+        image_sources = [img.get_attribute('src') for img in img_elements]
+        modified_sources = []
+        for src in image_sources:
+            # Replace Height=80 and Width=80 with Height=612 and Width=612
+            modified_src = re.sub(r'odnHeight=80', 'odnHeight=612', src)
+            modified_src = re.sub(r'odnWidth=80', 'odnWidth=612', modified_src)
+            modified_sources.append(modified_src)
+        print(modified_sources)
+    except:
+        print('Failed to get Product Images')
 
     new_row = {
         'ID': ID,
-        'Country': 'Australia',
-        'Store': 'Woolworths',
+        'Country': 'Canada',
+        'Store': 'Walmart',
         'Region': Region,
         'City': City,
         'ProductName': ProductName,
