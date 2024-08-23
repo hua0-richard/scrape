@@ -53,56 +53,16 @@ def cache_strategy():
     return combined_reference_df
 
 
-def setup_walmart(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
-    setLocation_walmart(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
+def setup_target(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
+    setLocation_target(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
 
 
-def setLocation_walmart(driver, address, EXPLICIT_WAIT_TIME):
+def setLocation_target(driver, address, EXPLICIT_WAIT_TIME):
     global LOCATION
     LOCATION = address
     for _ in range(MAX_RETRY):
         try:
-            time.sleep(1)
-            signin_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "div.mw3.mw4-hdkp.truncate.lh-title.f7")))
-            signin_button.click()
-            print('Button')
-            button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.XPATH, "//button[text()='Sign in or create account']")))
-            button.click()
-            print('Sign In')
-
-            try:
-                email_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.presence_of_element_located((By.XPATH, '//input[@type="email" and @id="react-aria-1"]')))
-                email_input.send_keys('u2894478@gmail.com')
-                print('Email')
-            except Exception as e:
-                print('Email Error')
-                print(e)
-
-            try:
-                WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_lgOn.w_jDfj.mv3"))).click()
-                password_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.presence_of_element_located((By.XPATH, '//input[@type="password" and @id="react-aria-1"]')))
-                password_input.send_keys('Notme123!')
-                print('Password')
-            except Exception as e:
-                print('Password Error')
-                print(e)
-
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.w_hhLG.w_8nsR.w_jDfj.w-100"))).click()
-
-            try:
-                no_number = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[link-identifier="notNow"][aria-label="Not now"]'))
-                )
-                no_number.click()
-            except Exception as e:
-                print('Number Message Not Present')
-            break
+            None
         except Exception as e:
             print(f'Error Setting Location... Trying Again... Attempt {_}')
 
@@ -158,7 +118,7 @@ def setLocation_walmart(driver, address, EXPLICIT_WAIT_TIME):
     print('Set Location Complete')
 
 
-def scrapeSite_walmart(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
+def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i in items
     # i[0] is url
     # i[1] is aisle
