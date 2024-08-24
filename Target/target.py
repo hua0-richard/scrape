@@ -60,61 +60,69 @@ def setup_target(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
 def setLocation_target(driver, address, EXPLICIT_WAIT_TIME):
     global LOCATION
     LOCATION = address
-    for _ in range(MAX_RETRY):
+    time.sleep(GEN_TIMEOUT)
+    try:
+        signin_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "span.sc-58ad44c0-3.kwbrXj.h-margin-r-x3"))
+        )
+        signin_button.click()
+        signin_button_v2 = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "span.sc-859e7637-0.hHZPQy"))
+        )
+        signin_button_v2.click()
+        input_username = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.ID, "username"))
+        )
+        input_username.send_keys('u2894478@gmail.com')
+        password_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.ID, "password"))
+        )
+        password_input.send_keys('notme123!')
+        submit_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.ID, "login"))
+        )
+        submit_button.click()
         try:
-            None
-        except Exception as e:
-            print(f'Error Setting Location... Trying Again... Attempt {_}')
-
-    for _ in range(MAX_RETRY):
-        try:
-            time.sleep(1)
-            set_loc_btn = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "span.f6.pointer.b")))
-            set_loc_btn.click()
-            print('Set Location')
-            break
+            print('Skip Link')
+            skip_link = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.sc-9306beff-0.sc-e6042511-0.dfqbQr.ibmrHV")))
+            skip_link.click()
         except:
-            print(f'Trying Again... Attempt{_}')
+            print('None')
+    except:
+        print('Failed to sign in')
 
-    for _ in range(MAX_RETRY):
-        try:
-            time.sleep(1)
-            icon = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, 'i.ld.ld-ChevronRight[aria-hidden="true"][style*="font-size: 1.5rem"]'))
-            )
-            icon.click()
-            print('Set Location Button')
-            break
-        except:
-            print(f'Trying Again... Attempt{_}')
+    try:
+        zip_code_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'span[data-test="@web/ZipCodeButton/ZipCodeNumber"]'))
+        )
+        zip_code_element.click()
+        print('Zip Code Button')
+    except:
+        print('Failed to get Zip Code Button')
 
-    for _ in range(MAX_RETRY):
-        try:
-            time.sleep(1)
-            input_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, 'input[data-automation-id="store-zip-code"][type="text"][maxlength="7"]'))
-            )
-            input_element.clear()
-            input_element.send_keys('N2L0C9')
-            break
-        except:
-            print('Postal Code Failed')
-            print(f'Trying Again... Attempt{_}')
+    # try:
+    #     zip_code_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+    #         EC.element_to_be_clickable((By.ID, "zip-code"))
+    #     )
+    #     zip_code_input.clear()
+    #     time.sleep(GEN_TIMEOUT)
+    #     for digit in '90000':
+    #         zip_code_input.send_keys(digit)
+    #         time.sleep(0.1)
+    #     time.sleep(GEN_TIMEOUT)
+    # except:
+    #     print('Failed to input Zip Code')
 
-    for _ in range(MAX_RETRY):
-        try:
-            time.sleep(1)
-            save_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[data-automation-id="save-label"]'))
-            )
-            save_button.click()
-            break
-        except:
-            print('Postal Code Failed')
-            print(f'Trying Again... Attempt{_}')
+    try:
+        update_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, "button[data-test='@web/LocationFlyout/UpdateLocationButton']"))
+        )
+        update_button.click()
+    except:
+        print('Failed to Update Zip Code')
+
     print('Set Location Complete')
 
 
@@ -123,6 +131,8 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i[0] is url
     # i[1] is aisle
     items = []
+    subaisles = []
+    subsubaisles = []
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
@@ -131,35 +141,89 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     except Exception as e:
         print('No Prior Items')
 
-        if aisle == 'Drinks':
-            driver.get('https://www.walmart.ca/en/browse/grocery/drinks/10019_6000194326336')
+        try:
             time.sleep(GEN_TIMEOUT)
-            target_divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located(
-                (By.CSS_SELECTOR, 'div.mb0.ph0-xl.pt0-xl.bb.b--near-white.w-25.pb3-m.ph1')))
-            for div in target_divs:
-                a_elements = div.find_elements(By.TAG_NAME, 'a')
-                div_hrefs = [element.get_attribute('href') for element in a_elements]
-                for dh in div_hrefs:
-                    items.append(dh)
-            max_pages = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR,                                                                                  'div.sans-serif.ph1.pv2.w4.h4.lh-copy.border-box.br-100.b--solid.mh2-m.db.tc.no-underline.gray.bg-white.b--white-90'))).text
-            print(f"pages {max_pages}")
-            for page in range(2, int(max_pages) + 1):
-                time.sleep(EXPLICIT_WAIT_TIME)
-                driver.get(f'https://www.walmart.ca/en/browse/grocery/drinks/10019_6000194326336?page={str(page)}')
-                target_divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_all_elements_located(
-                    (By.CSS_SELECTOR, 'div.mb0.ph0-xl.pt0-xl.bb.b--near-white.w-25.pb3-m.ph1')))
-                for div in target_divs:
-                    a_elements = div.find_elements(By.TAG_NAME, 'a')
-                    div_hrefs = [element.get_attribute('href') for element in a_elements]
-                    for dh in div_hrefs:
-                        items.append(dh)
-                print(items)
+            categories_link = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.element_to_be_clickable(
+                    (By.CSS_SELECTOR, "a[data-test='@web/Header/MainMenuLink'][aria-label='Categories']"))
+            )
+            categories_link.click()
+        except:
+            print('Failed to get Categories')
+
+        try:
+            time.sleep(GEN_TIMEOUT)
+            grocery_span = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.visibility_of_element_located(
+                    (By.XPATH, "//span[contains(@class, 'styles_wrapper__YYaWP') and text()='Grocery']"))
+            )
+            grocery_span.click()
+        except:
+            print('Failed to get Grocery')
+
+        try:
+            time.sleep(GEN_TIMEOUT)
+            aisle_span = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.visibility_of_element_located(
+                    (By.XPATH, f"//span[contains(@class, 'styles_wrapper__YYaWP') and text()='{aisle}']"))
+            )
+            aisle_span.click()
+        except:
+            print('Failed to get Aisle')
+
+        try:
+            time.sleep(GEN_TIMEOUT)
+            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-test='@web/component-header/CategoryLink']"))
+            )
+            category_links = driver.find_elements(By.CSS_SELECTOR, "a[data-test='@web/component-header/CategoryLink']")
+            print(len(category_links))
+            for link in category_links:
+                href = link.get_attribute("href")
+                if (href != 'https://www.target.com/c/coffee-beverages-grocery/-/N-4yi5p'):
+                    subaisles.append(href)
+        except:
+            print('Failed to get Aisle SubCategories')
+
+        try:
+            subaisles.pop(0)
+            for s in subaisles:
+                driver.get(s)
+                print('start')
+                time.sleep(GEN_TIMEOUT * 6)
+                # Wait for the product cards to be present
+                products = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                    EC.presence_of_all_elements_located(
+                        (By.CLASS_NAME, "rLjwS"))
+                )
+                for p in products:
+                    prod_html = p.get_attribute("outerHTML")
+                    soup = BeautifulSoup(prod_html, 'html.parser')
+                    a_tag = soup.find('a')
+                    if a_tag:
+                        href = a_tag['href']
+                        print(f"The href attribute is: https://www.target.com{href}")
+                        items.append(f"https://www.target.com{href}")
+                    else:
+                        print("The specific <a> tag was not found.")
+                try:
+                    next_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.eEvByy > button")))
+                    next_button.click()
+                except Exception as e:
+                    print(e)
+
+        except Exception as e:
+            print('Failed to get Subaisles')
+            print(e)
+
+        time.sleep(FAVNUM)
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
 
     df_data = pd.DataFrame()
     site_items_df = pd.DataFrame()
+
     # Cache Strategy
     try:
         seen_items = cache_strategy()
