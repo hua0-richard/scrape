@@ -1,0 +1,2 @@
+- [ ] images across aisles patch
+- [ ] locations patch

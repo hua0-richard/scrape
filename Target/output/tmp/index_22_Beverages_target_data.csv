@@ -1,0 +1,1071 @@
+ID,Country,Store,Region,City,ProductName,ProductVariety,ProductFlavor,Unitpp,ProductBrand,ProductAisle,ProductCategory,ProductSubCategory,ProductImages,Containersize_org,Containersize_val,Containersize_unit,Cals_org_pp,Cals_value_pp,Cals_unit_pp,TotalCarb_g_pp,TotalCarb_pct_pp,TotalSugars_g_pp,TotalSugars_pct_pp,AddedSugars_g_pp,AddedSugars_pct_pp,Cals_value_p100g,Cals_unit_p100g,TotalCarb_g_p100g,TotalCarb_pct_p100g,TotalSugars_g_p100g,TotalSugars_pct_p100g,AddedSugars_g_p100g,AddedSugars_pct_p100g,Packsize_org,Pack_type,Netcontent_val,Netcontent_org,Netcontent_unit,Price,Description,Nutr_label,Ingredients,NutrInfo_org,Servsize_container_type_org,Servsize_container_type_val,Servsize_container_type_unit,Servsize_portion_org,Servsize_portion_val,Servsize_portion_unit,Servings_cont,ProdType,StorType,ItemNum,SKU,UPC,url,DataCaptureTimeStamp,Notes
+22-0-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 46 fl oz Bottle,"cold pressed, organic",,,Suja,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Total Fat:
+  Value: 0grm
+0%
+  Daily Value: 0%
+Sodium:
+  Value: 50mg
+2%
+  Daily Value: 2%
+Total Carbohydrate:
+  Value: 12grm
+4%
+  Daily Value: 4%
+Total Sugars:
+  Value: 12grm
+0%
+  Daily Value: 0%
+Added Sugars:
+  Value: 0grm
+0%
+  Daily Value: 0%
+Protein:
+  Value: 1grm
+0%
+  Daily Value: 0%
+Potassium:
+  Value: 270mg
+6%
+  Daily Value: 6%
+Vitamin A:
+  Value: 30mcg
+4%
+  Daily Value: 4%
+Vitamin C:
+  Value: 8mg
+8%
+  Daily Value: 8%
+Vitamin K:
+  Value: 19mcg
+15%
+  Daily Value: 15%",,,,,,,,,,,,,,,https://www.target.com/p/suja-organic-vegan-mighty-dozen-fruit-and-vegetable-drink-46-fl-oz/-/A-51440067#lnk=sametab,2024-08-25T14:47:33.670419-04:00,OK
+22-1-BEV,United States,Target,,,Capri Sun Variety Pack - 30pk/6 fl oz Pouches,,,,Capri,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,variety pack,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-variety-pack-30pk-6-fl-oz-pouches/-/A-54341198#lnk=sametab,2024-08-25T17:20:16.718498-04:00,OK
+22-2-BEV,United States,Target,,,100% Apple Juice - 64 fl oz Bottle - Market Pantry™,,apple,,100%,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/100-apple-juice-64-fl-oz-bottle-market-pantry-8482/-/A-13305665#lnk=sametab,2024-08-25T17:20:23.882081-04:00,OK
+22-3-BEV,United States,Target,,,Honest Kids Organic Fruit Punch Juice Drink - 8pk/6 fl oz Boxes,organic,fruit punch,,Honest,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/honest-kids-organic-fruit-punch-juice-drink-8pk-6-fl-oz-boxes/-/A-52270196#lnk=sametab,2024-08-25T17:20:31.081208-04:00,OK
+22-4-BEV,United States,Target,,,Mott's 100% Original Apple Juice - 6pk/8 fl oz Bottles,original,"apple, original",,Mott's,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/mott-s-100-original-apple-juice-6pk-8-fl-oz-bottles/-/A-14409786#lnk=sametab,2024-08-25T17:20:37.943879-04:00,OK
+22-5-BEV,United States,Target,,,Suja Organic Vibrant Probiotic Cold Pressed Juice Drink - 12 fl oz Bottle,"cold pressed, organic, probiotic",,,Suja,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/suja-vibrant-organic-probiotic-fruit-juice-12-fl-oz/-/A-51440013#lnk=sametab,2024-08-25T17:20:44.900078-04:00,OK
+22-6-BEV,United States,Target,,,Bolthouse Farms Green Goodness - 15.2 fl oz,,,,Bolthouse,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/bolthouse-farms-green-goodness-15-2-fl-oz/-/A-13561429#lnk=sametab,2024-08-25T17:20:52.902607-04:00,OK
+22-7-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 12oz Bottle,"cold pressed, organic",,,Suja,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,bottle,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/suja-organic-vegan-mighty-dozen-12oz/-/A-16978093#lnk=sametab,2024-08-25T17:21:00.173466-04:00,OK
+22-8-BEV,United States,Target,,,Capri Sun Pacific Cooler Juice Pack - 10pk/6 fl oz Pouches,,,,Capri,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,pack,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-pacific-cooler-juice-pack-10pk-6-fl-oz-pouches/-/A-15041133#lnk=sametab,2024-08-25T17:21:07.060295-04:00,OK
+22-9-BEV,United States,Target,,,Capri Sun Fruit Punch - 10pk/60 fl oz,,fruit punch,,Capri,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-fruit-punch-10pk-60-fl-oz/-/A-15041132#lnk=sametab,2024-08-25T17:21:14.165715-04:00,OK
+22-10-BEV,United States,Target,,,Honest Kids Organic Apple Juice Drink - 8pk/6 fl oz Box,organic,apple,,Honest,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/honest-kids-organic-apple-juice-drink-8pk-6-fl-oz-box/-/A-52270091#lnk=sametab,2024-08-25T17:21:20.997172-04:00,OK
+22-11-BEV,United States,Target,,,Minute Maid Fruit Punch Juice - 59 fl oz,,fruit punch,,Minute,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/minute-maid-fruit-punch-juice-59-fl-oz/-/A-13345476#lnk=sametab,2024-08-25T17:21:27.900574-04:00,OK
+22-12-BEV,United States,Target,,,Martinelli's Gold Medal Sparkling Cider -25.4 fl oz Glass Bottles,sparkling,,,Martinelli's,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/martinelli-s-gold-medal-sparkling-cider-25-4-fl-oz-glass-bottles/-/A-14753150#lnk=sametab,2024-08-25T17:21:35.354711-04:00,OK
+22-13-BEV,United States,Target,,,Simply Orange Pulp Free Juice - 52 fl oz,,orange,,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-orange-pulp-free-juice-52-fl-oz/-/A-13183052#lnk=sametab,2024-08-25T17:21:42.758791-04:00,OK
+22-14-BEV,United States,Target,,,Martinelli's Sparkling Cider - 4pk/8.4 fl oz Mini Glass Bottles,sparkling,,,Martinelli's,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/martinelli-s-sparkling-cider-4pk-8-4-fl-oz-mini-glass-bottles/-/A-52635043#lnk=sametab,2024-08-25T17:21:50.015498-04:00,OK
+22-15-BEV,United States,Target,,,Simply Lemonade with Strawberry Juice - 52 fl oz,,"lemonade, strawberry",,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-lemonade-with-strawberry-juice-52-fl-oz/-/A-51624049#lnk=sametab,2024-08-25T17:21:57.811723-04:00,OK
+22-16-BEV,United States,Target,,,Simply Fruit Punch Juice Drink - 52 fl oz,,fruit punch,,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-fruit-punch-juice-drink-52-fl-oz/-/A-17094344#lnk=sametab,2024-08-25T17:22:04.902873-04:00,OK
+22-17-BEV,United States,Target,,,Ocean Spray White Cran-Peach Juice Drink - 64 fl oz Bottle,,peach,,Ocean,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,spray,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/ocean-spray-white-cran-peach-juice-drink-64-fl-oz-bottle/-/A-54343750#lnk=sametab,2024-08-25T17:22:12.019101-04:00,OK
+22-18-BEV,United States,Target,,,V8 Splash Berry Blend Juice - 64 fl oz Bottle,,berry,,V8,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/v8-splash-berry-blend-juice-64-fl-oz-bottle/-/A-13420444#lnk=sametab,2024-08-25T17:22:19.302263-04:00,OK
+22-19-BEV,United States,Target,,,Simply Lemonade - 52 fl oz,,lemonade,,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-lemonade-52-fl-oz/-/A-13183166#lnk=sametab,2024-08-25T17:22:26.268363-04:00,OK
+22-20-BEV,United States,Target,,,Simply Watermelon Juice Drink - 52 fl oz,,watermelon,,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-watermelon-juice-drink-52-fl-oz/-/A-54254413#lnk=sametab,2024-08-25T17:22:33.334932-04:00,OK
+22-21-BEV,United States,Target,,,Pink Lemonade - 64 fl oz Bottle - Market Pantry™,,pink lemonade,,Pink,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/pink-lemonade-64-fl-oz-bottle-market-pantry-8482/-/A-14589294#lnk=sametab,2024-08-25T17:22:40.367835-04:00,OK
+22-22-BEV,United States,Target,,,Simply Orange Pulp Free with Calcium & Vitamin D Juice - 52 fl oz,,orange,,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-orange-pulp-free-with-calcium-38-vitamin-d-juice-52-fl-oz/-/A-13183062#lnk=sametab,2024-08-25T17:22:47.479599-04:00,OK
+22-23-BEV,United States,Target,,,Simply Peach Juice Drink - 52 fl oz,,peach,,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-peach-juice-drink-52-fl-oz/-/A-51623781#lnk=sametab,2024-08-25T17:22:54.512226-04:00,OK
+22-24-BEV,United States,Target,,,Simply Lemonade - 89 fl oz,,lemonade,,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-lemonade-89-fl-oz/-/A-14729756#lnk=sametab,2024-08-25T17:23:01.387704-04:00,OK
+22-25-BEV,United States,Target,,,Simply Lemonade with Blueberry Juice - 52 fl oz,,"blueberry, lemonade",,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/simply-lemonade-with-blueberry-juice-52-fl-oz/-/A-14713529#lnk=sametab,2024-08-25T17:23:08.625420-04:00,OK
+22-26-BEV,United States,Target,,,Dole 100% Pineapple Juice - 6pk/6 fl oz Cans,,pineapple,,Dole,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/dole-100-pineapple-juice-6pk-6-fl-oz-cans/-/A-54360393#lnk=sametab,2024-08-25T17:23:15.691934-04:00,OK
+22-27-BEV,United States,Target,,,Dole Orange Peach Mango Juice - 59 fl oz,,"mango, orange, peach",,Dole,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/dole-orange-peach-mango-juice-59-fl-oz/-/A-13193704#lnk=sametab,2024-08-25T17:23:23.190109-04:00,OK
+22-28-BEV,United States,Target,,,Dole Pineapple Mango Juice - 6pk/6 fl oz Cans,,"mango, pineapple",,Dole,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/dole-pineapple-mango-juice-6pk-6-fl-oz-cans/-/A-89934308#lnk=sametab,2024-08-25T17:23:30.396590-04:00,OK
+22-29-BEV,United States,Target,,,WTRMLN WTR Hydration Cold Pressed Juiced Watermelon Water - 12 fl oz,cold pressed,watermelon,,WTRMLN,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/wtrmln-wtr-hydration-cold-pressed-juiced-watermelon-water-12-fl-oz/-/A-51486039#lnk=sametab,2024-08-25T17:23:37.661690-04:00,OK
+22-30-BEV,United States,Target,,,Tropicana Pure Premium No Pulp Orange Juice - 89 fl oz,premium,orange,,Tropicana,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,,,,,,,,,,,,,,,,https://www.target.com/p/tropicana-pure-premium-no-pulp-orange-juice-89-fl-oz/-/A-13193659#lnk=sametab,2024-08-25T17:23:45.100544-04:00,OK
+22-31-BEV,United States,Target,,,Ocean Spray Cran-Grape Juice - 64 fl oz Bottle,,grape,,Ocean,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,spray,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0grm          0%             
+Sodium          60mg          3%             
+Total Carbohydrate 28grm         10%            
+Total Sugars    26grm         0%             
+Added Sugars    22grm         44%            
+Protein         0grm          0%             
+Vitamin C       90mg          100%           
+",,,,,,,,,,,,,,,https://www.target.com/p/ocean-spray-cran-grape-juice-64-fl-oz-bottle/-/A-12935969#lnk=sametab,2024-08-25T17:24:12.253047-04:00,OK
+22-32-BEV,United States,Target,,,Capri Sun Lemonade Pack - 10pk/6 fl oz Pouches,,lemonade,,Capri,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,pack,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0g            0%             
+Sodium          30mg          1%             
+Total Carbohydrate 9g            3%             
+Sugars          8g                           
+Added Sugars    6g            12%            
+Protein         0g                           
+",,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-lemonade-pack-10pk-6-fl-oz-pouches/-/A-15066919#lnk=sametab,2024-08-25T17:24:19.315281-04:00,OK
+22-33-BEV,United States,Target,,,V8 Splash Tropical Blend Juice - 64 fl oz Bottle,,tropical,,V8,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0g            0%             
+Sodium          10mg          0%             
+Total Carbohydrate 10g           4%             
+Sugars          10g                          
+Added Sugars    9g            18%            
+Protein         0g                           
+Vitamin C       10mg          10%            
+Niacin          1.6mg         10%            
+Vitamin B6      0.2mg         10%            
+Vitamin B12     0.24mcg       10%            
+",,,,,,,,,,,,,,,https://www.target.com/p/v8-splash-tropical-blend-juice-64-fl-oz-bottle/-/A-13421232#lnk=sametab,2024-08-25T17:24:26.370423-04:00,OK
+22-34-BEV,United States,Target,,,Naked Mighty Mango Juice Smoothie - 64 fl oz,,mango,,Naked,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0.5grm        1%             
+Saturated Fat   0grm          0%             
+Trans Fat       0grm          0%             
+Cholesterol     0mg           0%             
+Sodium          10mg          0%             
+Total Carbohydrate 36grm         13%            
+Dietary Fiber   0grm          0%             
+Total Sugars    30grm         0%             
+Added Sugars    0grm          0%             
+Protein         1grm          0%             
+Vitamin D       0mcg          0%             
+                                             
+",,,,,,,,,,,,,,,https://www.target.com/p/naked-mighty-mango-juice-smoothie-64-fl-oz/-/A-13397601#lnk=sametab,2024-08-25T17:24:33.651112-04:00,OK
+22-35-BEV,United States,Target,,,Naked Strawberry Banana Juice Smoothie - 15.2 fl oz,,"banana, strawberry",,Naked,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0g            0%             
+Saturated Fat   0g            0%             
+Trans Fat       0g                           
+Cholesterol     0mg           0%             
+Sodium          5mg           0%             
+Total Carbohydrate 52g           19%            
+Dietary Fiber   5g            17%            
+Sugars          38g                          
+Added Sugars    0g            0%             
+Protein         2g                           
+Vitamin D       0mcg          0%             
+                                             
+",,,,,,,,,,,,,,,https://www.target.com/p/naked-strawberry-banana-juice-smoothie-15-2-fl-oz/-/A-13397595#lnk=sametab,2024-08-25T17:24:40.801812-04:00,OK
+22-36-BEV,United States,Target,,,Vive Organic Immunity Boost Original Ginger & Turmeric Wellness Shot - 2 fl oz,"organic, original","ginger, original, turmeric",,Vive,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0g            0%             
+Saturated Fat   0g            0%             
+Trans Fat       0g                           
+Cholesterol     0mg           0%             
+Sodium          0mg           0%             
+Total Carbohydrate 5g            2%             
+Dietary Fiber   0g            0%             
+Sugars          5g                           
+Added Sugars    0g            0%             
+Protein         0g                           
+Vitamin D       mcg           0%             
+                                             
+",,,,,,,,,,,,,,,https://www.target.com/p/vive-organic-immunity-boost-original-ginger-38-turmeric-wellness-shot-2-fl-oz/-/A-54554478#lnk=sametab,2024-08-25T17:24:48.174804-04:00,OK
+22-37-BEV,United States,Target,,,Honest Kids Organic Berry Lemonade Juice Drink - 8pk/6 fl oz Boxes,organic,"berry, lemonade",,Honest,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0g            0%             
+Sodium          15mg          1%             
+Total Carbohydrate 8g            3%             
+Sugars          7g                           
+Added Sugars    0g            0%             
+Protein         0g                           
+Vitamin C                     70%            
+",,,,,,,,,,,,,,,https://www.target.com/p/honest-kids-organic-berry-lemonade-juice-drink-8pk-6-fl-oz-boxes/-/A-79494331#lnk=sametab,2024-08-25T17:24:55.317757-04:00,OK
+22-38-BEV,United States,Target,,,Ocean Spray Cran-Apple Juice - 64 fl oz Bottle,,apple,,Ocean,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,spray,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0grm          0%             
+Sodium          45mg          2%             
+Total Carbohydrate 27grm         10%            
+Total Sugars    26grm         0%             
+Added Sugars    23grm         46%            
+Protein         0grm          0%             
+Vitamin C       90mg          100%           
+",,,,,,,,,,,,,,,https://www.target.com/p/ocean-spray-cran-apple-juice-64-fl-oz-bottle/-/A-12935574#lnk=sametab,2024-08-25T17:25:02.293862-04:00,OK
+22-39-BEV,United States,Target,,,Mott's 100% Original Apple Juice - 64 fl oz Bottle,original,"apple, original",,Mott's,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0g            0%             
+Sodium          30mg          1%             
+Total Carbohydrate 29g           10%            
+Sugars          28g                          
+Added Sugars    0g            0%             
+Protein         0g                           
+Iron            0.9mg         6%             
+Potassium       290mg         6%             
+Vitamin C       108mg         120%           
+",,,,,,,,,,,,,,,https://www.target.com/p/mott-s-100-original-apple-juice-64-fl-oz-bottle/-/A-13052005#lnk=sametab,2024-08-25T17:25:09.308620-04:00,OK
+22-40-BEV,United States,Target,,,Ocean Spray Cranberry Pineapple Juice Cocktail - 64 fl oz Bottle,,"cranberry, pineapple",,Ocean,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,spray,,,,,,"Nutrition Information
+=============================================
+Nutrient       amount         daily_value    
+---------------------------------------------
+Total Fat       0grm          0%             
+Sodium          10mg          0%             
+Total Carbohydrate 27grm         10%            
+Total Sugars    25grm         0%             
+Added Sugars    24grm         48%            
+Protein         0grm          0%             
+Vitamin C       90mg          100%           
+",,,,,,,,,,,,,,,https://www.target.com/p/ocean-spray-cranberry-pineapple-juice-cocktail-64-fl-oz-bottle/-/A-52278085#lnk=sametab,2024-08-25T17:25:16.459082-04:00,OK
+22-41-BEV,United States,Target,,,vitaminwater zero squeezed lemonade - 6pk/16.9 fl oz Bottles,,lemonade,,vitaminwater,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        3g                      1%                       
+Sugars                    0g                                               
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Calcium                   130mg                   10%                      
+Vitamin A                 mcg                     25%                      
+Vitamin C                 mg                      50%                      
+Vitamin E                 mg                      25%                      
+Niacin                    mg                      100%                     
+Vitamin B6                mg                      100%                     
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/vitaminwater-zero-squeezed-lemonade-6pk-16-9-fl-oz-bottles/-/A-14938267#lnk=sametab,2024-08-25T17:26:19.649150-04:00,OK
+22-42-BEV,United States,Target,,,Mott's for Tots Apple Juice - 64 fl oz Bottle,,apple,,Mott's,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                                               
+Sodium                    0mg                                              
+Total Carbohydrate        8g                                               
+Sugars                    15g                                              
+Protein                   0g                                               
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/mott-39-s-for-tots-apple-juice-64-fl-oz-bottle/-/A-13052281#lnk=sametab,2024-08-25T17:26:27.270096-04:00,OK
+22-43-BEV,United States,Target,,,Mott's 100% Original Apple Juice - 128 fl oz Bottle,original,"apple, original",,Mott's,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    30mg                    1%                       
+Total Carbohydrate        29g                     10%                      
+Sugars                    28g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Iron                      0.9mg                   6%                       
+Potassium                 290mg                   6%                       
+Vitamin C                 108mg                   120%                     
+",,,,,,,,,,,,,,,https://www.target.com/p/mott-39-s-100-original-apple-juice-128-fl-oz-bottle/-/A-13052004#lnk=sametab,2024-08-25T17:26:34.126826-04:00,OK
+22-44-BEV,United States,Target,,,Vive Organic Immunity Boost Original Ginger & Turmeric Shot - 4ct/2 fl oz,"organic, original","ginger, original, turmeric",,Vive,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Carbohydrate        6g                      2%                       
+Sugars                    4g                                               
+Added Sugars              0g                      0%                       
+Vitamin C                 100mg                   111%                     
+Organic Ginger (Root) Juice 11750mg                                          
+Organic Turmeric (Root) Juice 4500mg                                           
+Organic Acerola Cherry Extract (Fruit) 265mg                                            
+Organic Echinacea Purpurea (Whole Plant) Extract 50mg                                             
+Organic Ground Black Pepper 45mg                                             
+Bacillus Coagulans SNZ 1969 10mg                                             
+",,,,,,,,,,,,,,,https://www.target.com/p/vive-organic-immunity-boost-original-ginger-38-turmeric-shot-4ct-2-fl-oz/-/A-81968633#lnk=sametab,2024-08-25T17:26:41.082902-04:00,OK
+22-45-BEV,United States,Target,,,V8 Splash Mango Peach Juice - 64 fl oz Bottle,,"mango, peach",,V8,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        10g                     4%                       
+Sugars                    9g                                               
+Added Sugars              9g                      18%                      
+Protein                   0g                                               
+Vitamin C                 10mg                    10%                      
+Niacin                    1.6mg                   10%                      
+Vitamin B6                0.2mg                   10%                      
+Vitamin B12               0.24mcg                 10%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/v8-splash-mango-peach-juice-64-fl-oz-bottle/-/A-15041848#lnk=sametab,2024-08-25T17:26:48.066664-04:00,OK
+22-46-BEV,United States,Target,,,Capri Sun Fruit Punch Value Pack - 30pk/6 fl oz Pouches,,fruit punch,,Capri,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,pack,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        14g                     5%                       
+Sugars                    13g                                              
+Added Sugars              11g                     23%                      
+Protein                   0g                                               
+",,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-fruit-punch-value-pack-30pk-6-fl-oz-pouches/-/A-15066921#lnk=sametab,2024-08-25T17:26:54.901019-04:00,OK
+22-47-BEV,United States,Target,,,Simply Lemonade with Raspberry Juice - 52 fl oz,,"lemonade, raspberry",,Simply,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        27grm                   10%                      
+Total Sugars              25grm                   0%                       
+Added Sugars              25grm                   50%                      
+Protein                   0grm                    0%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/simply-lemonade-with-raspberry-juice-52-fl-oz/-/A-13182511#lnk=sametab,2024-08-25T17:27:01.838196-04:00,OK
+22-48-BEV,United States,Target,,,Martinelli's Apple Juice - 9pk/10 fl oz Bottles,,apple,,Martinelli's,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        43g                     16%                      
+Dietary Fiber             0g                      0%                       
+Sugars                    39g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/martinelli-39-s-apple-juice-9pk-10-fl-oz-bottles/-/A-79493829#lnk=sametab,2024-08-25T17:27:08.966557-04:00,OK
+22-49-BEV,United States,Target,,,SunnyD Orange Juice Drink - 18pk/6.75 fl oz Bottles,,orange,,SunnyD,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    160mg                   7%                       
+Total Carbohydrate        13grm                   5%                       
+Total Sugars              11grm                   0%                       
+Added Sugars              10grm                   20%                      
+Protein                   0grm                    0%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/sunnyd-orange-juice-drink-18pk-6-75-fl-oz-bottles/-/A-54564252#lnk=sametab,2024-08-25T17:27:16.076852-04:00,OK
+22-50-BEV,United States,Target,,,Organic Tart Cherry Juice From Concentrate - 32 fl oz - Good & Gather™,"from concentrate, organic",cherry,,Organic,Beverages,,,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        31g                     11%                      
+Dietary Fiber             0g                      0%                       
+Sugars                    26g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin D                 0mcg                    0%                       
+Calcium                   30mg                    2%                       
+Iron                      0.9mg                   4%                       
+Potassium                 300mg                   6%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/organic-tart-cherry-juice-from-concentrate-32-fl-oz-good-38-gather-8482/-/A-87097106#lnk=sametab,2024-08-25T17:27:23.163387-04:00,OK
+22-51-BEV,United States,Target,,,ReaLemon 100% Lemon Juice - 15 fl oz Bottle,,lemon,,ReaLemon,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        0g                      0%                       
+Protein                   0g                                               
+",,,,,,,,,,,,,,,https://www.target.com/p/realemon-100-lemon-juice-15-fl-oz-bottle/-/A-14751839#lnk=sametab,2024-08-25T17:35:02.337692-04:00,OK
+22-52-BEV,United States,Target,,,Simply Orange Pulp Free Juice - 89 fl oz,,orange,,Simply,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        26g                     9%                       
+Sugars                    23g                                              
+Added Sugars              0g                      0%                       
+Protein                   2g                                               
+Vitamin C                                         90%                      
+Calcium                   20mg                    2%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/simply-orange-pulp-free-juice-89-fl-oz/-/A-13183054#lnk=sametab,2024-08-25T17:35:19.768218-04:00,OK
+22-53-BEV,United States,Target,,,Organic Pineapple and Mango Juice From Concentrate - 32 fl oz - Good & Gather™,"from concentrate, organic","mango, pineapple",,Organic,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        29g                     11%                      
+Dietary Fiber             1g                      2%                       
+Sugars                    25g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin D                 0mcg                    0%                       
+Calcium                   20mg                    2%                       
+Iron                      0mg                     0%                       
+Potassium                 280mg                   6%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/organic-pineapple-and-mango-juice-from-concentrate-32-fl-oz-good-38-gather-8482/-/A-87113179#lnk=sametab,2024-08-25T17:35:37.466602-04:00,OK
+22-54-BEV,United States,Target,,,Honest Kids Super Fruit Punch Organic Juice Drinks - 8pk/6.75 fl oz Pouches,organic,fruit punch,,Honest,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        9g                      3%                       
+Sugars                    9g                                               
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin C                 mg                      70%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/honest-kids-super-fruit-punch-organic-juice-drinks-8pk-6-75-fl-oz-pouches/-/A-13176604#lnk=sametab,2024-08-25T17:35:54.735339-04:00,OK
+22-55-BEV,United States,Target,,,Naked Green Machine Boosted Juice Smoothie - 64 fl oz,,,,Naked,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Added Sugars              0g                      0%                       
+Calcium                   20mg                    0%                       
+Cholesterol               0mg                     0%                       
+Dietary Fiber             0g                      0%                       
+Iron                      0.7mg                   4%                       
+Magnesium                 24mg                    5%                       
+Potassium                 400mg                   10%                      
+Protein                   2g                                               
+Riboflavin (Vitamin B2)   0.2mg                   15%                      
+Saturated Fat             0g                      0%                       
+Sodium                    15mg                    1%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/naked-green-machine-boosted-juice-smoothie-64-fl-oz/-/A-13397600#lnk=sametab,2024-08-25T17:36:11.756694-04:00,OK
+22-56-BEV,United States,Target,,,Capri Sun Roaring Waters Fruit Punch Pack - 10pk/6 fl oz Pouches,,fruit punch,,Capri,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,pack,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    30mg                    1%                       
+Total Carbohydrate        2grm                    1%                       
+Total Sugars              2grm                    0%                       
+Added Sugars              2grm                    4%                       
+Protein                   0grm                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-roaring-waters-fruit-punch-pack-10pk-6-fl-oz-pouches/-/A-16746783#lnk=sametab,2024-08-25T17:36:29.124397-04:00,OK
+22-57-BEV,United States,Target,,,Dole Lite Pineapple Juice - 6pk/6 fl oz Cans,lite,pineapple,,Dole,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    50mg                    2%                       
+Total Carbohydrate        10g                     4%                       
+Dietary Fiber             0g                      0%                       
+Sugars                    9g                                               
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/dole-lite-pineapple-juice-6pk-6-fl-oz-cans/-/A-89934269#lnk=sametab,2024-08-25T17:36:46.456687-04:00,OK
+22-58-BEV,United States,Target,,,Naked Power-C Machine Juice Smoothie - 15.2 fl oz,,,,Naked,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Saturated Fat             0grm                    0%                       
+Trans Fat                 0grm                    0%                       
+Cholesterol               0mg                     0%                       
+Sodium                    25mg                    1%                       
+Total Carbohydrate        55grm                   20%                      
+Dietary Fiber             0grm                    0%                       
+Total Sugars              44grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   2grm                    0%                       
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/naked-power-c-machine-juice-smoothie-15-2-fl-oz/-/A-13397710#lnk=sametab,2024-08-25T17:37:04.260340-04:00,OK
+22-59-BEV,United States,Target,,,Capri Sun Roarin' Waters Tropical Fruit Juice Drinks - 10pk/6 fl oz Pouches,,tropical,,Capri,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        2g                      1%                       
+Sugars                    2g                                               
+Added Sugars              2g                      4%                       
+Protein                   0g                                               
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-roarin-waters-tropical-fruit-juice-drinks-10pk-6-fl-oz-pouches/-/A-12954121#lnk=sametab,2024-08-25T17:37:21.556769-04:00,OK
+22-60-BEV,United States,Target,,,Juicy Juice Fun Size Apple 100% Juice - 8pk/4.23 fl oz Boxes,,apple,,Juicy,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        15grm                   5%                       
+Total Sugars              14grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   0grm                    0%                       
+Potassium                 150mg                   4%                       
+Vitamin C                 54mg                    60%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/juicy-juice-fun-size-apple-100-juice-8pk-4-23-fl-oz-boxes/-/A-13315107#lnk=sametab,2024-08-25T17:37:39.124580-04:00,OK
+22-61-BEV,United States,Target,,,Tropicana Pure Premium No Pulp Calcium + Vitamin D Orange Juice - 89 fl oz,premium,orange,,Tropicana,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        26grm                   9%                       
+Total Sugars              22grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   2grm                    0%                       
+Vitamin D                 2.5mcg                  10%                      
+Calcium                   350mg                   25%                      
+Potassium                 450mg                   10%                      
+Vitamin C                 78mg                    90%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/tropicana-pure-premium-no-pulp-calcium-vitamin-d-orange-juice-89-fl-oz/-/A-13193658#lnk=sametab,2024-08-25T17:40:13.366903-04:00,OK
+22-62-BEV,United States,Target,,,Naked Pina Colada Blended Juice Smoothie - 15.2 fl oz,,pina colada,,Naked,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 2.5grm                  3%                       
+Saturated Fat             1.5grm                  9%                       
+Trans-Fat                 0grm                    0%                       
+Cholesterol               0mg                     0%                       
+Sodium                    5mg                     0%                       
+Total Carbohydrate        65grm                   24%                      
+Dietary Fiber             6grm                    20%                      
+Total Sugars              50grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   2grm                    0%                       
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/naked-pina-colada-blended-juice-smoothie-15-2-fl-oz/-/A-54244184#lnk=sametab,2024-08-25T17:40:20.340352-04:00,OK
+22-63-BEV,United States,Target,,,wildwonder Strawberry Passion Organic Prebiotic + Probiotic Sparkling Drink - 12 fl oz,"organic, prebiotic, probiotic, sparkling",strawberry,,wildwonder,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                                               
+Sodium                    0mg                     0%                       
+Total Carbohydrate        12g                     4%                       
+Dietary Fiber             5g                      20%                      
+Sugars                    6g                                               
+Added Sugars              5g                      10%                      
+Protein                   0g                                               
+",,,,,,,,,,,,,,,https://www.target.com/p/wildwonder-strawberry-passion-organic-prebiotic-probiotic-sparkling-drink-12-fl-oz/-/A-88008935#lnk=sametab,2024-08-25T17:40:27.636601-04:00,OK
+22-64-BEV,United States,Target,,,Ocean Spray Cranberry Grape - 101 fl oz Bottle,,"cranberry, grape",,Ocean,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,spray,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    60mg                    3%                       
+Total Carbohydrate        28g                     10%                      
+Sugars                    26g                                              
+Added Sugars              22g                     44%                      
+Protein                   0g                                               
+Vitamin C                 90mg                    100%                     
+",,,,,,,,,,,,,,,https://www.target.com/p/ocean-spray-cranberry-grape-101-fl-oz-bottle/-/A-17090076#lnk=sametab,2024-08-25T17:40:34.917056-04:00,OK
+22-65-BEV,United States,Target,,,Welch's Sparkling White Grape Juice - 25.4 fl oz Glass Bottles,sparkling,white grape,,Welch's,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    0%                       
+Total Carbohydrate        28g                     10%                      
+Sugars                    28g                                              
+Added Sugars              13g                     26%                      
+Protein                   0g                                               
+",,,,,,,,,,,,,,,https://www.target.com/p/welch-s-sparkling-white-grape-juice-25-4-fl-oz-glass-bottles/-/A-13352552#lnk=sametab,2024-08-25T17:40:41.853958-04:00,OK
+22-66-BEV,United States,Target,,,Sunsweet Prune Juice - 64 fl oz Bottle,,,,Sunsweet,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    30mg                    1%                       
+Total Carbohydrate        44g                     16%                      
+Dietary Fiber             4g                      16%                      
+Sugars                    24g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/sunsweet-prune-juice-64-fl-oz-bottle/-/A-14751852#lnk=sametab,2024-08-25T17:40:50.066288-04:00,OK
+22-67-BEV,United States,Target,,,Naked Blue Machine Boosted Juice Smoothie - 64 fl oz,,,,Naked,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        33g                     12%                      
+Dietary Fiber             4g                      15%                      
+Sugars                    27g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/naked-blue-machine-boosted-juice-smoothie-64-fl-oz/-/A-13397602#lnk=sametab,2024-08-25T17:40:57.281484-04:00,OK
+22-68-BEV,United States,Target,,,Vita Coco Original Coconut Water Cartons - 4pk/16.9 fl oz,original,"coconut, original",,Vita,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,cartons,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    35mg                    2%                       
+Total Carbohydrate        11g                     4%                       
+Dietary Fiber             0g                      0%                       
+Sugars                    10g                                              
+Added Sugars              1g                      2%                       
+Protein                   0g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/vita-coco-original-coconut-water-cartons-4pk-16-9-fl-oz/-/A-53186912#lnk=sametab,2024-08-25T17:41:04.615681-04:00,OK
+22-69-BEV,United States,Target,,,Naked Juice Smoothie Strawberry Banana - 64 fl oz,,"banana, strawberry",,Naked,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        27g                     10%                      
+Dietary Fiber             2g                      9%                       
+Sugars                    20g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/naked-juice-smoothie-strawberry-banana-64-fl-oz/-/A-52029767#lnk=sametab,2024-08-25T17:41:11.950270-04:00,OK
+22-70-BEV,United States,Target,,,Capri Sun Strawberry Kiwi Pack - 10pk/6 fl oz Pouches,,"kiwi, strawberry",,Capri,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,pack,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        7g                      3%                       
+Sugars                    7g                                               
+Added Sugars              5g                      10%                      
+Protein                   0g                                               
+",,,,,,,,,,,,,,,https://www.target.com/p/capri-sun-strawberry-kiwi-pack-10pk-6-fl-oz-pouches/-/A-15066920#lnk=sametab,2024-08-25T17:41:19.229011-04:00,OK
+22-71-BEV,United States,Target,,,Dole Pineapple Orange Banana Juice - 59 fl oz,,"banana, orange, pineapple",,Dole,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        30grm                   10%                      
+Total Sugars              26grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   1grm                    0%                       
+Vitamin D                 0mcg                    0%                       
+Calcium                   20mg                    0%                       
+Potassium                 310mg                   6%                       
+Vitamin C                 60mg                    70%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/dole-pineapple-orange-banana-juice-59-fl-oz/-/A-13193705#lnk=sametab,2024-08-25T17:41:26.368651-04:00,OK
+22-72-BEV,United States,Target,,,Honest Kids Appley Ever After Organic Juice Drinks - 8pk/6.75 fl oz Pouches,organic,,,Honest,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        10g                     4%                       
+Sugars                    9g                                               
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin C                 mg                      70%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/honest-kids-appley-ever-after-organic-juice-drinks-8pk-6-75-fl-oz-pouches/-/A-13783652#lnk=sametab,2024-08-25T17:41:33.957924-04:00,OK
+22-73-BEV,United States,Target,,,Pulp Free 100% Orange Juice From Concentrate w/ Calcium & Vitamin D - 64 fl oz - Good & Gather™,from concentrate,orange,,Pulp,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        27g                     10%                      
+Dietary Fiber             0g                      0%                       
+Sugars                    23g                                              
+Added Sugars              0g                      0%                       
+Protein                   2g                                               
+Potassium                 450mg                   10%                      
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/pulp-free-100-orange-juice-from-concentrate-w-calcium-38-vitamin-d-64-fl-oz-good-38-gather-8482/-/A-78098798#lnk=sametab,2024-08-25T17:41:41.134846-04:00,OK
+22-74-BEV,United States,Target,,,POM Wonderful 100% Pomegranate Juice - 48 fl oz,,pomegranate,,POM,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Saturated Fat             0grm                    0%                       
+Trans Fat                 0grm                    0%                       
+Cholesterol               0mg                     0%                       
+Sodium                    5mg                     0%                       
+Total Carbohydrate        39grm                   14%                      
+Dietary Fiber             0grm                    0%                       
+Total Sugars              34grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   0grm                    0%                       
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/pom-wonderful-100-pomegranate-juice-48-fl-oz/-/A-13373098#lnk=sametab,2024-08-25T17:41:48.032798-04:00,OK
+22-75-BEV,United States,Target,,,Martinelli's Apple Juice - 1 Liter Bottle,,apple,,Martinelli's,Beverages,Beverages,Juice & Cider,,1L,1.0,L,,,,,,,,,,,,,,,,,,,liter,1.0,1L,L,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        35g                     13%                      
+Dietary Fiber             0g                      0%                       
+Sugars                    31g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin D                                         0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/martinelli-39-s-apple-juice-1-liter-bottle/-/A-86912031#lnk=sametab,2024-08-25T17:41:55.418673-04:00,OK
+22-76-BEV,United States,Target,,,Honest Kids Organic Strawberry Peach Keen Juice Drink - 8pk/6 fl oz Boxes,organic,"peach, strawberry",,Honest,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        8g                      3%                       
+Sugars                    7g                                               
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin C                                         70%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/honest-kids-organic-strawberry-peach-keen-juice-drink-8pk-6-fl-oz-boxes/-/A-79494332#lnk=sametab,2024-08-25T17:42:02.527556-04:00,OK
+22-77-BEV,United States,Target,,,Juicy Juice Fun Size Fruit Punch 100% Juice - 8pk/4.23 fl oz Boxes,,fruit punch,,Juicy,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        15grm                   5%                       
+Total Sugars              14grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   0grm                    0%                       
+Potassium                 150mg                   4%                       
+Vitamin C                 54mg                    60%                      
+",,,,,,,,,,,,,,,https://www.target.com/p/juicy-juice-fun-size-fruit-punch-100-juice-8pk-4-23-fl-oz-boxes/-/A-13386432#lnk=sametab,2024-08-25T17:42:09.805829-04:00,OK
+22-78-BEV,United States,Target,,,Simply Apple Juice - 52 fl oz,,apple,,Simply,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    5mg                     0%                       
+Total Carbohydrate        27g                     10%                      
+Sugars                    25g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Potassium                 240mg                   6%                       
+Magnesium                 10mg                    2%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/simply-apple-juice-52-fl-oz/-/A-13183167#lnk=sametab,2024-08-25T17:42:17.649161-04:00,OK
+22-79-BEV,United States,Target,,,Welch's Sparkling Red Grape Juice - 25.4 fl oz Glass Bottles,sparkling,grape,,Welch's,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        28g                     10%                      
+Sugars                    27g                                              
+Added Sugars              13g                     26%                      
+Protein                   0g                                               
+Potassium                 160mg                   4%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/welch-s-sparkling-red-grape-juice-25-4-fl-oz-glass-bottles/-/A-13352500#lnk=sametab,2024-08-25T17:42:24.507889-04:00,OK
+22-80-BEV,United States,Target,,,Martinelli's Apple Juice - 4pk/10 fl oz Bottles,,apple,,Martinelli's,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Saturated Fat             0grm                    0%                       
+Cholesterol               0mg                     0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        43grm                   14%                      
+Total Sugars              39grm                   0%                       
+Protein                   1grm                    0%                       
+Trans Fat                 0grm                    0%                       
+Potassium                 150mg                   4%                       
+Calories From Fat         0kcal                   0%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/martinelli-s-apple-juice-4pk-10-fl-oz-bottles/-/A-53424047#lnk=sametab,2024-08-25T17:42:33.463114-04:00,OK
+22-81-BEV,United States,Target,,,Harmless Harvest Organic Coconut Water - 32 fl oz,organic,coconut,,Harmless,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    40mg                    2%                       
+Total Carbohydrate        15grm                   5%                       
+Total Sugars              14grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   0grm                    0%                       
+Calcium                   46mg                    4%                       
+Potassium                 541mg                   10%                      
+Phosphorus                162mg                   15%                      
+Magnesium                 19mg                    4%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/harmless-harvest-organic-coconut-water-32-fl-oz/-/A-52556612#lnk=sametab,2024-08-25T17:42:40.872982-04:00,OK
+22-82-BEV,United States,Target,,,Ocean Spray 100% Juice Blend Cranberry - 101.4 floz Bottle,,cranberry,,Ocean,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,spray,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Vitamin C                 90mg                    100%                     
+Total Fat                 0g                      0%                       
+Sugars                    23g                                              
+Sodium                    25mg                    1.1%                     
+Protein                   0g                                               
+Potassium                 225mg                   4%                       
+Total Carbohydrate        29g                     11%                      
+Added Sugars              0g                      0%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/ocean-spray-100-juice-blend-cranberry-101-4-floz-bottle/-/A-13458545#lnk=sametab,2024-08-25T17:42:47.978702-04:00,OK
+22-83-BEV,United States,Target,,,SunnyD Tangy Orange Sport Cap - 15pk/11.3 fl oz Bottles,,orange,,SunnyD,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,sport cap,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    260mg                   11%                      
+Total Carbohydrate        22grm                   8%                       
+Total Sugars              19grm                   0%                       
+Added Sugars              17grm                   34%                      
+Protein                   0grm                    0%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/sunnyd-tangy-orange-sport-cap-15pk-11-3-fl-oz-bottles/-/A-84261877#lnk=sametab,2024-08-25T17:42:55.137336-04:00,OK
+22-84-BEV,United States,Target,,,KeVita Mango Sparkling Prebiotic Lemonade - 12 fl oz,"prebiotic, sparkling","lemonade, mango",,KeVita,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    25mg                    1%                       
+Total Carbohydrate        15g                     5%                       
+Dietary Fiber             3g                      12%                      
+Sugars                    9g                                               
+Added Sugars              4g                      8%                       
+Protein                   0g                                               
+Calcium                   40mg                    2%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/kevita-mango-sparkling-prebiotic-lemonade-12-fl-oz/-/A-89791493#lnk=sametab,2024-08-25T17:43:02.284817-04:00,OK
+22-85-BEV,United States,Target,,,wildwonder Mango Gold Organic Prebiotic + Probiotic Sparkling Drink - 12 fl oz Can,"organic, prebiotic, probiotic, sparkling",mango,,wildwonder,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    0mg                     0%                       
+Total Carbohydrate        12g                     4%                       
+Dietary Fiber             5g                      20%                      
+Sugars                    6g                                               
+Added Sugars              5g                      10%                      
+Protein                   0g                                               
+",,,,,,,,,,,,,,,https://www.target.com/p/wildwonder-mango-gold-organic-prebiotic-probiotic-sparkling-drink-12-fl-oz-can/-/A-84697187#lnk=sametab,2024-08-25T17:43:09.696258-04:00,OK
+22-86-BEV,United States,Target,,,Organic Apple Juice From Concentrate - 32 fl oz - Good & Gather™,"from concentrate, organic",apple,,Organic,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        28g                     10%                      
+Dietary Fiber             0g                      0%                       
+Sugars                    24g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin D                 0mcg                    0%                       
+Calcium                   20mg                    2%                       
+Iron                      0.3mg                   2%                       
+Potassium                 240mg                   6%                       
+",,,,,,,,,,,,,,,https://www.target.com/p/organic-apple-juice-from-concentrate-32-fl-oz-good-38-gather-8482/-/A-87113178#lnk=sametab,2024-08-25T17:43:17.270259-04:00,OK
+22-87-BEV,United States,Target,,,Vita Coco Original Coconut Water - 1 L Carton,original,"coconut, original",,Vita,Beverages,Beverages,Juice & Cider,,1L,1.0,L,,,,,,,,,,,,,,,,,,,carton,1.0,1L,L,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        11g                     4%                       
+Dietary Fiber             0g                      0%                       
+Sugars                    10g                                              
+Added Sugars              1g                      2%                       
+Protein                   0g                                               
+Vitamin C                 14mg                    15%                      
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/vita-coco-original-coconut-water-1-l-carton/-/A-15024425#lnk=sametab,2024-08-25T17:43:24.755473-04:00,OK
+22-88-BEV,United States,Target,,,Welch's 100% Grape Juice - 64 fl oz Bottle,,grape,,Welch's,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Added Sugars              0g                      0%                       
+Calcium                                           2%                       
+Calories From Fat         0calories                                        
+Cholesterol               0mg                     0%                       
+Dietary Fiber             0g                      0%                       
+Iron                                              0%                       
+Potassium                 2mg                     0%                       
+Protein                   0.5g                                             
+Saturated Fat             0g                      0%                       
+Sodium                    10mg                    0%                       
+Sugars                    35g                                              
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/welch-s-100-grape-juice-64-fl-oz-bottle/-/A-13352159#lnk=sametab,2024-08-25T17:43:32.165932-04:00,OK
+22-89-BEV,United States,Target,,,V8 Original Low Sodium 100% Vegetable Juice - 64 fl oz Bottle,"low sodium, original","original, vegetable",,V8,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    140mg                   6%                       
+Total Carbohydrate        9g                      3%                       
+Dietary Fiber             1g                      4%                       
+Sugars                    7g                                               
+Added Sugars              0g                      0%                       
+Protein                   2g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/v8-original-low-sodium-100-vegetable-juice-64-fl-oz-bottle/-/A-50304012#lnk=sametab,2024-08-25T17:43:39.273857-04:00,OK
+22-90-BEV,United States,Target,,,V8 Original Low Sodium 100% Vegetable Juice - 8pk/5.5 fl oz Cans,"low sodium, original","original, vegetable",,V8,Beverages,Beverages,Juice & Cider,,,,,,,,,,,,,,,,,,,,,,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Saturated Fat             0grm                    0%                       
+Trans Fat                 0grm                    0%                       
+Cholesterol               0mg                     0%                       
+Sodium                    95mg                    4%                       
+Total Carbohydrate        6grm                    2%                       
+Dietary Fiber             1grm                    4%                       
+Total Sugars              5grm                    0%                       
+Added Sugars              0grm                    0%                       
+Protein                   1grm                    0%                       
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,,,,,,,,,,,,,,https://www.target.com/p/v8-original-low-sodium-100-vegetable-juice-8pk-5-5-fl-oz-cans/-/A-79555917#lnk=sametab,2024-08-25T17:43:46.709224-04:00,OK
+22-91-BEV,United States,Target,,,KeVita Strawberry Sparkling Prebiotic Lemonade - 12 fl oz,"prebiotic, sparkling","lemonade, strawberry",,KeVita,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    25mg                    1%                       
+Total Carbohydrate        14g                     5%                       
+Dietary Fiber             3g                      12%                      
+Sugars                    9g                                               
+Added Sugars              4g                      8%                       
+Protein                   0g                                               
+Calcium                   40mg                    2%                       
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/kevita-strawberry-sparkling-prebiotic-lemonade-12-fl-oz/-/A-89791664#lnk=sametab,2024-08-25T17:46:09.574321-04:00,OK
+22-92-BEV,United States,Target,,,Ocean Spray Cranberry Mango - 64 fl oz Bottle,,"cranberry, mango",,Ocean,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,spray,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        27g                     10%                      
+Sugars                    26g                                              
+Added Sugars              24g                     48%                      
+Protein                   0g                                               
+Vitamin C                 90mg                    100%                     
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/ocean-spray-cranberry-mango-64-fl-oz-bottle/-/A-50268628#lnk=sametab,2024-08-25T17:46:16.705142-04:00,OK
+22-93-BEV,United States,Target,,,GT's Synergy Trilogy Organic Kombucha - 48 fl oz,organic,,,GT's,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                                               
+Sodium                    10mg                    0%                       
+Total Carbohydrate        12g                     4%                       
+Sugars                    12g                                              
+Added Sugars              3g                      6%                       
+Protein                   0g                                               
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/gt-39-s-synergy-trilogy-organic-kombucha-48-fl-oz/-/A-52568061#lnk=sametab,2024-08-25T17:46:23.595426-04:00,OK
+22-94-BEV,United States,Target,,,Bolthouse Farms Green Goodness - 52 fl oz,,,,Bolthouse,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        30g                     11%                      
+Dietary Fiber             1g                      4%                       
+Sugars                    25g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin C                 11mg                    10%                      
+                                                                           
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/bolthouse-farms-green-goodness-52-fl-oz/-/A-13563416#lnk=sametab,2024-08-25T17:46:30.726676-04:00,OK
+22-95-BEV,United States,Target,,,Organic Cranberry Pomegranate Juice From Concentrate - 32 fl oz - Good & Gather™,"from concentrate, organic","cranberry, pomegranate",,Organic,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    20mg                    1%                       
+Total Carbohydrate        27g                     10%                      
+Dietary Fiber             0g                      0%                       
+Sugars                    22g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin D                 0mcg                    0%                       
+Calcium                   20mg                    2%                       
+Iron                      0.3mg                   2%                       
+Potassium                 240mg                   6%                       
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/organic-cranberry-pomegranate-juice-from-concentrate-32-fl-oz-good-38-gather-8482/-/A-87113182#lnk=sametab,2024-08-25T17:46:38.275982-04:00,OK
+22-96-BEV,United States,Target,,,Ocean Spray Cranberry 100% Mixed Juice - 6pk/10 fl oz Bottles,,cranberry,,Ocean,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,spray,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    30mg                    1%                       
+Total Carbohydrate        36g                     13%                      
+Sugars                    29g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin C                 90mg                    100%                     
+Potassium                 280mg                   6%                       
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/ocean-spray-cranberry-100-mixed-juice-6pk-10-fl-oz-bottles/-/A-17090092#lnk=sametab,2024-08-25T17:46:45.680737-04:00,OK
+22-97-BEV,United States,Target,,,V8 Blends 100% Juice Pomegranate Blueberry Juice - 46 fl oz Bottle,,"blueberry, pomegranate",,V8,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    95mg                    4%                       
+Total Carbohydrate        22g                     8%                       
+Dietary Fiber             0g                      0%                       
+Sugars                    19g                                              
+Added Sugars              0g                      0%                       
+Protein                   1g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/v8-blends-100-juice-pomegranate-blueberry-juice-46-fl-oz-bottle/-/A-13420449#lnk=sametab,2024-08-25T17:46:52.805611-04:00,OK
+22-98-BEV,United States,Target,,,Juicy Juice Slim Apple 100% Juice - 8pk/6.75 fl oz Boxes,slim,apple,,Juicy,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        24g                     9%                       
+Sugars                    23g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Potassium                 230mg                   4%                       
+Vitamin C                 90mg                    100%                     
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/juicy-juice-slim-apple-100-juice-8pk-6-75-fl-oz-boxes/-/A-13314774#lnk=sametab,2024-08-25T17:46:59.988679-04:00,OK
+22-99-BEV,United States,Target,,,Juicy Juice Fun Size Berry 100% Juice - 8pk/4.23 fl oz Boxes,,berry,,Juicy,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        15g                     5%                       
+Sugars                    14g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Potassium                 150mg                   4%                       
+Vitamin C                 54mg                    60%                      
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/juicy-juice-fun-size-berry-100-juice-8pk-4-23-fl-oz-boxes/-/A-88034330#lnk=sametab,2024-08-25T17:47:07.793464-04:00,OK
+22-100-BEV,United States,Target,,,Harmless Harvest Organic Coconut Water - 4ct/12 fl oz,organic,coconut,,Harmless,Beverages,Beverages,Juice & Cider,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,fl oz,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    55mg                    2%                       
+Total Carbohydrate        23grm                   8%                       
+Total Sugars              20grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   0grm                    0%                       
+Calcium                   69                      6%                       
+Potassium                 812mg                   15%                      
+Phosphorous               243mg                   20%                      
+Magnesium                 29mg                    6%                       
+",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,N/A,https://www.target.com/p/harmless-harvest-organic-coconut-water-4ct-12-fl-oz/-/A-79495128#lnk=sametab,2024-08-25T17:47:15.201491-04:00,OK
