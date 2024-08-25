@@ -25,7 +25,7 @@ def main():
 
         driver.get(url)
 
-        target.setup_target(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
+        #target.setup_target(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
         target.scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Beverages', ind=ind)
 
         driver.quit()

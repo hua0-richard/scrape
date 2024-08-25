@@ -28,10 +28,23 @@ import re
 
 FAVNUM = 22222
 GEN_TIMEOUT = 3
-STORE_NAME = 'walmart_canada'
+STORE_NAME = 'target'
 LOCATION = ''
 MAX_RETRY = 10
 
+def nutrition_info_to_string(nutrition_dict):
+    result = []
+    for key, value in nutrition_dict.items():
+        if isinstance(value, dict):
+            result.append(f"{key}:")
+            result.append(f"  Value: {value['value']}")
+            result.append(f"  Daily Value: {value['daily_value']}")
+        elif key == 'Ingredients':
+            result.append(f"{key}:")
+            result.append(f"  {value}")
+        else:
+            result.append(f"{key}: {value}")
+    return "\n".join(result)
 
 def remove_empty_lines(text):
     return '\n'.join(line for line in text.splitlines() if line.strip())
@@ -190,6 +203,14 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                 driver.get(s)
                 print('start')
                 while True:
+
+
+                    # REMOVE LATER
+                    if (len(items) > 100):
+                        break
+                    # REMOVE LATER
+
+
                     time.sleep(GEN_TIMEOUT * 4)
                     # Wait for the product cards to be present
                     products = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -210,6 +231,10 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                     try:
                         outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
                         next_button = outer_container.find_element(By.CSS_SELECTOR, 'button[data-test="next"]')
+                        is_disabled = next_button.get_attribute("disabled") is not None
+                        if is_disabled:
+                            print('No Next')
+                            break
                         next_button.click()
                         print('Next Button Found')
                     except Exception as e:
@@ -221,7 +246,6 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
             print('Failed to get Subaisles')
             print(e)
 
-        time.sleep(FAVNUM)
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
@@ -356,8 +380,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     for p_name in range(2):
         try:
             ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR,
-                                                'h1#main-title[data-pcss-show="true"][itemprop="name"][elementtiming="ip-main-title"]'))
+                EC.visibility_of_element_located((By.ID, "pdp-product-title-id"))
             ).text
             break
         except Exception as e:
@@ -368,44 +391,41 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             return None
 
     try:
-        ProductBrand = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'a.bg-transparent.bn.lh-solid.pa0.sans-serif.tc.underline.inline-button.mid-gray.pointer.f6'))).text
+        ProductBrand = ProductName.split()[0]
     except:
         print('Failed to get Product Brand')
 
     try:
-        ol_element = driver.find_element(By.CSS_SELECTOR, 'ol.w_3Z__')
-        span_elements = ol_element.find_elements(By.CSS_SELECTOR, 'span[itemprop="name"]')
-        breadcrumb_text = [span.text for span in span_elements]
-        breadcrumb_text.pop(0)
-        breadcrumb_text.pop(0)
-        if len(breadcrumb_text) > 0:
-            ProductCategory = breadcrumb_text.pop(0)
-        if len(breadcrumb_text) > 0:
-            ProductSubCategory = breadcrumb_text.pop(0)
+        breadcrumbs_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-module-type='ProductDetailBreadcrumbs']"))
+        )
+        breadcrumb_links = breadcrumbs_container.find_elements(By.CSS_SELECTOR,
+                                                               "a[data-test='@web/Breadcrumbs/BreadcrumbLink']")
+        breadcrumb_texts = [link.text for link in breadcrumb_links]
+        breadcrumb_texts.pop(0)
+        breadcrumb_texts.pop(0)
+        if len(breadcrumb_texts > 0):
+            ProductCategory = breadcrumb_texts.pop(0)
+        if len(breadcrumb_texts > 0):
+            ProductSubCategory = breadcrumb_texts.pop(0)
     except:
         print('Failed to get Product Categories')
 
     try:
-        img_elements = driver.find_elements(By.CSS_SELECTOR, 'div[data-testid="vertical-carousel-container"] img')
-        image_sources = [img.get_attribute('src') for img in img_elements]
-        modified_sources = []
-        for src in image_sources:
-            # Replace Height=80 and Width=80 with Height=612 and Width=612
-            modified_src = re.sub(r'odnHeight=80', 'odnHeight=612', src)
-            modified_src = re.sub(r'odnWidth=80', 'odnWidth=612', modified_src)
-            modified_sources.append(modified_src)
-
-        for index in range(len(modified_sources)):
-            response = requests.get(modified_sources[index])
+        gallery_section = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.ID, "PdpImageGallerySection"))
+        )
+        img_elements = gallery_section.find_elements(By.TAG_NAME, "img")
+        image_urls = [img.get_attribute("src") for img in img_elements]
+        if len(image_urls) > 0:
+            response = requests.get(image_urls[0])
             if response.status_code == 200:
-                if not os.path.exists(f'output/images/{str(ind)}/{str(ID)}'):
-                    os.makedirs(f'output/images/{str(ind)}/{str(ID)}', exist_ok=True)
-                full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
+                if not os.path.exists(f'output/images/{str(ind)}/'):
+                    os.makedirs(f'output/images/{str(ind)}/', exist_ok=True)
+                full_path = 'output/images/' + str(ind) + '/' + str(ID) + '-' + str(index) + '.png'
                 with open(full_path, 'wb') as file:
                     file.write(response.content)
-
-        ProductImages = ','.join(modified_sources)
-
+            None
     except:
         print('Failed to get Product Images')
 
@@ -609,39 +629,50 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Net Content')
 
     try:
-        full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/'
-        entries = os.listdir(full_path)
-        print(entries)
-        for f in entries:
-            print(f)
-            image_path = full_path + f
-            img = Image.open(image_path)
-            text = pytesseract.image_to_string(img)
-            text = remove_empty_lines(text)
-            split_text = text.split('\n')
-            # check for Label
-            for s in split_text:
-                tmp_s = s.lower()
-                keyword = 'Nutrition Facts'
-                keyword = keyword.lower()
-                if keyword in tmp_s:
-                    Nutr_label = "Present"
-                    break
-            # check for Ingredients
-            for s in split_text:
-                tmp_s = s.lower()
-                keyword = 'Ingredients'
-                keyword = keyword.lower()
-                if keyword in tmp_s:
-                    Ingredients = f
-                    break
+        # time.sleep(GEN_TIMEOUT)
+        # label_info_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+        #     EC.element_to_be_clickable((By.XPATH, "//button[.//h3[contains(text(), 'Label info')]]"))
+        # )
+        # label_info_button.click()
+        # print('Clicked Label Info Button')
+        try:
+            time.sleep(GEN_TIMEOUT)
+            nutrition_tab = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, "div[data-test='productDetailTabs-nutritionFactsTab']"))
+            )
+            nutrition_dict = {}
+            nutrition_items = nutrition_tab.find_elements(By.CSS_SELECTOR, "div.jPYLql > div")
+            for item in nutrition_items:
+                try:
+                    name = item.find_element(By.TAG_NAME, "b").text
+                    value = item.text.split(name)[1].strip().split(' ', 1)[0]
+                    try:
+                        daily_value = item.find_element(By.CLASS_NAME, "h-float-right").text
+                    except:
+                        daily_value = 'Not specified'
+
+                    nutrition_dict[name] = {
+                        'value': value,
+                        'daily_value': daily_value
+                    }
+                except Exception as e:
+                    print(f"Error parsing item: {item.text}. Error: {e}")
+
+            print(nutrition_dict)
+            Nutr_label = nutrition_info_to_string(nutrition_dict)
+
+        except TimeoutException:
+            print("Timed out waiting for nutrition facts to be present")
+        except Exception as e:
+            print(f"An error occurred: {e}")
     except:
         print('Failed to get Ingredients and/or Nutrition Label')
 
     new_row = {
         'ID': ID,
-        'Country': 'Canada',
-        'Store': 'Walmart',
+        'Country': 'United States',
+        'Store': 'Target',
         'Region': Region,
         'City': City,
         'ProductName': ProductName,
