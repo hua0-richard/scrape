@@ -1,5 +1,6 @@
 import glob
 import os
+import shutil
 
 import requests
 from selenium.common import TimeoutException
@@ -281,16 +282,34 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                 index_for_here = f'{ind}-{cache_index}-{aisle.upper()[:3]}'
                 print(f'Found Cached Entry {cache_index}')
                 new_rows.append(row)
-                try:
-                    full_path = 'output/images/' + str(ind) + '/' + str(row['ID']) + '/' + str(
-                        index_for_here) + '-' + str(0) + '.png'
-                    if not os.path.isfile(full_path):
-                        response = requests.get(row['img_urls'])
-                        if response.status_code == 200:
-                            with open(full_path, 'wb') as file:
-                                file.write(response.content)
-                except:
-                    print('Images Error Cache')
+                # try:
+                #     full_path = 'output/images/' + str(ind) + '/' + str(row['ID']) + '/'
+                #     if not os.path.exists(full_path):
+                #         os.makedirs(full_path)
+                #
+                #     rowid = str(row['ID'])
+                #     item = '50' + rowid[2:]  # Assuming rowid is at least 3 characters long
+                #     item_path = os.path.join('output/images/50', item)
+                #     print(item_path)
+                #
+                #     # Create new item name by replacing first two characters
+                #     new_item = str(ind).zfill(2) + rowid[2:]
+                #
+                #     dest_path = os.path.join('output/images', str(ind), new_item)
+                #
+                #     try:
+                #         if os.path.isdir(item_path):
+                #             shutil.copytree(item_path, dest_path)
+                #             print(f"Successfully copied directory '{item}' to '{dest_path}'.")
+                #         else:
+                #             shutil.copy2(item_path, dest_path)
+                #             print(f"Successfully copied file '{item}' to '{dest_path}'.")
+                #     except Exception as e:
+                #         print(f"Error copying: {e}")
+                #         # Your commented-out code for downloading images goes here
+                #     print('Copied!')
+                # except:
+                #     print('Images Error Cache')
         if new_rows:
             new_rows_df = pd.DataFrame(new_rows)
             df_data = pd.concat([df_data, new_rows_df], ignore_index=True)
@@ -331,7 +350,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
                 print(f'Failed to scrape item. Attempt {v}. Trying Again... ')
                 print(e)
 
-        if (item_index % 10 == 0):
+        if item_index % 10 == 0:
             site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
 
     site_items_df.to_csv(f'output/tmp/index_{str(ind)}_{aisle}_{STORE_NAME}_data.csv', index=False)
