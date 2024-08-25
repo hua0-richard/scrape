@@ -658,7 +658,21 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                     'daily_value': value
                 }
         print(nutrition_dict)
+
+        for key, value in nutrition_dict.items():
+            if key == 'Total Carbohydrates':
+                TotalCarb_g_pp = value['amount']
+                TotalCarb_pct_pp = value['daily_value']
+
+            elif key == 'Sugars':
+                None
+            elif key == 'Added Suagrs':
+                None
+
+
         Nutr_label = format_nutrition_label(nutrition_dict)
+
+
     except:
         print('Failed to get Ingredients and/or Nutrition Label')
 
@@ -676,15 +690,47 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     try:
         containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.h-padding-l-default')))
         spans = containers_html.find_elements(By.TAG_NAME, "span")
+        Cals_org_pp = f'{spans[0].text.strip()} {spans[1].text.strip()}'
+        Cals_unit_pp = 'Calories'
+        Cals_value_pp = spans[1].text.strip()
         for s in spans:
             print(s.text)
+
     except:
         print('Calories Error')
 
     try:
-        None
+        h4_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located(
+            (By.XPATH, "//h4[contains(@class, 'sc-fe064f5c-0') and text()='Ingredients:']")))
+        parent_div = h4_element.find_element(By.XPATH, "..")
+        Ingredients = parent_div.find_element(By.TAG_NAME, "div").text.strip()
     except:
         print('Ingredients Error')
+
+    try:
+        time.sleep(GEN_TIMEOUT)
+        details_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable(
+            (By.XPATH, "//h3[contains(@class, 'sc-fe064f5c-0') and contains(@class, 'cJJgsH') and contains(@class, 'h-margin-b-none') and text()='Details']")
+        ))
+        details_element.click()
+        time.sleep(GEN_TIMEOUT)
+        description_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((
+            By.CSS_SELECTOR,
+            "div.h-margin-t-x2[data-test='item-details-description']"
+        )))
+        Description = description_element.text
+        print(Description)
+    except Exception as e:
+        print('Description Error')
+
+    try:
+        button_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((
+            By.XPATH,
+            "//button[contains(@class, 'styles_button__D8Xvn') and .//h3[contains(text(), 'Specifications')]]"
+        )))
+        button_element.click()
+    except:
+        print('More Details Error')
 
     new_row = {
         'ID': ID,
