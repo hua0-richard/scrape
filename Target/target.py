@@ -185,30 +185,37 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
         try:
             subaisles.pop(0)
             for s in subaisles:
+                items = list(dict.fromkeys(items))
                 print(f'Items so far... {len(items)}')
                 driver.get(s)
                 print('start')
-                time.sleep(GEN_TIMEOUT * 6)
-                # Wait for the product cards to be present
-                products = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                    EC.presence_of_all_elements_located(
-                        (By.CLASS_NAME, "rLjwS"))
-                )
-                for p in products:
-                    prod_html = p.get_attribute("outerHTML")
-                    soup = BeautifulSoup(prod_html, 'html.parser')
-                    a_tag = soup.find('a')
-                    if a_tag:
-                        href = a_tag['href']
-                        print(f"The href attribute is: https://www.target.com{href}")
-                        items.append(f"https://www.target.com{href}")
-                    else:
-                        print("The specific <a> tag was not found.")
-                try:
-                    next_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.eEvByy > button")))
-                    next_button.click()
-                except Exception as e:
-                    print(e)
+                while True:
+                    time.sleep(GEN_TIMEOUT * 4)
+                    # Wait for the product cards to be present
+                    products = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                        EC.presence_of_all_elements_located(
+                            (By.CLASS_NAME, "rLjwS"))
+                    )
+                    # Extract Links from Products
+                    for p in products:
+                        prod_html = p.get_attribute("outerHTML")
+                        soup = BeautifulSoup(prod_html, 'html.parser')
+                        a_tag = soup.find('a')
+                        if a_tag:
+                            href = a_tag['href']
+                            print(f"The href attribute is: https://www.target.com{href}")
+                            items.append(f"https://www.target.com{href}")
+                        else:
+                            print("The specific <a> tag was not found.")
+                    try:
+                        outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
+                        next_button = outer_container.find_element(By.CSS_SELECTOR, 'button[data-test="next"]')
+                        next_button.click()
+                        print('Next Button Found')
+                    except Exception as e:
+                        print('Next Button Not Found')
+                        print(e)
+                        break
 
         except Exception as e:
             print('Failed to get Subaisles')
