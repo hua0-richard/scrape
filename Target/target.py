@@ -101,18 +101,16 @@ def setLocation_target(driver, address, EXPLICIT_WAIT_TIME):
     except:
         print('Failed to get Zip Code Button')
 
-    # try:
-    #     zip_code_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-    #         EC.element_to_be_clickable((By.ID, "zip-code"))
-    #     )
-    #     zip_code_input.clear()
-    #     time.sleep(GEN_TIMEOUT)
-    #     for digit in '90000':
-    #         zip_code_input.send_keys(digit)
-    #         time.sleep(0.1)
-    #     time.sleep(GEN_TIMEOUT)
-    # except:
-    #     print('Failed to input Zip Code')
+    try:
+        zip_code_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.element_to_be_clickable((By.ID, "zip-code"))
+        )
+        zip_code_input.send_keys(Keys.BACKSPACE * 10)
+        time.sleep(GEN_TIMEOUT)
+        zip_code_input.send_keys('19131')
+        time.sleep(GEN_TIMEOUT)
+    except:
+        print('Failed to input Zip Code')
 
     try:
         update_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -132,7 +130,6 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i[1] is aisle
     items = []
     subaisles = []
-    subsubaisles = []
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
@@ -188,6 +185,7 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
         try:
             subaisles.pop(0)
             for s in subaisles:
+                print(f'Items so far... {len(items)}')
                 driver.get(s)
                 print('start')
                 time.sleep(GEN_TIMEOUT * 6)
