@@ -14,7 +14,6 @@ from bs4 import BeautifulSoup
 from PIL import Image
 import pytesseract
 
-
 # Special Package to scrap and aids in avoiding more stringent sites
 import undetected_chromedriver as uc
 
@@ -32,22 +31,38 @@ STORE_NAME = 'target'
 LOCATION = ''
 MAX_RETRY = 10
 
-def nutrition_info_to_string(nutrition_dict):
-    result = []
-    for key, value in nutrition_dict.items():
-        if isinstance(value, dict):
-            result.append(f"{key}:")
-            result.append(f"  Value: {value['value']}")
-            result.append(f"  Daily Value: {value['daily_value']}")
-        elif key == 'Ingredients':
-            result.append(f"{key}:")
-            result.append(f"  {value}")
-        else:
-            result.append(f"{key}: {value}")
-    return "\n".join(result)
+
+def format_nutrition_label(nutrition_data):
+    # Find all unique columns
+    columns = set()
+    for values in nutrition_data.values():
+        columns.update(values.keys())
+    columns = sorted(list(columns))
+
+    # Create the header
+    label = "Nutrition Information\n"
+    label += "=" * (25 + 25 * len(columns)) + "\n"
+    header = "Nutrient".ljust(25)
+    for col in columns:
+        header += col.ljust(25)
+    label += header + "\n"
+    label += "-" * (25 + 25 * len(columns)) + "\n"
+
+    # Add each nutrient row
+    for nutrient, values in nutrition_data.items():
+        row = nutrient.ljust(25)
+        if nutrient.startswith('–'):
+            row = "  " + nutrient.ljust(23)
+        for col in columns:
+            row += values.get(col, "N/A").ljust(25)
+        label += row + "\n"
+
+    return label
+
 
 def remove_empty_lines(text):
     return '\n'.join(line for line in text.splitlines() if line.strip())
+
 
 def custom_sort_key(value):
     parts = value.split('-')
@@ -204,12 +219,10 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                 print('start')
                 while True:
 
-
                     # REMOVE LATER
                     if (len(items) > 100):
                         break
                     # REMOVE LATER
-
 
                     time.sleep(GEN_TIMEOUT * 4)
                     # Wait for the product cards to be present
@@ -229,7 +242,8 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                         else:
                             print("The specific <a> tag was not found.")
                     try:
-                        outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
+                        outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
                         next_button = outer_container.find_element(By.CSS_SELECTOR, 'button[data-test="next"]')
                         is_disabled = next_button.get_attribute("disabled") is not None
                         if is_disabled:
@@ -246,9 +260,9 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
             print('Failed to get Subaisles')
             print(e)
 
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
+                                   encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
-
 
     df_data = pd.DataFrame()
     site_items_df = pd.DataFrame()
@@ -404,9 +418,9 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         breadcrumb_texts = [link.text for link in breadcrumb_links]
         breadcrumb_texts.pop(0)
         breadcrumb_texts.pop(0)
-        if len(breadcrumb_texts > 0):
+        if len(breadcrumb_texts) > 0:
             ProductCategory = breadcrumb_texts.pop(0)
-        if len(breadcrumb_texts > 0):
+        if len(breadcrumb_texts) > 0:
             ProductSubCategory = breadcrumb_texts.pop(0)
     except:
         print('Failed to get Product Categories')
@@ -629,45 +643,44 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Net Content')
 
     try:
-        # time.sleep(GEN_TIMEOUT)
-        # label_info_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-        #     EC.element_to_be_clickable((By.XPATH, "//button[.//h3[contains(text(), 'Label info')]]"))
-        # )
-        # label_info_button.click()
-        # print('Clicked Label Info Button')
-        try:
-            time.sleep(GEN_TIMEOUT)
-            nutrition_tab = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, "div[data-test='productDetailTabs-nutritionFactsTab']"))
-            )
-            nutrition_dict = {}
-            nutrition_items = nutrition_tab.find_elements(By.CSS_SELECTOR, "div.jPYLql > div")
-            for item in nutrition_items:
-                try:
-                    name = item.find_element(By.TAG_NAME, "b").text
-                    value = item.text.split(name)[1].strip().split(' ', 1)[0]
-                    try:
-                        daily_value = item.find_element(By.CLASS_NAME, "h-float-right").text
-                    except:
-                        daily_value = 'Not specified'
+        elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.h-margin-t-tight")))
+        nutrition_dict = {}
+        for element in elements:
+            spans = element.find_elements(By.TAG_NAME, "span")
+            if len(spans) >= 2:
+                nutrient_name = spans[0].find_element(By.TAG_NAME, "b").text.strip()
+                nutrient = spans[0].text.strip().replace(nutrient_name, '')
+                value = spans[1].text.strip()
 
-                    nutrition_dict[name] = {
-                        'value': value,
-                        'daily_value': daily_value
-                    }
-                except Exception as e:
-                    print(f"Error parsing item: {item.text}. Error: {e}")
-
-            print(nutrition_dict)
-            Nutr_label = nutrition_info_to_string(nutrition_dict)
-
-        except TimeoutException:
-            print("Timed out waiting for nutrition facts to be present")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+                nutrition_dict[nutrient_name] = {
+                    'amount': nutrient,
+                    'daily_value': value
+                }
+        print(nutrition_dict)
+        Nutr_label = format_nutrition_label(nutrition_dict)
     except:
         print('Failed to get Ingredients and/or Nutrition Label')
+
+    try:
+        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-cf555beb-2.sFaVI')))
+        ptags = containers_html.find_elements(By.TAG_NAME, "p")
+        for p in ptags:
+            btag = p.find_element(By.TAG_NAME, "b")
+            ptag_text = p.text.replace(btag.text, '')
+            print(btag.text.strip())
+            print(ptag_text.strip())
+    except:
+        print('Failed to get Servings')
+
+    try:
+        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.h-padding-l-default')))
+        spans = containers_html.find_elements(By.TAG_NAME, "span")
+        for s in spans:
+            print(s.text)
+    except:
+        print('Calories Error')
+        None
 
     new_row = {
         'ID': ID,
