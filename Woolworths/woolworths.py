@@ -340,7 +340,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
             try:
                 time.sleep(GEN_TIMEOUT)
                 driver.get(item_url)
-                new_row = scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, item_index,
+                new_row = scrape_item(driver, aisle, item_url, 0.5, ind, item_index,
                                       items[item_index][1])
                 site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
                 site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
@@ -357,6 +357,7 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
 
 
 def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_aisles_string):
+    time.sleep(5)
     ID = f'{ind}-{index}-{aisle.upper()[:3]}'
     Region = None
     City = None
