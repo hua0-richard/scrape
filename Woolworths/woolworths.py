@@ -122,7 +122,7 @@ def cache_strategy():
 
 
 def setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
-    setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
+    setLocation_woolworths(driver, site_location_df.loc[ind - 1, 1], 10)
 
 
 def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
@@ -171,6 +171,7 @@ def setLocation_woolworths(driver, address, EXPLICIT_WAIT_TIME):
 
 
 def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
+    time.sleep(5)
     # i in items
     # i[0] is url
     # i[1] is aisle

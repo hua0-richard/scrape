@@ -27,7 +27,7 @@ def main():
         driver.get(url)
 
         woolworths.setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
-        woolworths.scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks', ind=ind)
+        woolworths.scrapeSite_woolworths(driver, 0.5, idx=str(ind), aisle='Drinks', ind=ind)
 
         driver.quit()
 

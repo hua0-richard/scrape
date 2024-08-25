@@ -680,7 +680,11 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             print(s.text)
     except:
         print('Calories Error')
+
+    try:
         None
+    except:
+        print('Ingredients Error')
 
     new_row = {
         'ID': ID,
