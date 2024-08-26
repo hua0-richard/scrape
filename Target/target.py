@@ -717,6 +717,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         Description = description_element.text
         print(Description)
     except Exception as e:
+        Notes = 'ERR'
         print('Description Error')
 
     try:
@@ -760,6 +761,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         Unitpp = pack_quant_div.text.strip()
         UPC = upc_div.text.strip()
     except:
+        Notes = 'ERR'
         print('More Details Error')
 
     new_row = {
