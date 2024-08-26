@@ -227,12 +227,6 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                 driver.get(s)
                 print('start')
                 while True:
-
-                    # REMOVE LATER
-                    if (len(items) > 100):
-                        break
-                    # REMOVE LATER
-
                     time.sleep(GEN_TIMEOUT * 4)
                     # Wait for the product cards to be present
                     products = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
@@ -251,6 +245,9 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                         else:
                             print("The specific <a> tag was not found.")
                     try:
+                        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                        driver.execute_script("window.scrollBy(0, arguments[0]);", -800)
+                        time.sleep(5)
                         outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                             EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
                         next_button = outer_container.find_element(By.CSS_SELECTOR, 'button[data-test="next"]')
