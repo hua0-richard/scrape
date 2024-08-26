@@ -445,8 +445,9 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Product Images')
 
     try:
-        pattern = r'(\d+(?:\.\d+)?)\s*(L|ML|l|ml)'
-        match = re.search(pattern, ProductName, re.IGNORECASE)
+        size_pattern = r'(\d+(?:\.\d+)?)\s*(fl\s*oz|oz|ml|l|pk|pack)\b'
+        focus_string = ProductName.split('-')[1].strip()
+        match = re.search(size_pattern, focus_string, re.IGNORECASE)
         if match:
             volume = match.group(1)
             unit = match.group(2).upper()
@@ -700,14 +701,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                     (By.XPATH, "//h3[contains(@class, 'sc-fe064f5c-0') and contains(@class, 'cJJgsH') and contains(@class, 'h-margin-b-none') and text()='Details']")
                 ))
                 driver.execute_script("arguments[0].scrollIntoView(true);", details_element)
-                scroll_relative_js = """
-                function scrollRelative(deltaY) {
-                    window.scrollBy(0, deltaY);
-                    return window.pageYOffset;
-                }
-                """
-                driver.execute_script(scroll_relative_js)
-                driver.execute_script("return scrollRelative(arguments[0]);", -100)
+                driver.execute_script("window.scrollBy(0, arguments[0]);", -200)
                 time.sleep(1)
                 details_element.click()
                 break
@@ -733,14 +727,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                     "//button[contains(@class, 'styles_button__D8Xvn') and .//h3[contains(text(), 'Specifications')]]"
                 )))
                 driver.execute_script("arguments[0].scrollIntoView(true);", button_element)
-                scroll_relative_js = """
-                function scrollRelative(deltaY) {
-                    window.scrollBy(0, deltaY);
-                    return window.pageYOffset;
-                }
-                """
-                driver.execute_script(scroll_relative_js)
-                driver.execute_script("return scrollRelative(arguments[0]);", -100)
+                driver.execute_script("window.scrollBy(0, arguments[0]);", -200)
                 time.sleep(1)
                 button_element.click()
                 break
