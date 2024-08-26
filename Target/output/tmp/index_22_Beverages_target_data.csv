@@ -1,0 +1,151 @@
+ID,Country,Store,Region,City,ProductName,ProductVariety,ProductFlavor,Unitpp,ProductBrand,ProductAisle,ProductCategory,ProductSubCategory,ProductImages,Containersize_org,Containersize_val,Containersize_unit,Cals_org_pp,Cals_value_pp,Cals_unit_pp,TotalCarb_g_pp,TotalCarb_pct_pp,TotalSugars_g_pp,TotalSugars_pct_pp,AddedSugars_g_pp,AddedSugars_pct_pp,Cals_value_p100g,Cals_unit_p100g,TotalCarb_g_p100g,TotalCarb_pct_p100g,TotalSugars_g_p100g,TotalSugars_pct_p100g,AddedSugars_g_p100g,AddedSugars_pct_p100g,Packsize_org,Pack_type,Netcontent_val,Netcontent_org,Netcontent_unit,Price,Description,Nutr_label,Ingredients,NutrInfo_org,Servsize_container_type_org,Servsize_container_type_val,Servsize_container_type_unit,Servsize_portion_org,Servsize_portion_val,Servsize_portion_unit,Servings_cont,ProdType,StorType,ItemNum,SKU,UPC,url,DataCaptureTimeStamp,Notes
+22-0-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 46 fl oz Bottle,"cold pressed, organic",,,Suja,Beverages,Beverages,Juice & Cider,,,,,Calories: 50,50,Calories, 0grm,0%,,,,,,,,,,,,,,Bottle,,,,,"Suja Organic Mighty Dozen is a little sweet, a little green and perfectly balanced. This 12 fl oz bottle of green juice will have you feeling mighty good and mighty healthy with 5.5 servings of fruit and vegetables per bottle. Full of organic cold pressed juice from fruits and vegetables with no added sugar, this green juice is an excellent source of vitamin K and a good source of vitamin C. Mighty Dozen blends 12 earthy green with green apple and a lemon and ginger zing for a vibrant organic juice. Sip Suja juice any time to give your body a nutrient boost.","Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    50mg                    2%                       
+Total Carbohydrate        12grm                   4%                       
+Total Sugars              12grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   1grm                    0%                       
+Potassium                 270mg                   6%                       
+Vitamin A                 30mcg                   4%                       
+Vitamin C                 8mg                     8%                       
+Vitamin K                 19mcg                   15%                      
+Vitamin B12               0.1mcg                  4%                       
+","Organic Apple Juice, Organic Celery Juice, Organic Cucumber Juice, Organic Kale Juice, Organic Collard Greens Juice, Organic Lemon Juice, Organic Mint Tea (Purified Water, Organic Peppermint Tea Leaf, Organic Spearmint Tea Leaf), Organic Ginger Juice, Organic Spinach Juice, Organic Spirulina Powder, Organic Chlorella Powder, Organic Barley Grass Powder.",,,,,,,,,,,,,,https://www.target.com/p/suja-organic-vegan-mighty-dozen-fruit-and-vegetable-drink-46-fl-oz/-/A-51440067#lnk=sametab,2024-08-26T00:19:16.427816-04:00,OK
+22-1-BEV,United States,Target,,,Capri Sun Variety Pack - 30pk/6 fl oz Pouches,,,Package Quantity: 30,Capri,Beverages,Beverages,Juice & Cider,,,,,Calories: 60,60,Calories, 12g,23%, 13g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Pouches,Net weight: 180 fl oz (US),Net weight: 180 fl oz (US),Net weight: 180 fl oz (US),,"Capri Sun Naturally Flavored Juice Drink Blend Variety Pack takes hydration to new heights with fun drink pouches filled with quality ingredients. These ready to drink juice drink blend juice pouches come packed with kid friendly fruity flavors. Each variety pack juice box includes 10 Fruit Punch, 10 Strawberry Kiwi, and 10 Pacific Cooler flavored juice pouches. Made with no artificial colors, flavors or preservatives and no high fructose corn syrup, this kids drink is as epic as the kids who drink it. Each 6 fluid ounce single-serve drink pouch contains 30% less sugar than leading regular juice drinks (this product 13 grams of sugar; leading regular juice drinks 20 grams of sugar per 6 fluid ounce serving). Skip the traditional juice boxes and enjoy flavorful fun made easy! Stock up with this 30 count variety box of juice drinks. Perfect for your kids school lunches or on-the-go snacks.","Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        14g                     5%                       
+Sugars                    13g                                              
+Added Sugars              12g                     23%                      
+Protein                   0g                                               
+","Fruit Punch Ingredients: Filtered Water; Sugar; Pear And Grape Juice Concentrates; Citric Acid; Orange, Apple, And Pineapple Juice Concentrates; Natural Flavor, Strawberry Kiwi Ingredients: Filtered Water; Sugar; Pear And Strawberry Juice Concentrates; Citric Acid; Apple Juice Concentrate; Natural Flavor, Pacific Cooler Ingredients: Filtered Water; Sugar; Pear, Grape, And Orange Juice Concentrates; Citric Acid, Pineapple And Apple Juice Concentrates; Natural Flavor",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 087684010365,https://www.target.com/p/capri-sun-variety-pack-30pk-6-fl-oz-pouches/-/A-54341198#lnk=sametab,2024-08-26T00:21:08.693291-04:00,OK
+22-2-BEV,United States,Target,,,100% Apple Juice - 64 fl oz Bottle - Market Pantry™,,apple,,100%,Beverages,Beverages,Juice & Cider,,,,,Calories: 110,110,Calories, 0g,0%, 28g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Saturated Fat             0g                      0%                       
+Trans Fat                 0g                                               
+Cholesterol               0mg                     0%                       
+Sodium                    30mg                    1%                       
+Total Carbohydrate        28g                     10%                      
+Dietary Fiber             0g                      0%                       
+Sugars                    28g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin D                 0mcg                    0%                       
+                                                                           
+","Filtered Water, Apple Juice Concentrate, Ascorbic Acid (Vitamin C).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/100-apple-juice-64-fl-oz-bottle-market-pantry-8482/-/A-13305665#lnk=sametab,2024-08-26T00:21:30.430786-04:00,OK
+22-3-BEV,United States,Target,,,Honest Kids Organic Fruit Punch Juice Drink - 8pk/6 fl oz Boxes,organic,fruit punch,,Honest,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 0g,0%, 8g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Boxes,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        8g                      3%                       
+Sugars                    8g                                               
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin C                                         70%                      
+","Ingredients: Filtered Water, Organic Apple Juice From Concentrate, Organic White Grape Juice From Concentrate, Organic Strawberry Juice From Concentrate, Organic Cranberry Juice From Concentrate, Organic Natural Flavors, Vitamin C (Ascorbic Acid), Natural Flavors, Citric Acid (Provides Tartness).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/honest-kids-organic-fruit-punch-juice-drink-8pk-6-fl-oz-boxes/-/A-52270196#lnk=sametab,2024-08-26T00:21:51.923777-04:00,OK
+22-4-BEV,United States,Target,,,Mott's 100% Original Apple Juice - 6pk/8 fl oz Bottles,original,"apple, original",,Mott's,Beverages,Beverages,Juice & Cider,,,,,Calories: 120,120,Calories, 0g,0%, 28g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottles,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    30mg                    1%                       
+Total Carbohydrate        29g                     10%                      
+Sugars                    28g                                              
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+","Water, Apple Juice Concentrate, Ascorbic Acid (Vitamin C)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/mott-s-100-original-apple-juice-6pk-8-fl-oz-bottles/-/A-14409786#lnk=sametab,2024-08-26T00:22:13.028193-04:00,OK
+22-5-BEV,United States,Target,,,Suja Organic Vibrant Probiotic Cold Pressed Juice Drink - 12 fl oz Bottle,"cold pressed, organic, probiotic",,,Suja,Beverages,Beverages,Juice & Cider,,,,,Calories: 60,60,Calories, 4g,8%, 10g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,,,,,"Be good to your gut with Suja Organic Vibrant Probiotic Cold Pressed Juice Drink. Enjoy this all-organic blend of strawberry, raspberry, lemon juice, honey and tart cherry for a delicious berry-forward probiotic drink. Rich in functional ingredients, this 12 fl oz organic juice drink is an excellent source of antioxidant vitamin C. Plus, each bottle arms you with live probiotics to support your immune and digestive health* to keep you going strong. Sip Suja Organic Vibrant Probiotic anytime, anywhere. *As part of a balanced diet and healthy lifestyle","Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    10mg                    0%                       
+Total Carbohydrate        14g                     5%                       
+Dietary Fiber             2g                      7%                       
+Sugars                    10g                                              
+Added Sugars              4g                      8%                       
+Protein                   1g                                               
+Calcium                   20mg                    2%                       
+Potassium                 120mg                   2%                       
+Vitamin C                 48mg                    50%                      
+Magnesium                 10mg                    2%                       
+","Purified Water, Organic Strawberry Puree, Organic Raspberry Puree, Organic Lemon Juice, Organic Honey, Organic Tart Cherry Concentrate, Probiotic Bacillus Coagulans Gbi-30 6086, Organic Stevia Leaf Extract Powder",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/suja-vibrant-organic-probiotic-fruit-juice-12-fl-oz/-/A-51440013#lnk=sametab,2024-08-26T00:22:39.275939-04:00,OK
+22-6-BEV,United States,Target,,,Bolthouse Farms Green Goodness - 15.2 fl oz,,,Package Quantity: 1,Bolthouse,Beverages,Beverages,Juice & Cider,,,,,Calories: 240,240,Calories, 0grm,0%,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 15.2 fl oz (US),Net weight: 15.2 fl oz (US),Net weight: 15.2 fl oz (US),,"This perfect combination of apple, mango, kiwi and spinach are perfectly blended together for a delicious taste and a good source of antioxidant A and vitamin B12.","Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0.5grm                  1%                       
+Saturated Fat             0grm                    0%                       
+Trans Fat                 0grm                    0%                       
+Cholesterol               0mg                     0%                       
+Sodium                    30mg                    1%                       
+Total Carbohydrate        56grm                   20%                      
+Dietary Fiber             2grm                    7%                       
+Total Sugars              47grm                   0%                       
+Added Sugars              0grm                    0%                       
+Protein                   2grm                    0%                       
+Vitamin D                 1mcg                    6%                       
+                                                                           
+","Pineapple Juice From Concentrate (Water, Pineapple Juice Concentrate), Apple Juice From Concentrate (Water, Apple Mune Concentrate), Mango Puree From Concentrate (Water, Mango Puree Concentrate), Banana Puree, Cucumber Juice From Concentrate (Water, Cucumber Juice Concentrate), Kiwi Puree, Contains 2% Or Less: Natural Flavors, Spirulina (Dried), Vitamin C (Ascorbic Acid), Green Tea (Dried), Spinach (Dried), Broccoli (Dried), Barley Grass (Dried), Wheatgrass (Dried), Garlic (Dried), Jerusalem Artichoke (Dried), Nova Scotia Dulse (Dried).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 071464240400,https://www.target.com/p/bolthouse-farms-green-goodness-15-2-fl-oz/-/A-13561429#lnk=sametab,2024-08-26T00:23:10.981505-04:00,OK
+22-7-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 12oz Bottle,"cold pressed, organic",,,Suja,Beverages,Beverages,Juice & Cider,,,,,Calories: 80,80,Calories, 0g,0%, 17g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    75mg                    3%                       
+Total Carbohydrate        17g                     6%                       
+Sugars                    17g                                              
+Added Sugars              0g                      0%                       
+Protein                   2g                                               
+Vitamin A                 50mcg                   6%                       
+Vitamin C                 11mg                    10%                      
+Calcium                   40mg                    4%                       
+Potassium                 400mg                   8%                       
+Vitamin K                 28mcg                   25%                      
+","Ingredients: Organic Apple Juice, Organic Celery Juice, Organic Cucumber Juice, Organic Kale Juice, Organic Collard Greens Juice, Organic Lemon Juice, Organic Mint Tea (Purified Water, Organic Peppermint Tea Leaf, Organic Spearmint Tea Leaf), Organic Ginger Juice, Organic Spinach Juice, Organic Spirulina Powder, Organic Chlorella Powder, Organic Barley Grass Powder",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/suja-organic-vegan-mighty-dozen-12oz/-/A-16978093#lnk=sametab,2024-08-26T00:23:32.653992-04:00,OK
+22-8-BEV,United States,Target,,,Capri Sun Pacific Cooler Juice Pack - 10pk/6 fl oz Pouches,,,,Capri,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 5grm,10%,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Pouches,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        9grm                    3%                       
+Total Sugars              8grm                    0%                       
+Added Sugars              5grm                    10%                      
+Protein                   0grm                    0%                       
+","Filtered Water; Sugar; Pear, Grape And Orange Juice Concentrates; Monk Fruit Concentrate; Citric Acid; Pineapple And Apple Juice Concentrates; Natural Flavor; Mushroom Extract (To Protect Quality).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/capri-sun-pacific-cooler-juice-pack-10pk-6-fl-oz-pouches/-/A-15041133#lnk=sametab,2024-08-26T00:23:53.787538-04:00,OK
+22-9-BEV,United States,Target,,,Capri Sun Fruit Punch - 10pk/60 fl oz,,fruit punch,,Capri,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 5grm,10%,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0grm                    0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        9grm                    3%                       
+Total Sugars              8grm                    0%                       
+Added Sugars              5grm                    10%                      
+Protein                   0grm                    0%                       
+","Filtered Water; Sugar; Pear, Grape And Orange Juice Concentrates; Monk Fruit Concentrate; Citric Acid; Apple And Pineapple Juice Concentrates; Natural Flavor, Mushroom Extract (To Protect Quality).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/capri-sun-fruit-punch-10pk-60-fl-oz/-/A-15041132#lnk=sametab,2024-08-26T00:24:14.819232-04:00,OK
+22-10-BEV,United States,Target,,,Honest Kids Organic Apple Juice Drink - 8pk/6 fl oz Box,organic,apple,,Honest,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 0g,0%, 8g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Box,,,,,,"Nutrition Information
+===========================================================================
+Nutrient                 amount                   daily_value              
+---------------------------------------------------------------------------
+Total Fat                 0g                      0%                       
+Sodium                    15mg                    1%                       
+Total Carbohydrate        9g                      3%                       
+Sugars                    8g                                               
+Added Sugars              0g                      0%                       
+Protein                   0g                                               
+Vitamin C                                         70%                      
+","Filtered Water, Organic Apple Juice From Concentrate, Natural Flavors, Organic Natural Flavors, Vitamin C (Ascorbic Acid), Citric Acid (Provides Tartness).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/honest-kids-organic-apple-juice-drink-8pk-6-fl-oz-box/-/A-52270091#lnk=sametab,2024-08-26T00:24:36.034748-04:00,OK

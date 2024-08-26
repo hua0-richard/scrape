@@ -26,7 +26,7 @@ import random
 import re
 
 FAVNUM = 22222
-GEN_TIMEOUT = 3
+GEN_TIMEOUT = 6
 STORE_NAME = 'target'
 LOCATION = ''
 MAX_RETRY = 10
@@ -389,6 +389,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     TotalSugars_pct_p100g = 'N/A'
     AddedSugars_g_p100g = 'N/A'
     AddedSugars_pct_p100g = 'N/A'
+    UPC = None
     Notes = 'OK'
 
     for p_name in range(2):
@@ -456,7 +457,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Container Size')
 
     try:
-        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg))', ProductName, re.IGNORECASE)
+        focus_string = ProductName.split('-')[1].strip()
+        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg|fl oz))', focus_string, re.IGNORECASE)
         if match:
             full_quantity = match.group(1)
             pack_size_match = re.search(r'(\d+)x', full_quantity)
@@ -467,7 +469,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print("Failed to get Packsize")
 
     try:
-        pattern = r'\b(bottles?|cans?|cartons?|boxe?s?|pouche?s?|sachets?|' \
+        pattern = r'\b(?:(\d+(?:\.\d+)?)\s*(?:fl\s*oz|oz|ml|l(?:iter)?s?|gal(?:lon)?s?|pt|qt|cup|tbsp|tsp|cl|dl|kg|g|lb|pint|quart))?\s*' \
+                  r'(bottles?|cans?|cartons?|boxe?s?|pouche?s?|sachets?|' \
                   r'flasks?|jugs?|pitchers?|tetra\s?paks?|kegs?|barrels?|casks?|' \
                   r'cups?|glass(?:es)?|mugs?|tumblers?|goblets?|steins?|' \
                   r'canisters?|thermos(?:es)?|vacuum\s?flasks?|' \
@@ -475,7 +478,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                   r'tins?|containers?|tubs?|packets?|' \
                   r'single-serves?|multi-packs?|variety\s?packs?|' \
                   r'miniatures?|minis?|nips?|shooters?|' \
-                  r'pints?|quarts?|gallons?|liters?|ml|fl\s?oz|' \
+                  r'pints?|quarts?|gallons?|liters?|' \
                   r'growlers?|crowlers?|howlers?|' \
                   r'magnums?|jeroboams?|rehoboams?|methusela(?:hs?)?|' \
                   r'salmanazars?|balthazars?|nebuchadnezzars?|' \
@@ -520,9 +523,11 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                   r'wine\s?skins?|hip\s?flasks?|canteens?|' \
                   r'hydration\s?packs?|water\s?bladders?)\b'
 
-        match = re.search(pattern, ProductName, re.IGNORECASE)
+        focus_string = ProductName.split('-')[1].strip()
+        print(focus_string)
+        match = re.search(pattern, focus_string, re.IGNORECASE)
         if match:
-            Pack_type = match.group(1).lower()
+            Pack_type = match.group(2)
     except:
         print('Failed to find Pack Type')
 
@@ -689,10 +694,27 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     try:
         time.sleep(GEN_TIMEOUT)
-        details_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable(
-            (By.XPATH, "//h3[contains(@class, 'sc-fe064f5c-0') and contains(@class, 'cJJgsH') and contains(@class, 'h-margin-b-none') and text()='Details']")
-        ))
-        details_element.click()
+        for _ in range(5):
+            try:
+                details_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable(
+                    (By.XPATH, "//h3[contains(@class, 'sc-fe064f5c-0') and contains(@class, 'cJJgsH') and contains(@class, 'h-margin-b-none') and text()='Details']")
+                ))
+                driver.execute_script("arguments[0].scrollIntoView(true);", details_element)
+                scroll_relative_js = """
+                function scrollRelative(deltaY) {
+                    window.scrollBy(0, deltaY);
+                    return window.pageYOffset;
+                }
+                """
+                driver.execute_script(scroll_relative_js)
+                driver.execute_script("return scrollRelative(arguments[0]);", -100)
+                time.sleep(1)
+                details_element.click()
+                break
+            except Exception as e:
+                print(f'Trying Again Description... Attempt {_}')
+                print(e)
+                time.sleep(1)
         time.sleep(GEN_TIMEOUT)
         description_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((
             By.CSS_SELECTOR,
@@ -704,11 +726,28 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Description Error')
 
     try:
-        button_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((
-            By.XPATH,
-            "//button[contains(@class, 'styles_button__D8Xvn') and .//h3[contains(text(), 'Specifications')]]"
-        )))
-        button_element.click()
+        for _ in range(5):
+            try:
+                button_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((
+                    By.XPATH,
+                    "//button[contains(@class, 'styles_button__D8Xvn') and .//h3[contains(text(), 'Specifications')]]"
+                )))
+                driver.execute_script("arguments[0].scrollIntoView(true);", button_element)
+                scroll_relative_js = """
+                function scrollRelative(deltaY) {
+                    window.scrollBy(0, deltaY);
+                    return window.pageYOffset;
+                }
+                """
+                driver.execute_script(scroll_relative_js)
+                driver.execute_script("return scrollRelative(arguments[0]);", -100)
+                time.sleep(1)
+                button_element.click()
+                break
+            except Exception as e:
+                print(f'Trying Again Description... Attempt {_}')
+                time.sleep(1)
+                print(e)
         time.sleep(GEN_TIMEOUT)
         container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-test='item-details-specifications']"))
@@ -721,19 +760,18 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         for div in divs:
             bold_element = div.find_elements(By.TAG_NAME, "b")
             for i in bold_element:
-                print(i.get_attribute('outerHTML'))
-                print(div.get_attribute('outerHTML'))
-                # if "Net weight:" in bold_element.text:
-                #     net_weight_div = div
-                # elif bold_element and "Package Quantity:" in bold_element.text:
-                #     pack_quant_div = div
-                # elif bold_element and "UPC:" in bold_element.text:
-                #     upc_div = div
+                if "Net weight:" in i.text:
+                    net_weight_div = div
+                elif bold_element and "Package Quantity:" in i.text:
+                    pack_quant_div = div
+                elif bold_element and "UPC" in i.text:
+                    upc_div = div
+        Netcontent_org = net_weight_div.text.strip()
+        Netcontent_unit = net_weight_div.text.strip()
+        Netcontent_val = net_weight_div.text.strip()
 
-        # print(net_weight_div.text.strip())
-        # print(pack_quant_div.text.strip())
-        # print(upc_div.text.strip())
-
+        Unitpp = pack_quant_div.text.strip()
+        UPC = upc_div.text.strip()
     except:
         print('More Details Error')
 
@@ -793,7 +831,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         'StorType': 'N/A',
         'ItemNum': 'N/A',
         'SKU': 'N/A',
-        'UPC': 'N/A',
+        'UPC': UPC,
         'url': item_url,
         'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
         'Notes': Notes
