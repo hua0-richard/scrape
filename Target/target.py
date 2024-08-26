@@ -653,8 +653,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                 TotalSugars_g_pp = value['amount']
                 TotalSugars_pct_pp = value['daily_value']
             elif key == 'Added Sugars':
-                TotalCarb_g_pp = value['amount']
-                TotalCarb_pct_pp = value['daily_value']
+                AddedSugars_g_pp = value['amount']
+                AddedSugars_g_pp = value['daily_value']
 
         Nutr_label = format_nutrition_label(nutrition_dict)
 
