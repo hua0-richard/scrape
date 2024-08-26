@@ -623,26 +623,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Product Flavour')
 
     try:
-        if (not Packsize_org == None):
-            match = re.match(r'([\d.]+x[\d.]+)([a-zA-Z]+)', Packsize_org)
-            if match:
-                numeric_part, unit = match.groups()
-                num1, num2 = map(float, numeric_part.split('x'))
-                result = num1 * num2
-            Netcontent_org = f"{result:.10g}{unit}"
-            Netcontent_val = result
-            Netcontent_unit = unit
-        elif (not Containersize_org == None):
-            Netcontent_org = Containersize_org
-            pattern = r'(\d+(?:\.\d+)?)\s*([a-zA-Z]+)'
-            match = re.match(pattern, Containersize_org)
-            if match:
-                Netcontent_val = float(match.group(1))
-                Netcontent_unit = match.group(2)
-    except:
-        print('Failed to get Net Content')
-
-    try:
         elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.h-margin-t-tight")))
         nutrition_dict = {}
@@ -660,15 +640,15 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print(nutrition_dict)
 
         for key, value in nutrition_dict.items():
-            if key == 'Total Carbohydrates':
+            if key == 'Total Carbohydrate':
                 TotalCarb_g_pp = value['amount']
                 TotalCarb_pct_pp = value['daily_value']
-
             elif key == 'Sugars':
-                None
-            elif key == 'Added Suagrs':
-                None
-
+                TotalSugars_g_pp = value['amount']
+                TotalSugars_pct_pp = value['daily_value']
+            elif key == 'Added Sugars':
+                TotalCarb_g_pp = value['amount']
+                TotalCarb_pct_pp = value['daily_value']
 
         Nutr_label = format_nutrition_label(nutrition_dict)
 
@@ -729,6 +709,31 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             "//button[contains(@class, 'styles_button__D8Xvn') and .//h3[contains(text(), 'Specifications')]]"
         )))
         button_element.click()
+        time.sleep(GEN_TIMEOUT)
+        container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-test='item-details-specifications']"))
+        )
+        divs = container.find_elements(By.TAG_NAME, "div")
+        # More Specifications
+        net_weight_div = None
+        pack_quant_div = None
+        upc_div = None
+        for div in divs:
+            bold_element = div.find_elements(By.TAG_NAME, "b")
+            for i in bold_element:
+                print(i.get_attribute('outerHTML'))
+                print(div.get_attribute('outerHTML'))
+                # if "Net weight:" in bold_element.text:
+                #     net_weight_div = div
+                # elif bold_element and "Package Quantity:" in bold_element.text:
+                #     pack_quant_div = div
+                # elif bold_element and "UPC:" in bold_element.text:
+                #     upc_div = div
+
+        # print(net_weight_div.text.strip())
+        # print(pack_quant_div.text.strip())
+        # print(upc_div.text.strip())
+
     except:
         print('More Details Error')
 
