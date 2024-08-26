@@ -450,7 +450,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         match = re.search(size_pattern, focus_string, re.IGNORECASE)
         if match:
             volume = match.group(1)
-            unit = match.group(2).upper()
+            unit = match.group(2).lower()
             Containersize_org = f"{volume}{unit}"
             Containersize_val = volume
             Containersize_unit = unit
