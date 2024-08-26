@@ -440,6 +440,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                 full_path = 'output/images/' + str(ind) + '/' + str(ID) + '-' + str(index) + '.png'
                 with open(full_path, 'wb') as file:
                     file.write(response.content)
+                ProductImages = image_urls[0]
             None
     except:
         print('Failed to get Product Images')
@@ -447,6 +448,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     try:
         size_pattern = r'(\d+(?:\.\d+)?)\s*(fl\s*oz|oz|ml|l|pk|pack)\b'
         focus_string = ProductName.split('-')[1].strip()
+        Packsize_org = focus_string
         match = re.search(size_pattern, focus_string, re.IGNORECASE)
         if match:
             volume = match.group(1)
@@ -652,6 +654,9 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             elif key == 'Sugars':
                 TotalSugars_g_pp = value['amount']
                 TotalSugars_pct_pp = value['daily_value']
+            elif key == 'Total Sugars':
+                TotalSugars_g_pp = value['amount']
+                TotalSugars_pct_pp = value['daily_value']
             elif key == 'Added Sugars':
                 AddedSugars_g_pp = value['amount']
                 AddedSugars_pct_pp = value['daily_value']
@@ -668,6 +673,13 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         for p in ptags:
             btag = p.find_element(By.TAG_NAME, "b")
             ptag_text = p.text.replace(btag.text, '')
+            if (btag.text.strip() == 'Serving Size:'):
+                Servsize_portion_org = f'{btag.text.strip()} {ptag_text.strip()}'
+                Servsize_portion_val = ''.join(char for char in ptag_text if char.isdigit()).strip()
+                Servsize_portion_unit = ''.join(char for char in ptag_text if not char.isdigit()).strip().replace('.','')
+                None
+            elif (btag.text.strip() == 'Serving Per Container:'):
+                Servings_cont = f'{btag.text.strip()} {ptag_text.strip()}'
             print(btag.text.strip())
             print(ptag_text.strip())
     except:
