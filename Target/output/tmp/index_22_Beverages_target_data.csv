@@ -1,5 +1,5 @@
 ID,Country,Store,Region,City,ProductName,ProductVariety,ProductFlavor,Unitpp,ProductBrand,ProductAisle,ProductCategory,ProductSubCategory,ProductImages,Containersize_org,Containersize_val,Containersize_unit,Cals_org_pp,Cals_value_pp,Cals_unit_pp,TotalCarb_g_pp,TotalCarb_pct_pp,TotalSugars_g_pp,TotalSugars_pct_pp,AddedSugars_g_pp,AddedSugars_pct_pp,Cals_value_p100g,Cals_unit_p100g,TotalCarb_g_p100g,TotalCarb_pct_p100g,TotalSugars_g_p100g,TotalSugars_pct_p100g,AddedSugars_g_p100g,AddedSugars_pct_p100g,Packsize_org,Pack_type,Netcontent_val,Netcontent_org,Netcontent_unit,Price,Description,Nutr_label,Ingredients,NutrInfo_org,Servsize_container_type_org,Servsize_container_type_val,Servsize_container_type_unit,Servsize_portion_org,Servsize_portion_val,Servsize_portion_unit,Servings_cont,ProdType,StorType,ItemNum,SKU,UPC,url,DataCaptureTimeStamp,Notes
-22-0-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 46 fl oz Bottle,"cold pressed, organic",,,Suja,Beverages,Beverages,Juice & Cider,,,,,Calories: 50,50,Calories, 0grm,0%,,,,,,,,,,,,,,Bottle,,,,,"Suja Organic Mighty Dozen is a little sweet, a little green and perfectly balanced. This 12 fl oz bottle of green juice will have you feeling mighty good and mighty healthy with 5.5 servings of fruit and vegetables per bottle. Full of organic cold pressed juice from fruits and vegetables with no added sugar, this green juice is an excellent source of vitamin K and a good source of vitamin C. Mighty Dozen blends 12 earthy green with green apple and a lemon and ginger zing for a vibrant organic juice. Sip Suja juice any time to give your body a nutrient boost.","Nutrition Information
+22-0-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 46 fl oz Bottle,"cold pressed, organic",,Package Quantity: 1,Suja,Beverages,Beverages,Juice & Cider,,46fl oz,46,fl oz,Calories: 50,50,Calories, 12grm,4%,,N/A, 0grm,0%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,Net weight: 46.0 fl oz (US),Net weight: 46.0 fl oz (US),Net weight: 46.0 fl oz (US),,"Suja Organic Mighty Dozen is a little sweet, a little green and perfectly balanced. This 12 fl oz bottle of green juice will have you feeling mighty good and mighty healthy with 5.5 servings of fruit and vegetables per bottle. Full of organic cold pressed juice from fruits and vegetables with no added sugar, this green juice is an excellent source of vitamin K and a good source of vitamin C. Mighty Dozen blends 12 earthy green with green apple and a lemon and ginger zing for a vibrant organic juice. Sip Suja juice any time to give your body a nutrient boost.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -14,8 +14,8 @@ Vitamin A                 30mcg                   4%
 Vitamin C                 8mg                     8%                       
 Vitamin K                 19mcg                   15%                      
 Vitamin B12               0.1mcg                  4%                       
-","Organic Apple Juice, Organic Celery Juice, Organic Cucumber Juice, Organic Kale Juice, Organic Collard Greens Juice, Organic Lemon Juice, Organic Mint Tea (Purified Water, Organic Peppermint Tea Leaf, Organic Spearmint Tea Leaf), Organic Ginger Juice, Organic Spinach Juice, Organic Spirulina Powder, Organic Chlorella Powder, Organic Barley Grass Powder.",,,,,,,,,,,,,,https://www.target.com/p/suja-organic-vegan-mighty-dozen-fruit-and-vegetable-drink-46-fl-oz/-/A-51440067#lnk=sametab,2024-08-26T00:19:16.427816-04:00,OK
-22-1-BEV,United States,Target,,,Capri Sun Variety Pack - 30pk/6 fl oz Pouches,,,Package Quantity: 30,Capri,Beverages,Beverages,Juice & Cider,,,,,Calories: 60,60,Calories, 12g,23%, 13g,,,,,,,,,,,,,Pouches,Net weight: 180 fl oz (US),Net weight: 180 fl oz (US),Net weight: 180 fl oz (US),,"Capri Sun Naturally Flavored Juice Drink Blend Variety Pack takes hydration to new heights with fun drink pouches filled with quality ingredients. These ready to drink juice drink blend juice pouches come packed with kid friendly fruity flavors. Each variety pack juice box includes 10 Fruit Punch, 10 Strawberry Kiwi, and 10 Pacific Cooler flavored juice pouches. Made with no artificial colors, flavors or preservatives and no high fructose corn syrup, this kids drink is as epic as the kids who drink it. Each 6 fluid ounce single-serve drink pouch contains 30% less sugar than leading regular juice drinks (this product 13 grams of sugar; leading regular juice drinks 20 grams of sugar per 6 fluid ounce serving). Skip the traditional juice boxes and enjoy flavorful fun made easy! Stock up with this 30 count variety box of juice drinks. Perfect for your kids school lunches or on-the-go snacks.","Nutrition Information
+","Organic Apple Juice, Organic Celery Juice, Organic Cucumber Juice, Organic Kale Juice, Organic Collard Greens Juice, Organic Lemon Juice, Organic Mint Tea (Purified Water, Organic Peppermint Tea Leaf, Organic Spearmint Tea Leaf), Organic Ginger Juice, Organic Spinach Juice, Organic Spirulina Powder, Organic Chlorella Powder, Organic Barley Grass Powder.",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 859213005896,https://www.target.com/p/suja-organic-vegan-mighty-dozen-fruit-and-vegetable-drink-46-fl-oz/-/A-51440067#lnk=sametab,2024-08-26T01:25:10.259010-04:00,OK
+22-1-BEV,United States,Target,,,Capri Sun Variety Pack - 30pk/6 fl oz Pouches,,,Package Quantity: 30,Capri,Beverages,Beverages,Juice & Cider,,30pk,30,pk,Calories: 60,60,Calories, 14g,5%, 13g,, 12g,23%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Pouches,Net weight: 180 fl oz (US),Net weight: 180 fl oz (US),Net weight: 180 fl oz (US),,"Capri Sun Naturally Flavored Juice Drink Blend Variety Pack takes hydration to new heights with fun drink pouches filled with quality ingredients. These ready to drink juice drink blend juice pouches come packed with kid friendly fruity flavors. Each variety pack juice box includes 10 Fruit Punch, 10 Strawberry Kiwi, and 10 Pacific Cooler flavored juice pouches. Made with no artificial colors, flavors or preservatives and no high fructose corn syrup, this kids drink is as epic as the kids who drink it. Each 6 fluid ounce single-serve drink pouch contains 30% less sugar than leading regular juice drinks (this product 13 grams of sugar; leading regular juice drinks 20 grams of sugar per 6 fluid ounce serving). Skip the traditional juice boxes and enjoy flavorful fun made easy! Stock up with this 30 count variety box of juice drinks. Perfect for your kids school lunches or on-the-go snacks.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -25,8 +25,8 @@ Total Carbohydrate        14g                     5%
 Sugars                    13g                                              
 Added Sugars              12g                     23%                      
 Protein                   0g                                               
-","Fruit Punch Ingredients: Filtered Water; Sugar; Pear And Grape Juice Concentrates; Citric Acid; Orange, Apple, And Pineapple Juice Concentrates; Natural Flavor, Strawberry Kiwi Ingredients: Filtered Water; Sugar; Pear And Strawberry Juice Concentrates; Citric Acid; Apple Juice Concentrate; Natural Flavor, Pacific Cooler Ingredients: Filtered Water; Sugar; Pear, Grape, And Orange Juice Concentrates; Citric Acid, Pineapple And Apple Juice Concentrates; Natural Flavor",,,,,,,,,,,,,UPC: 087684010365,https://www.target.com/p/capri-sun-variety-pack-30pk-6-fl-oz-pouches/-/A-54341198#lnk=sametab,2024-08-26T00:21:08.693291-04:00,OK
-22-2-BEV,United States,Target,,,100% Apple Juice - 64 fl oz Bottle - Market Pantry™,,apple,,100%,Beverages,Beverages,Juice & Cider,,,,,Calories: 110,110,Calories, 0g,0%, 28g,,,,,,,,,,,,,Bottle,,,,,,"Nutrition Information
+","Fruit Punch Ingredients: Filtered Water; Sugar; Pear And Grape Juice Concentrates; Citric Acid; Orange, Apple, And Pineapple Juice Concentrates; Natural Flavor, Strawberry Kiwi Ingredients: Filtered Water; Sugar; Pear And Strawberry Juice Concentrates; Citric Acid; Apple Juice Concentrate; Natural Flavor, Pacific Cooler Ingredients: Filtered Water; Sugar; Pear, Grape, And Orange Juice Concentrates; Citric Acid, Pineapple And Apple Juice Concentrates; Natural Flavor",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 087684010365,https://www.target.com/p/capri-sun-variety-pack-30pk-6-fl-oz-pouches/-/A-54341198#lnk=sametab,2024-08-26T01:25:44.180473-04:00,OK
+22-2-BEV,United States,Target,,,100% Apple Juice - 64 fl oz Bottle - Market Pantry™,,apple,Package Quantity: 1,100%,Beverages,Beverages,Juice & Cider,,64fl oz,64,fl oz,Calories: 110,110,Calories, 28g,10%, 28g,, 0g,0%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,Net weight: 64 fl oz (US),Net weight: 64 fl oz (US),Net weight: 64 fl oz (US),,"Kick-start your day with the 100% Apple Juice from market pantry™. Made from apple concentrate with added ingredients, this ready-to-drink apple juice brings the goodness of fresh and juicy apples to your breakfast table. This half-gallon bottle contains eight servings, each loaded with 80% of your daily value of vitamin C so that you can feel good about it with every sip you take. Simply pour a glass of this refreshing 100% apple juice during breakfast or whenever you want some quick refreshment to quench your thirst.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -42,8 +42,8 @@ Added Sugars              0g                      0%
 Protein                   0g                                               
 Vitamin D                 0mcg                    0%                       
                                                                            
-","Filtered Water, Apple Juice Concentrate, Ascorbic Acid (Vitamin C).",,,,,,,,,,,,,,https://www.target.com/p/100-apple-juice-64-fl-oz-bottle-market-pantry-8482/-/A-13305665#lnk=sametab,2024-08-26T00:21:30.430786-04:00,OK
-22-3-BEV,United States,Target,,,Honest Kids Organic Fruit Punch Juice Drink - 8pk/6 fl oz Boxes,organic,fruit punch,,Honest,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 0g,0%, 8g,,,,,,,,,,,,,Boxes,,,,,,"Nutrition Information
+","Filtered Water, Apple Juice Concentrate, Ascorbic Acid (Vitamin C).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 085239665169,https://www.target.com/p/100-apple-juice-64-fl-oz-bottle-market-pantry-8482/-/A-13305665#lnk=sametab,2024-08-26T01:26:18.771250-04:00,OK
+22-3-BEV,United States,Target,,,Honest Kids Organic Fruit Punch Juice Drink - 8pk/6 fl oz Boxes,organic,fruit punch,Package Quantity: 8,Honest,Beverages,Beverages,Juice & Cider,,8pk,8,pk,Calories: 35,35,Calories, 8g,3%, 8g,, 0g,0%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Boxes,Net weight: 48 fl oz (US),Net weight: 48 fl oz (US),Net weight: 48 fl oz (US),,"It’s a bird! It’s a plane! It’s... Super Fruit Punch for Honest kids. The flavors of grape, strawberry, apple and cranberry juice unite to truly pack a punch. These fantastic flavors combine their powers of refreshment to keep your little ones soaring through their day. Honest seeks to create and promote sustainable, great-tasting beverages with honesty and integrity, which means telling you exactly what’s in every beverage from the get-go. From the very beginning, Honest has been about something as simple as quenching thirst while being “Just a Tad Sweet.” And while our mission is now about more than just refreshment, we strive to fulfill that original promise with the same care and quality as we did back then. So, when you choose Honest, you choose a drink that makes a difference. Picking up a carton means promoting wellness, and a commitment to making sure better options are available to all. Honest strives to deliver on this and its other missions—like democratizing organic ingredients—just like it delivers on high-quality lemonades, teas and juices. We make our drinks the way you expect from a brand named Honest—organically. Whether you’re looking for the robust variety of our Honest Teas, the refreshing tartness of our Honest Lemonades, or our fun and flavorful Honest Kids juice drinks, Honest has something for the whole family to enjoy. Refreshingly yours, The Honest Tea-m","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -54,8 +54,8 @@ Sugars                    8g
 Added Sugars              0g                      0%                       
 Protein                   0g                                               
 Vitamin C                                         70%                      
-","Ingredients: Filtered Water, Organic Apple Juice From Concentrate, Organic White Grape Juice From Concentrate, Organic Strawberry Juice From Concentrate, Organic Cranberry Juice From Concentrate, Organic Natural Flavors, Vitamin C (Ascorbic Acid), Natural Flavors, Citric Acid (Provides Tartness).",,,,,,,,,,,,,,https://www.target.com/p/honest-kids-organic-fruit-punch-juice-drink-8pk-6-fl-oz-boxes/-/A-52270196#lnk=sametab,2024-08-26T00:21:51.923777-04:00,OK
-22-4-BEV,United States,Target,,,Mott's 100% Original Apple Juice - 6pk/8 fl oz Bottles,original,"apple, original",,Mott's,Beverages,Beverages,Juice & Cider,,,,,Calories: 120,120,Calories, 0g,0%, 28g,,,,,,,,,,,,,Bottles,,,,,,"Nutrition Information
+","Ingredients: Filtered Water, Organic Apple Juice From Concentrate, Organic White Grape Juice From Concentrate, Organic Strawberry Juice From Concentrate, Organic Cranberry Juice From Concentrate, Organic Natural Flavors, Vitamin C (Ascorbic Acid), Natural Flavors, Citric Acid (Provides Tartness).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 657622741417,https://www.target.com/p/honest-kids-organic-fruit-punch-juice-drink-8pk-6-fl-oz-boxes/-/A-52270196#lnk=sametab,2024-08-26T01:26:52.210376-04:00,OK
+22-4-BEV,United States,Target,,,Mott's 100% Original Apple Juice - 6pk/8 fl oz Bottles,original,"apple, original",Package Quantity: 6,Mott's,Beverages,Beverages,Juice & Cider,,6pk,6,pk,Calories: 120,120,Calories, 29g,10%, 28g,, 0g,0%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottles,Net weight: 48 fl oz (US),Net weight: 48 fl oz (US),Net weight: 48 fl oz (US),,"Nothing satisfies quite like Mott’s Original Apple Juice. Packed with ripe apple flavor, Mott’s Original Apple Juice is 100% fruit juice and delivers 2 servings of fruit in each 8 fl. oz cup, per current USDA Dietary Guidelines. It’s also an excellent source of Vitamin C, contains no added sugar and has a delicious taste the whole family will love. Mott’s Original Apple Juice is the perfect refreshment at dinnertime, lunchtime, or any time. Apples have always nourished us, inspired us, and provided for us. Mott's provides the nutrition and taste of real fruit that families have trusted since 1842, when our founder - Samuel R. Mott's - began growing and packaging apples in New York. In the years since then, Mott’s commitment to apple excellence and high-quality products has continued to provide healthy, delicious juices and snacks. Treat your family to the classic taste of Mott’s Original Apple Juice.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -65,8 +65,8 @@ Total Carbohydrate        29g                     10%
 Sugars                    28g                                              
 Added Sugars              0g                      0%                       
 Protein                   0g                                               
-","Water, Apple Juice Concentrate, Ascorbic Acid (Vitamin C)",,,,,,,,,,,,,,https://www.target.com/p/mott-s-100-original-apple-juice-6pk-8-fl-oz-bottles/-/A-14409786#lnk=sametab,2024-08-26T00:22:13.028193-04:00,OK
-22-5-BEV,United States,Target,,,Suja Organic Vibrant Probiotic Cold Pressed Juice Drink - 12 fl oz Bottle,"cold pressed, organic, probiotic",,,Suja,Beverages,Beverages,Juice & Cider,,,,,Calories: 60,60,Calories, 4g,8%, 10g,,,,,,,,,,,,,Bottle,,,,,"Be good to your gut with Suja Organic Vibrant Probiotic Cold Pressed Juice Drink. Enjoy this all-organic blend of strawberry, raspberry, lemon juice, honey and tart cherry for a delicious berry-forward probiotic drink. Rich in functional ingredients, this 12 fl oz organic juice drink is an excellent source of antioxidant vitamin C. Plus, each bottle arms you with live probiotics to support your immune and digestive health* to keep you going strong. Sip Suja Organic Vibrant Probiotic anytime, anywhere. *As part of a balanced diet and healthy lifestyle","Nutrition Information
+","Water, Apple Juice Concentrate, Ascorbic Acid (Vitamin C)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 014800002294,https://www.target.com/p/mott-s-100-original-apple-juice-6pk-8-fl-oz-bottles/-/A-14409786#lnk=sametab,2024-08-26T01:27:26.864178-04:00,OK
+22-5-BEV,United States,Target,,,Suja Organic Vibrant Probiotic Cold Pressed Juice Drink - 12 fl oz Bottle,"cold pressed, organic, probiotic",,Package Quantity: 1,Suja,Beverages,Beverages,Juice & Cider,,12fl oz,12,fl oz,Calories: 60,60,Calories, 14g,5%, 10g,, 4g,8%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,Net weight: 12.0 fl oz (US),Net weight: 12.0 fl oz (US),Net weight: 12.0 fl oz (US),,"Be good to your gut with Suja Organic Vibrant Probiotic Cold Pressed Juice Drink. Enjoy this all-organic blend of strawberry, raspberry, lemon juice, honey and tart cherry for a delicious berry-forward probiotic drink. Rich in functional ingredients, this 12 fl oz organic juice drink is an excellent source of antioxidant vitamin C. Plus, each bottle arms you with live probiotics to support your immune and digestive health* to keep you going strong. Sip Suja Organic Vibrant Probiotic anytime, anywhere. *As part of a balanced diet and healthy lifestyle","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -81,8 +81,8 @@ Calcium                   20mg                    2%
 Potassium                 120mg                   2%                       
 Vitamin C                 48mg                    50%                      
 Magnesium                 10mg                    2%                       
-","Purified Water, Organic Strawberry Puree, Organic Raspberry Puree, Organic Lemon Juice, Organic Honey, Organic Tart Cherry Concentrate, Probiotic Bacillus Coagulans Gbi-30 6086, Organic Stevia Leaf Extract Powder",,,,,,,,,,,,,,https://www.target.com/p/suja-vibrant-organic-probiotic-fruit-juice-12-fl-oz/-/A-51440013#lnk=sametab,2024-08-26T00:22:39.275939-04:00,OK
-22-6-BEV,United States,Target,,,Bolthouse Farms Green Goodness - 15.2 fl oz,,,Package Quantity: 1,Bolthouse,Beverages,Beverages,Juice & Cider,,,,,Calories: 240,240,Calories, 0grm,0%,,,,,,,,,,,,,,,Net weight: 15.2 fl oz (US),Net weight: 15.2 fl oz (US),Net weight: 15.2 fl oz (US),,"This perfect combination of apple, mango, kiwi and spinach are perfectly blended together for a delicious taste and a good source of antioxidant A and vitamin B12.","Nutrition Information
+","Purified Water, Organic Strawberry Puree, Organic Raspberry Puree, Organic Lemon Juice, Organic Honey, Organic Tart Cherry Concentrate, Probiotic Bacillus Coagulans Gbi-30 6086, Organic Stevia Leaf Extract Powder",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 859213005650,https://www.target.com/p/suja-vibrant-organic-probiotic-fruit-juice-12-fl-oz/-/A-51440013#lnk=sametab,2024-08-26T01:28:01.155451-04:00,OK
+22-6-BEV,United States,Target,,,Bolthouse Farms Green Goodness - 15.2 fl oz,,,Package Quantity: 1,Bolthouse,Beverages,Beverages,Juice & Cider,,15.2fl oz,15.2,fl oz,Calories: 240,240,Calories, 56grm,20%,,N/A, 0grm,0%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 15.2 fl oz (US),Net weight: 15.2 fl oz (US),Net weight: 15.2 fl oz (US),,"This perfect combination of apple, mango, kiwi and spinach are perfectly blended together for a delicious taste and a good source of antioxidant A and vitamin B12.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -98,8 +98,8 @@ Added Sugars              0grm                    0%
 Protein                   2grm                    0%                       
 Vitamin D                 1mcg                    6%                       
                                                                            
-","Pineapple Juice From Concentrate (Water, Pineapple Juice Concentrate), Apple Juice From Concentrate (Water, Apple Mune Concentrate), Mango Puree From Concentrate (Water, Mango Puree Concentrate), Banana Puree, Cucumber Juice From Concentrate (Water, Cucumber Juice Concentrate), Kiwi Puree, Contains 2% Or Less: Natural Flavors, Spirulina (Dried), Vitamin C (Ascorbic Acid), Green Tea (Dried), Spinach (Dried), Broccoli (Dried), Barley Grass (Dried), Wheatgrass (Dried), Garlic (Dried), Jerusalem Artichoke (Dried), Nova Scotia Dulse (Dried).",,,,,,,,,,,,,UPC: 071464240400,https://www.target.com/p/bolthouse-farms-green-goodness-15-2-fl-oz/-/A-13561429#lnk=sametab,2024-08-26T00:23:10.981505-04:00,OK
-22-7-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 12oz Bottle,"cold pressed, organic",,,Suja,Beverages,Beverages,Juice & Cider,,,,,Calories: 80,80,Calories, 0g,0%, 17g,,,,,,,,,,,,,Bottle,,,,,,"Nutrition Information
+","Pineapple Juice From Concentrate (Water, Pineapple Juice Concentrate), Apple Juice From Concentrate (Water, Apple Mune Concentrate), Mango Puree From Concentrate (Water, Mango Puree Concentrate), Banana Puree, Cucumber Juice From Concentrate (Water, Cucumber Juice Concentrate), Kiwi Puree, Contains 2% Or Less: Natural Flavors, Spirulina (Dried), Vitamin C (Ascorbic Acid), Green Tea (Dried), Spinach (Dried), Broccoli (Dried), Barley Grass (Dried), Wheatgrass (Dried), Garlic (Dried), Jerusalem Artichoke (Dried), Nova Scotia Dulse (Dried).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 071464240400,https://www.target.com/p/bolthouse-farms-green-goodness-15-2-fl-oz/-/A-13561429#lnk=sametab,2024-08-26T01:28:35.122113-04:00,OK
+22-7-BEV,United States,Target,,,Suja Organic Mighty Dozen Cold Pressed Juice Drink - 12oz Bottle,"cold pressed, organic",,Package Quantity: 1,Suja,Beverages,Beverages,Juice & Cider,,12oz,12,oz,Calories: 80,80,Calories, 17g,6%, 17g,, 0g,0%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,Net weight: 12.0 fl oz (US),Net weight: 12.0 fl oz (US),Net weight: 12.0 fl oz (US),,"Suja Organic Mighty Dozen is a little sweet, a little green and perfectly balanced. This 12 fl oz bottle of green juice will have you feeling mighty good and mighty healthy with 1.5 servings of fruit and vegetables per bottle. Full of organic cold pressed juice from fruits and vegetables with no added sugar, this green juice is an excellent source of vitamin K and a good source of vitamin C. Mighty Dozen blends 12 earthy green with green apple and a lemon and ginger zing for a vibrant organic juice. Sip Suja juice any time to give your body a nutrient boost.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -114,8 +114,8 @@ Vitamin C                 11mg                    10%
 Calcium                   40mg                    4%                       
 Potassium                 400mg                   8%                       
 Vitamin K                 28mcg                   25%                      
-","Ingredients: Organic Apple Juice, Organic Celery Juice, Organic Cucumber Juice, Organic Kale Juice, Organic Collard Greens Juice, Organic Lemon Juice, Organic Mint Tea (Purified Water, Organic Peppermint Tea Leaf, Organic Spearmint Tea Leaf), Organic Ginger Juice, Organic Spinach Juice, Organic Spirulina Powder, Organic Chlorella Powder, Organic Barley Grass Powder",,,,,,,,,,,,,,https://www.target.com/p/suja-organic-vegan-mighty-dozen-12oz/-/A-16978093#lnk=sametab,2024-08-26T00:23:32.653992-04:00,OK
-22-8-BEV,United States,Target,,,Capri Sun Pacific Cooler Juice Pack - 10pk/6 fl oz Pouches,,,,Capri,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 5grm,10%,,,,,,,,,,,,,,Pouches,,,,,,"Nutrition Information
+","Ingredients: Organic Apple Juice, Organic Celery Juice, Organic Cucumber Juice, Organic Kale Juice, Organic Collard Greens Juice, Organic Lemon Juice, Organic Mint Tea (Purified Water, Organic Peppermint Tea Leaf, Organic Spearmint Tea Leaf), Organic Ginger Juice, Organic Spinach Juice, Organic Spirulina Powder, Organic Chlorella Powder, Organic Barley Grass Powder",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 854208005080,https://www.target.com/p/suja-organic-vegan-mighty-dozen-12oz/-/A-16978093#lnk=sametab,2024-08-26T01:29:09.748737-04:00,OK
+22-8-BEV,United States,Target,,,Capri Sun Pacific Cooler Juice Pack - 10pk/6 fl oz Pouches,,,Package Quantity: 10,Capri,Beverages,Beverages,Juice & Cider,,10pk,10,pk,Calories: 35,35,Calories, 9grm,3%,,N/A, 5grm,10%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Pouches,Net weight: 60 fl oz (US),Net weight: 60 fl oz (US),Net weight: 60 fl oz (US),,"Capri Sun Naturally Flavored Pacific Cooler Mixed Fruit Juice Drink Blend offers an all natural drink option conveniently packaged for portability. Each juice pouch of ready to drink pacific cooler flavored beverage captures the sweet, juicy flavor of mixed fruit in a kid friendly drink. This 10 count juice box of mixed fruit drink pouches contains no artificial colors, flavors or preservatives and no high fructose corn syrup. That's what makes Capri Sun as epic as the kids who drink it. Each 6 fluid ounce mixed fruit single-serve pouch contains 30% less sugar than leading regular juice drinks (this product has 13 grams of sugar; while leading regular juice drinks have 20 grams of sugar per 6 fluid ounce serving). Skip the traditional juice boxes and enjoy flavorful fun made easy! This thirst-quenching drink for kids comes in 10 individual pouches with attached straws for convenience.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -125,8 +125,8 @@ Total Carbohydrate        9grm                    3%
 Total Sugars              8grm                    0%                       
 Added Sugars              5grm                    10%                      
 Protein                   0grm                    0%                       
-","Filtered Water; Sugar; Pear, Grape And Orange Juice Concentrates; Monk Fruit Concentrate; Citric Acid; Pineapple And Apple Juice Concentrates; Natural Flavor; Mushroom Extract (To Protect Quality).",,,,,,,,,,,,,,https://www.target.com/p/capri-sun-pacific-cooler-juice-pack-10pk-6-fl-oz-pouches/-/A-15041133#lnk=sametab,2024-08-26T00:23:53.787538-04:00,OK
-22-9-BEV,United States,Target,,,Capri Sun Fruit Punch - 10pk/60 fl oz,,fruit punch,,Capri,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 5grm,10%,,,,,,,,,,,,,,,,,,,,"Nutrition Information
+","Filtered Water; Sugar; Pear, Grape And Orange Juice Concentrates; Monk Fruit Concentrate; Citric Acid; Pineapple And Apple Juice Concentrates; Natural Flavor; Mushroom Extract (To Protect Quality).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 087684000953,https://www.target.com/p/capri-sun-pacific-cooler-juice-pack-10pk-6-fl-oz-pouches/-/A-15041133#lnk=sametab,2024-08-26T01:29:43.960102-04:00,OK
+22-9-BEV,United States,Target,,,Capri Sun Fruit Punch - 10pk/60 fl oz,,fruit punch,Package Quantity: 10,Capri,Beverages,Beverages,Juice & Cider,,10pk,10,pk,Calories: 35,35,Calories, 9grm,3%,,N/A, 5grm,10%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 60 fl oz (US),Net weight: 60 fl oz (US),Net weight: 60 fl oz (US),,"Capri Sun Naturally Flavored Fruit Punch Juice Drink Blend offers an all natural drink option conveniently packaged for portability. Each juice pouch of ready to drink fruit punch captures the sweet, juicy flavor of oranges, pineapples, apples, and other fruits in a kid friendly drink. This 10 count juice box of fruit punch drink pouches contains no artificial colors, flavors or preservatives and no high fructose corn syrup. That's what makes Capri Sun as epic as the kids who drink it. Each 6 fluid ounce fruit punch single-serve pouch contains 30% less sugar than leading regular juice drinks (this product has 13 grams of sugar; while leading regular juice drinks have 20 grams of sugar per 6 fluid ounce serving). Skip the traditional juice boxes and enjoy flavorful fun made easy! This thirst-quenching drink for kids comes in 10 individual pouches with attached straws for convenience.","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -136,8 +136,19 @@ Total Carbohydrate        9grm                    3%
 Total Sugars              8grm                    0%                       
 Added Sugars              5grm                    10%                      
 Protein                   0grm                    0%                       
-","Filtered Water; Sugar; Pear, Grape And Orange Juice Concentrates; Monk Fruit Concentrate; Citric Acid; Apple And Pineapple Juice Concentrates; Natural Flavor, Mushroom Extract (To Protect Quality).",,,,,,,,,,,,,,https://www.target.com/p/capri-sun-fruit-punch-10pk-60-fl-oz/-/A-15041132#lnk=sametab,2024-08-26T00:24:14.819232-04:00,OK
-22-10-BEV,United States,Target,,,Honest Kids Organic Apple Juice Drink - 8pk/6 fl oz Box,organic,apple,,Honest,Beverages,Beverages,Juice & Cider,,,,,Calories: 35,35,Calories, 0g,0%, 8g,,,,,,,,,,,,,Box,,,,,,"Nutrition Information
+","Filtered Water; Sugar; Pear, Grape And Orange Juice Concentrates; Monk Fruit Concentrate; Citric Acid; Apple And Pineapple Juice Concentrates; Natural Flavor, Mushroom Extract (To Protect Quality).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 087684001073,https://www.target.com/p/capri-sun-fruit-punch-10pk-60-fl-oz/-/A-15041132#lnk=sametab,2024-08-26T01:30:17.778370-04:00,OK
+22-10-BEV,United States,Target,,,Honest Kids Organic Apple Juice Drink - 8pk/6 fl oz Box,organic,apple,Package Quantity: 8,Honest,Beverages,Beverages,Juice & Cider,,8pk,8,pk,Calories: 35,35,Calories, 9g,3%, 8g,, 0g,0%,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Box,Net weight: 48 fl oz (US),Net weight: 48 fl oz (US),Net weight: 48 fl oz (US),,"Once upon a time, there was a delicious organic apple juice from Honest Kids called Appley Ever After. This refreshing beverage will leave your kids happy and satisfied, just like a classic storybook ending. Plus, it’s an excellent source of Vitamin C and it has no added sugar.
+
+Honest seeks to create and promote sustainable, great–tasting beverages with honesty and integrity, which means telling you exactly what’s in every beverage from the get-go.
+
+From the very beginning, Honest has been about something as simple as quenching thirst while being “Just a Tad Sweet.” And while our mission is now about more than just refreshment, we strive to fulfill that original promise with the same care and quality as we did back then.
+
+So, when you choose Honest, you choose a drink that makes a difference. Picking up a juice box means promoting wellness, and a commitment to making sure better options are available to all. Honest strives to deliver on this and its other missions—like democratizing organic ingredients—just like it delivers on high-quality lemonades, teas and juices.
+
+We make our drinks the way you expect from a brand named Honest—organically. Whether you’re looking for the robust variety of our Honest Teas, the refreshing tartness of our Honest Lemonades, or our fun and flavorful Honest Kids juice drinks, Honest has something for the whole family to enjoy.
+
+Refreshingly yours,
+The Honest Tea-m","Nutrition Information
 ===========================================================================
 Nutrient                 amount                   daily_value              
 ---------------------------------------------------------------------------
@@ -148,317 +159,4 @@ Sugars                    8g
 Added Sugars              0g                      0%                       
 Protein                   0g                                               
 Vitamin C                                         70%                      
-","Filtered Water, Organic Apple Juice From Concentrate, Natural Flavors, Organic Natural Flavors, Vitamin C (Ascorbic Acid), Citric Acid (Provides Tartness).",,,,,,,,,,,,,,https://www.target.com/p/honest-kids-organic-apple-juice-drink-8pk-6-fl-oz-box/-/A-52270091#lnk=sametab,2024-08-26T00:24:36.034748-04:00,OK
-22-11-BEV,United States,Target,,,Minute Maid Fruit Punch Juice - 59 fl oz,,fruit punch,Package Quantity: 1,Minute,Beverages,Beverages,Juice & Cider,,,,,Calories: 80,80,Calories, 20grm,40%,,,,,,,,,,,,,,,Net weight: 59 fl oz (US),Net weight: 59 fl oz (US),Net weight: 59 fl oz (US),,"From enjoying flavorful fruit punches as a kid to providing your family with delicious fruit drinks as an adult, the Minute Maid brand has been bringing goodness to your family for 75 years. And Minute Maid fruit drinks and juices carry on the tradition of good.
-
-All our punches are filled with flavors that tickle your taste buds and have you ready for your next glass. These fruit drinks will satisfy your need for refreshment, and leave you pleased as punch. There is a variety of sizes available to you so you can enjoy the delicious goodness of Minute Maid fruit drinks on-the-go or at home.
-
-Minute Maid has prided itself for generations on providing quality products to families around the world. With more than 100 different flavors and varieties from 100% orange juice to 100% apple juice, and lemonades to punches, we use high quality ingredients to ensure you get delicious, quality juice and juice drinks.
-
-Delicious and refreshing juice beverages for the whole family. Now that sounds good.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Sodium                    15mg                    1%                       
-Total Carbohydrate        22grm                   8%                       
-Total Sugars              22grm                   0%                       
-Added Sugars              20grm                   40%                      
-Protein                   0grm                    0%                       
-","Filtered Water, High Fructose Corn Syrup, Grape And Pineapple Juices From Concentrate, Less Than 1% Of: Pear And Apple Juices From Concentrate, Natural Flavors, Citric Acid (Provides Tartness), Sucralose, Grape Skin Extract (For Color).",,,,,,,,,,,,,UPC: 025000047725,https://www.target.com/p/minute-maid-fruit-punch-juice-59-fl-oz/-/A-13345476#lnk=sametab,2024-08-26T00:57:19.751401-04:00,OK
-22-12-BEV,United States,Target,,,Martinelli's Gold Medal Sparkling Cider -25.4 fl oz Glass Bottles,sparkling,,Package Quantity: 1,Martinelli's,Beverages,Beverages,Juice & Cider,,,,,Calories: 140,140,Calories, 0g,0%, 31g,,,,,,,,,,,,,Glass,Net weight: 25.4 fl oz (US),Net weight: 25.4 fl oz (US),Net weight: 25.4 fl oz (US),,"Martinelli's Gold Medal Sparkling Cider has been an American Classic since 1868. Made from the finest varieties of US Grown fresh apples that are picked, pressed and pasteurized for a crisp and refreshing taste. It is delightfully non-alcoholic and can be enjoyed by everyone in the family. Whether you are celebrating holidays, birthdays, anniversaries, graduations, baby showers or everyday special moments, make sure to have plenty of Martinelli's Sparkling Cider.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Saturated Fat             0g                      0%                       
-Trans Fat                 0g                                               
-Cholesterol               0mg                     0%                       
-Sodium                    0mg                     0%                       
-Total Carbohydrate        35g                     13%                      
-Dietary Fiber             0g                      0%                       
-Sugars                    31g                                              
-Added Sugars              0g                      0%                       
-Protein                   1g                                               
-Vitamin D                 0mcg                    0%                       
-                                                                           
-","Pasteurized 100% Carbonated Apple Juice From U.S. Grown Fresh Apples, Vitamin C. No Water Or Alcohol, No Concentrates, No Sweeteners Or Chemical Preservatives. Natural Sediment May Occur.",,,,,,,,,,,,,UPC: 04124467,https://www.target.com/p/martinelli-s-gold-medal-sparkling-cider-25-4-fl-oz-glass-bottles/-/A-14753150#lnk=sametab,2024-08-26T00:57:57.507256-04:00,OK
-22-13-BEV,United States,Target,,,Simply Orange Pulp Free Juice - 52 fl oz,,orange,Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,,,,Calories: 110,110,Calories, 0grm,0%,,,,,,,,,,,,,,,Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),,"For Simply Orange Pulp Free, we carefully select real, ripe oranges and turn them into a deliciously simple pulp-free orange juice. Not from concentrate, for a deliciously fresh-squeezed taste.
-
-Simple ingredients and the Simply “Fresh Taste Guarantee” make for a refreshing non-GMO orange juice you can enjoy with breakfast, lunch or any time in between. Simply Orange is 100% pure-squeezed pasteurized orange juice.
-
-Simply products start with great-tasting fruit and end with great-tasting fruit juices, fruit drinks and fruit smoothies. That’s because we believe the best things in life are made simply. And we hold everything—from Simply Fruit Punch to Simply Lemonade—to the same high standard with our “Fresh Taste Guarantee.” Whatever juice you’re looking for, the choice is simple.
-
-With Simply Orange Pulp Free, the difference is clear. Because with Simply, there’s nothing to hide.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Saturated Fat             0grm                    0%                       
-Trans Fat                 0grm                    0%                       
-Cholesterol               0mg                     0%                       
-Sodium                    0mg                     0%                       
-Total Carbohydrate        26grm                   9%                       
-Total Sugars              23grm                   0%                       
-Added Sugars              0grm                    0%                       
-Protein                   2grm                    0%                       
-Calcium                   20mg                    2%                       
-Potassium                 450mg                   10%                      
-",,,,,,,,,,,,,,UPC: 025000100000,https://www.target.com/p/simply-orange-pulp-free-juice-52-fl-oz/-/A-13183052#lnk=sametab,2024-08-26T00:58:41.435597-04:00,OK
-22-14-BEV,United States,Target,,,Martinelli's Sparkling Cider - 4pk/8.4 fl oz Mini Glass Bottles,sparkling,,Package Quantity: 4,Martinelli's,Beverages,Beverages,Juice & Cider,,,,,Calories: 150,150,Calories, 0g,0%, 33g,,,,,,,,,,,,,Mini,Net weight: 33.6 fl oz (US),Net weight: 33.6 fl oz (US),Net weight: 33.6 fl oz (US),,Raise your champagne glass with the fun and delicious taste of Martinelli's Sparkling Cider. This four-pack of little mini bottles has bubbles like champagne but none of the alcohol. The crisp apple cider flavor is something every member of the family can enjoy. Chill the cider before serving for the best flavor.,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Saturated Fat             0g                      0%                       
-Trans Fat                 0g                                               
-Cholesterol               0mg                     0%                       
-Sodium                    0mg                     0%                       
-Total Carbohydrate        37g                     13%                      
-Dietary Fiber             0g                      0%                       
-Sugars                    33g                                              
-Added Sugars              0g                      0%                       
-Protein                   1g                                               
-Vitamin D                 0mcg                    0%                       
-                                                                           
-","Pasteurized 100% Carbonated Apple Juice From U.S. Grown Fresh Apples, Vitamin C",,,,,,,,,,,,,UPC: 041244402502,https://www.target.com/p/martinelli-s-sparkling-cider-4pk-8-4-fl-oz-mini-glass-bottles/-/A-52635043#lnk=sametab,2024-08-26T00:59:15.527120-04:00,OK
-22-15-BEV,United States,Target,,,Simply Lemonade with Strawberry Juice - 52 fl oz,,"lemonade, strawberry",Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,,,,Calories: 110,110,Calories, 25grm,50%,,,,,,,,,,,,,,,Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),,"Our delicious lemonade is made simply, with natural ingredients and a delicate balance of sweet and sour. For Simply Lemonade with Strawberry, we added an extra twist—the sweet taste of strawberries. Delicious and refreshing, Simply Lemonade with Strawberry is a delightful, all-natural and non-GMO fruit juice beverage that tastes as close to homemade lemonade as you can get, all in one beautifully simple bottle. There are no surprises here. Just simple ingredients and a deliciously refreshing taste. One sip of this all-natural refreshment can take you right back to an ice-cold glass pitcher on a lazy summer afternoon or makeshift lemonade stands on quiet neighborhood streets. That’s because Simply Lemonade with Strawberry tastes as close to homemade as it gets. Be sure to try all Simply Lemonade flavors, like original Simply Lemonade, Simply Lemonade with Mango or Simply Lemonade with Raspberry. Simply products start with great-tasting fruit and end with great-tasting fruit juices, fruit drinks and fruit smoothies. That’s because we believe the best things in life are made simply. And we hold everything— from all-natural Simply Fruit Punch to Simply Lemonade—to the same high standard with our “Fresh Taste Guarantee.” Whatever juice or juice drink you’re looking for, the choice is simple. With Simply Lemonade with Strawberry, the difference is clear. Clear enough that you can see the all-natural ingredients inside. Because with Simply, there’s nothing to hide.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Sodium                    15mg                    1%                       
-Total Carbohydrate        27grm                   10%                      
-Total Sugars              26grm                   0%                       
-Added Sugars              25grm                   50%                      
-Protein                   0grm                    0%                       
-","Filtered Water, Cane Sugar, Lemon Juice, Strawberry Puree, Natural Flavors.",,,,,,,,,,,,,UPC: 025000040863,https://www.target.com/p/simply-lemonade-with-strawberry-juice-52-fl-oz/-/A-51624049#lnk=sametab,2024-08-26T00:59:49.424175-04:00,OK
-22-16-BEV,United States,Target,,,Simply Fruit Punch Juice Drink - 52 fl oz,,fruit punch,Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,,,,Calories: 100,100,Calories, 22grm,44%,,,,,,,,,,,,,,,Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),,"Refreshing blends of fruity flavors. The sweet and delicious taste of fruit punch. A fruit juice drink made simply, with natural flavors for deliciously simple taste. What more could you ask for? Simply Fruit Punch delivers on the delicious and fresh taste you want from a fruit juice drink without overcomplicating it. What you see is what you get. In fact, Simply juices and juice drinks always have the “Fresh Taste Guarantee.” Plus, it’s all-natural without GMOs. Simply Fruit Punch is made with the refreshing blend of pineapple, cherry and cranberry juice. It’s so packed with flavor, you’ll think you need more than one glass to contain it all. Simply Juice Drinks come in a variety of other flavors like Simply Peach, Simply Watermelon and Simply Pineapple, giving you a wide array of fruit flavors to choose from. With Simply Fruit Punch, the difference is clear. Clear enough that you can see the all-natural ingredients inside. Because with Simply, there’s nothing to hide.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Sodium                    15mg                    1%                       
-Total Carbohydrate        26grm                   9%                       
-Total Sugars              25grm                   0%                       
-Added Sugars              22grm                   44%                      
-Protein                   0grm                    0%                       
-","Pure Filtered Water, Cane Sugar, Pineapple, Cherry And Cranberry Juices, Lemon Juice (For Tartness), Cherry Puree, Natural Flavors.",,,,,,,,,,,,,UPC: 025000051791,https://www.target.com/p/simply-fruit-punch-juice-drink-52-fl-oz/-/A-17094344#lnk=sametab,2024-08-26T01:00:23.071783-04:00,OK
-22-17-BEV,United States,Target,,,Ocean Spray White Cran-Peach Juice Drink - 64 fl oz Bottle,,peach,Package Quantity: 1,Ocean,Beverages,Beverages,Juice & Cider,,,,,Calories: 100,100,Calories, 28g,9%, 26g,,,,,,,,,,,,,,Net weight: 64 fl oz (US),Net weight: 64 fl oz (US),Net weight: 64 fl oz (US),,"Sweeten the moment with Ocean Spray® White Cran-Peach Juice Drink. Light and refreshing. Crisp and bold. This fruit juice beverage packs a day's worth of vitamin C in one serving. Enjoy the sweet, tasty flavor of white cranberry juice and peach juice concentrate. Did we mention Ocean Spray® White Cran-Peach Juice Drink is made with no high fructose corn syrup? Use this cranberry juice drink as a cocktail mixer for elevated drinks. It makes a unique addition to blended beverages and ice pops, too. Go ahead and get creative.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Calories From Fat         0kcal                                            
-Total Fat                 0g                      0%                       
-Sodium                    40mg                    2%                       
-Total Carbohydrate        28g                     9%                       
-Sugars                    26g                                              
-Protein                   0g                                               
-Potassium                 15mg                    0%                       
-Vitamin C                 mg                      100%                     
-","Filtered Water, Sugar, Peach Juice (Water, Peach Juice Concentrate), Cranberry Juice (Water, Cranberry Juice Concentrate), Citric Acid, Natural Flavor, Grape Juice (Water, Grape Juice Concentrate), Sodium Citrate, Ascorbic Acid (Vitamin C)",,,,,,,,,,,,,UPC: 031200281319,https://www.target.com/p/ocean-spray-white-cran-peach-juice-drink-64-fl-oz-bottle/-/A-54343750#lnk=sametab,2024-08-26T01:00:57.146635-04:00,OK
-22-18-BEV,United States,Target,,,V8 Splash Berry Blend Juice - 64 fl oz Bottle,,berry,Package Quantity: 1,V8,Beverages,Beverages,Juice & Cider,,,,,Calories: 40,40,Calories, 9g,18%, 9g,,,,,,,,,,,,,Bottle,Net weight: 64.0 fl oz (US),Net weight: 64.0 fl oz (US),Net weight: 64.0 fl oz (US),,"Quench your thirst with the refreshing taste of V8 Splash Berry Blend Flavored Juice Beverage. This 5% juice blend is made from the concentrated juices of sweet potatoes and carrots with the natural flavors of strawberries, raspberries and blackberries for a tasty drink with a satisfying splash of delicious fruit flavor. V8 Splash Berry Blend juice beverage contains 25% less sugar than leading juice drink brands*, plus Antioxidant C and B Vitamins. It’s also gluten free and fat free with only 40 calories per serving. (*Per 8 fl oz: Leading shelf stable brands, 17g; Splash, 9g)","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Sodium                    15mg                    1%                       
-Total Carbohydrate        10g                     4%                       
-Sugars                    9g                                               
-Added Sugars              9g                      18%                      
-Protein                   0g                                               
-Vitamin C                 10mg                    10%                      
-Niacin                    1.6mg                   10%                      
-Vitamin B6                0.2mg                   10%                      
-Vitamin B12               0.24mcg                 10%                      
-","Water, Vegetable Juice (Water And Concentrated Juices Of Sweet Potatoes, Carrots), High Fructose Corn Syrup, Natural Flavoring, Citric Acid, Malic Acid, Vitamin C (Ascorbic Acid), Sucralose, Red 40 (For Color), Niacinamide (Vitamin B3), Licorice Root Extract (For Flavor), Pyridoxine Hydrochloride (Vitamin 86), Cyanocobalamin (Vitamin B12)",,,,,,,,,,,,,UPC: 051000127112,https://www.target.com/p/v8-splash-berry-blend-juice-64-fl-oz-bottle/-/A-13420444#lnk=sametab,2024-08-26T01:01:31.342863-04:00,OK
-22-19-BEV,United States,Target,,,Simply Lemonade - 52 fl oz,,lemonade,Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,,,,Calories: 110,110,Calories, 27grm,54%,,,,,,,,,,,,,,,Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),,"When you think of lemonade, your mind is immediately filled with images of fresh lemons, simple ingredients, cold glass pitchers, lemonade stands and hot summer days. And it’s easy to imagine why. Nothing can beat the taste of fresh lemonade.
-
-Which is why we made Simply Lemonade—so you can have that same perfect experience without the work. It’s the feeling you know and love that classic lemonade brings, captured and bottled perfectly. Made with real lemon juice and other all-natural ingredients, it’s everything you love about lemonade—minus the inconvenience of having to make it yourself.
-
-And while that homemade lemonade taste is no doubt both delicious and nostalgic, Simply Lemonade also comes in Blueberry, Raspberry and Strawberry flavors for when you need to satisfy a different kind of taste. Perfect and unapologetic blends of sweet and sour means you’ll never get tired of the all-natural drink that’s truly been tried and tested.
-
-With Simply Lemonade, the difference is clear. Clear enough that you can see the all-natural ingredients inside. Because with Simply, there’s nothing to hide.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Sodium                    20mg                    1%                       
-Total Carbohydrate        29grm                   11%                      
-Total Sugars              27grm                   0%                       
-Added Sugars              27grm                   54%                      
-Protein                   0grm                    0%                       
-","Filtered Water, Lemon Juice, Cane Sugar, Natural Flavors.",,,,,,,,,,,,,UPC: 025000044984,https://www.target.com/p/simply-lemonade-52-fl-oz/-/A-13183166#lnk=sametab,2024-08-26T01:02:05.245616-04:00,OK
-22-20-BEV,United States,Target,,,Simply Watermelon Juice Drink - 52 fl oz,,watermelon,Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,,,,Calories: 90,90,Calories, 20g,41%, 21g,,,,,,,,,,,,,,Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),,"Refreshing blends of fruity flavors. The sweet and delicious taste of watermelon. A fruit juice drink made simply, with natural flavors for deliciously simple taste. What more could you ask for? Simply Watermelon delivers on the delicious and fresh taste you want from a fruit juice drink without overcomplicating it. What you see is what you get. In fact, Simply juices and juice drinks always have the “Fresh Taste Guarantee.” Plus, it’s all-natural without GMOs. Simply Watermelon takes the delightful flavor and tastiness of sliced watermelon and delivers it in a juice drink that’s sure to refresh anyone. With such a light and fresh watermelon taste, it’s a perfect way to sweeten your day all year long, no matter where you are or what time of day it is. Simply Juice Drinks come in a variety of other flavors like Simply Peach, Simply Fruit Punch and Simply Pineapple, giving you a wide array of fruit flavors to choose from. With Simply Watermelon, the difference is clear. Clear enough that you can see the all-natural ingredients inside. Because with Simply, there’s nothing to hide.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Sodium                    15mg                    1%                       
-Total Carbohydrate        23g                     9%                       
-Sugars                    21g                                              
-Added Sugars              20g                     41%                      
-Protein                   0g                                               
-","Pure Filtered Water, Watermelon Juice, Cane Sugar, Lemon Juice (For Tartness), Cherry Juice, Natural Flavors",,,,,,,,,,,,,UPC: 025000102110,https://www.target.com/p/simply-watermelon-juice-drink-52-fl-oz/-/A-54254413#lnk=sametab,2024-08-26T01:02:42.689311-04:00,OK
-22-21-BEV,United States,Target,,,Pink Lemonade - 64 fl oz Bottle - Market Pantry™,,pink lemonade,Package Quantity: 1,Pink,Beverages,Beverages,Juice & Cider,,64FL OZ,64,FL OZ,Calories: 120,120,Calories, 28g,56%, 29g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Bottle,Net weight: 64 fl oz (US),Net weight: 64 fl oz (US),Net weight: 64 fl oz (US),,,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Saturated Fat             0g                      0%                       
-Trans Fat                 0g                                               
-Cholesterol               0mg                     0%                       
-Sodium                    30mg                    1%                       
-Total Carbohydrate        29g                     11%                      
-Dietary Fiber             0g                      0%                       
-Sugars                    29g                                              
-Added Sugars              28g                     56%                      
-Protein                   0g                                               
-Vitamin D                 0mcg                    0%                       
-                                                                           
-","Filtered Water, High Fructose Corn Syrup, Citric Acid, Lemon Juice Concentrate, Natural Flavors, Fruit Juice (For Color), Grape Skin Extract (Color).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 085239142530,https://www.target.com/p/pink-lemonade-64-fl-oz-bottle-market-pantry-8482/-/A-14589294#lnk=sametab,2024-08-26T01:08:44.615102-04:00,OK
-22-22-BEV,United States,Target,,,Simply Orange Pulp Free with Calcium & Vitamin D Juice - 52 fl oz,,orange,Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,52FL OZ,52,FL OZ,Calories: 110,110,Calories, 0g,0%, 23g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),,,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Sodium                    0mg                     0%                       
-Total Carbohydrate        26g                     9%                       
-Sugars                    23g                                              
-Added Sugars              0g                      0%                       
-Protein                   2g                                               
-Vitamin D                 2.5mcg                  15%                      
-Calcium                   350mg                   25%                      
-Potassium                 450mg                   10%                      
-Vitamin C                 mg                      90%                      
-Thiamin                   mg                      8%                       
-                                                                           
-","Orange Juice, Less Than 1% Of: Calcium Phosphate* And Calcium Lactate* (Calcium Sources), Vitamin D*, *Ingredients Not Found In Regular Orange Juice",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 025000044960,https://www.target.com/p/simply-orange-pulp-free-with-calcium-38-vitamin-d-juice-52-fl-oz/-/A-13183062#lnk=sametab,2024-08-26T01:09:18.408241-04:00,OK
-22-23-BEV,United States,Target,,,Simply Peach Juice Drink - 52 fl oz,,peach,Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,52FL OZ,52,FL OZ,Calories: 100,100,Calories, 21grm,42%,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),Net weight: 52 fl oz (US),,,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Sodium                    15mg                    1%                       
-Total Carbohydrate        26grm                   9%                       
-Total Sugars              25grm                   0%                       
-Added Sugars              21grm                   42%                      
-Protein                   0grm                    0%                       
-","Filtered Water, Peach Juice, Cane Sugar, Lemon Juice (For Tartness), Peach Puree, Natural Flavors.",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 025000040849,https://www.target.com/p/simply-peach-juice-drink-52-fl-oz/-/A-51623781#lnk=sametab,2024-08-26T01:10:03.651625-04:00,OK
-22-24-BEV,United States,Target,,,Simply Lemonade - 89 fl oz,,lemonade,Package Quantity: 1,Simply,Beverages,Beverages,Juice & Cider,,89FL OZ,89,FL OZ,Calories: 110,110,Calories, 27g,54%, 27g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 89 fl oz (US),Net weight: 89 fl oz (US),Net weight: 89 fl oz (US),,,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Sodium                    20mg                    1%                       
-Total Carbohydrate        29g                     11%                      
-Sugars                    27g                                              
-Added Sugars              27g                     54%                      
-Protein                   0g                                               
-","Filtered Water, Lemon Juice, Cane Sugar, Natural Flavors",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 025000134166,https://www.target.com/p/simply-lemonade-89-fl-oz/-/A-14729756#lnk=sametab,2024-08-26T01:10:37.105523-04:00,OK
-22-25-BEV,United States,Target,,,Simply Lemonade with Blueberry Juice - 52 fl oz,,"blueberry, lemonade",,Simply,Beverages,Beverages,Juice & Cider,,52FL OZ,52,FL OZ,Calories: 110,110,Calories, 26g,52%, 26g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,,,,,,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Sodium                    15mg                    1%                       
-Total Carbohydrate        28g                     10%                      
-Sugars                    26g                                              
-Added Sugars              26g                     52%                      
-Protein                   0g                                               
-","Contains Pure Filtered Water, Cane Sugar, Lemon Juice, Blueberry Puree, Natural Flavors.",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/simply-lemonade-with-blueberry-juice-52-fl-oz/-/A-14713529#lnk=sametab,2024-08-26T01:11:31.881775-04:00,OK
-22-26-BEV,United States,Target,,,Dole 100% Pineapple Juice - 6pk/6 fl oz Cans,,pineapple,,Dole,Beverages,Beverages,Juice & Cider,,6PK,6,PK,Calories: 100,100,Calories, 0g,0%, 22g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Cans,,,,,,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Saturated Fat             0g                      0%                       
-Trans Fat                 0g                                               
-Cholesterol               0mg                     0%                       
-Sodium                    0mg                     0%                       
-Total Carbohydrate        24g                     9%                       
-Dietary Fiber             0g                      0%                       
-Sugars                    22g                                              
-Added Sugars              0g                      0%                       
-Protein                   1g                                               
-Vitamin C                 58mg                    60%                      
-                                                                           
-",Ingredients: Pineapple Juice And Ascorbic Acid (Vitamin C).,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://www.target.com/p/dole-100-pineapple-juice-6pk-6-fl-oz-cans/-/A-54360393#lnk=sametab,2024-08-26T01:12:27.168648-04:00,OK
-22-27-BEV,United States,Target,,,Dole Orange Peach Mango Juice - 59 fl oz,,"mango, orange, peach",Package Quantity: 1,Dole,Beverages,Beverages,Juice & Cider,,59FL OZ,59,FL OZ,Calories: 120,120,Calories, 0grm,0%,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 59 fl oz (US),Net weight: 59 fl oz (US),Net weight: 59 fl oz (US),,,"Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Sodium                    10mg                    0%                       
-Total Carbohydrate        29grm                   11%                      
-Total Sugars              27grm                   0%                       
-Added Sugars              0grm                    0%                       
-Protein                   1grm                    0%                       
-Vitamin D                 0mcg                    0%                       
-Calcium                   20mg                    0%                       
-Potassium                 300mg                   6%                       
-Vitamin C                 60mg                    70%                      
-","Filtered Water, Apple Juice Concentrate, Orange Juice Concentrate, Clarified Pineapple Juice Concentrate, Peach Puree Concentrate, Grape Juice Concentrate, Mango Puree Concentrate, Citric Acid, Beta-Carotene (Color), Natural Flavors And Ascorbic Acid (Vitamin C).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 048500250129,https://www.target.com/p/dole-orange-peach-mango-juice-59-fl-oz/-/A-13193704#lnk=sametab,2024-08-26T01:13:11.570632-04:00,OK
-22-28-BEV,United States,Target,,,Dole Pineapple Mango Juice - 6pk/6 fl oz Cans,,"mango, pineapple",Package Quantity: 6,Dole,Beverages,Beverages,Juice & Cider,,6PK,6,PK,Calories: 100,100,Calories, 0g,0%, 24g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,Cans,Net weight: 36 fl oz (US),Net weight: 36 fl oz (US),Net weight: 36 fl oz (US),,"Dole(R) 100% Pineapple Mango Juice cans offer a tropical, sweet blend of pineapple and mango that invigorates your senses with every sip. We've squeezed the fruit. Now all you do is pull the tab for delicious nutrition!","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Saturated Fat             0g                      0%                       
-Trans Fat                 0g                                               
-Cholesterol               0mg                     0%                       
-Sodium                    10mg                    0%                       
-Total Carbohydrate        24g                     9%                       
-Dietary Fiber             0g                      0%                       
-Sugars                    24g                                              
-Added Sugars              0g                      0%                       
-Protein                   1g                                               
-Vitamin D                 0mcg                    0%                       
-                                                                           
-","Pineapple Juice From Concentrate (Water, Pineapple Juice Concentrate), Clarified Pineapple Juice From Concentrate (Water, Clarified Pineapple Juice Concentrate), Mango Puree, Lemon Juice From Concentrate (Water, Lemon Juice Concentrate), Natural Flavors",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 038900009465,https://www.target.com/p/dole-pineapple-mango-juice-6pk-6-fl-oz-cans/-/A-89934308#lnk=sametab,2024-08-26T01:13:47.570149-04:00,OK
-22-29-BEV,United States,Target,,,WTRMLN WTR Hydration Cold Pressed Juiced Watermelon Water - 12 fl oz,cold pressed,watermelon,Package Quantity: 1,WTRMLN,Beverages,Beverages,Juice & Cider,,12FL OZ,12,FL OZ,Calories: 70,70,Calories, 0g,0%, 17g,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 12 fl oz (US),Net weight: 12 fl oz (US),Net weight: 12 fl oz (US),,"WTRMLN WTR is on a mission to bring the many powers of the watermelon superfruit to all humans in a way that supports local communities and farmers. We believe that mother nature has all the answers, and we aim to bring what she gives us to market in the purest way possible without losing the natural nutrients. Sourcing our melons from small farmers, we cold press the rind and flesh, add a touch of filtered water, and a squeeze of lime juice, and bottle it. That’s it! With superior hydration benefits and delicious taste, WTRMLN WTR naturally contains electrolytes and antioxidants to keep you hydrated and rejuvenated in the best way. Drink it for workouts, as an afternoon pick-me-up, or just to stay hydrated throughout the day!
-
-WTRMLN WTR Original Cold Pressed Juiced Watermelon Water, 12 Oz:
-
-DELICIOUS ALTERNATIVE TO OTHER PLANT BASED WATERS: Like coconut water, WTRMLN WTR is naturally low in sugar (45% less than leading juices), and packed with natural electrolytes, antioxidants and vitamins. But nothing beats the juicy taste of watermelon, and other waters lack the natural Lycopene and L-citrulline found in our tasty beverage. It's nature's perfect sports drink.
-
-GOOD FOR YOU: Each bottle of this superfruit juice is bursting with natural electrolytes, antioxidants and vitamins. How much? More electrolytes and 6x the potassium than leading sports drinks! Plus WTRMLN WTR has two special ingredients: Lycopene and L-citrulline, to make your muscles happy.
-
-NO BAD STUFF: No added sugar, sweeteners, artificial flavors or colors.
-
-MADE COLD, SHIPPED COLD, KEEP COLD: We thoughtfully cold press our watermelons in order to maintain the nutrient efficacy, since heating for pasteurization can destroy them. The extra care is worth to ensure we are bringing the best in taste and quality to you.
-
-GREAT SOLO OR AT A PARTY: WTRMLN WTR is delicious on its own, and is also great in smoothies, mocktail and cocktail recipes. Also a great rehydrator for the morning after!
-
-MELONS WITH A MISSION: We source as many 'ugly melons' as we can, that are juicy and delicious on the inside but a little lumpy or bumpy on the outside, saving them from landfills while supporting American and Dominican Republican farmers.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0g                      0%                       
-Sodium                    3mg                     0%                       
-Total Carbohydrate        18g                     7%                       
-Dietary Fiber             1g                      4%                       
-Sugars                    17g                                              
-Added Sugars              0g                      0%                       
-Protein                   2g                                               
-Iron                      0.7mg                   4%                       
-Vitamin C                 12mg                    13%                      
-Calcium                   20mg                    2%                       
-Potassium                 355mg                   8%                       
-                                                                           
-","Ingredients: Watermelon Juice, Filtered Water, Lemon Juice",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 852921005004,https://www.target.com/p/wtrmln-wtr-hydration-cold-pressed-juiced-watermelon-water-12-fl-oz/-/A-51486039#lnk=sametab,2024-08-26T01:14:21.973731-04:00,OK
-22-30-BEV,United States,Target,,,Tropicana Pure Premium No Pulp Orange Juice - 89 fl oz,premium,orange,Package Quantity: 1,Tropicana,Beverages,Beverages,Juice & Cider,,89FL OZ,89,FL OZ,Calories: 110,110,Calories, 0grm,0%,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,Net weight: 89 fl oz (US),Net weight: 89 fl oz (US),Net weight: 89 fl oz (US),,"There’s something about Tropicana that just makes you want to smile. Maybe it’s the sweet juicy taste, the bright color, or maybe because it reminds you of the breakfast table from your childhood. No matter why you love it, bringing you the goodness of juice is Tropicana’s passion. A passion we’ve enjoyed and have been dedicated to for nearly 70 years, because we know the better the taste, and the more nutritious, the bigger your smile.","Nutrition Information
-===========================================================================
-Nutrient                 amount                   daily_value              
----------------------------------------------------------------------------
-Total Fat                 0grm                    0%                       
-Sodium                    0mg                     0%                       
-Total Carbohydrate        26grm                   9%                       
-Total Sugars              22grm                   0%                       
-Added Sugars              0grm                    0%                       
-Protein                   2grm                    0%                       
-Vitamin D                 0mcg                    0%                       
-Calcium                   20mg                    2%                       
-Potassium                 450mg                   10%                      
-Vitamin C                 78mg                    90%                      
-",,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 048500018330,https://www.target.com/p/tropicana-pure-premium-no-pulp-orange-juice-89-fl-oz/-/A-13193659#lnk=sametab,2024-08-26T01:15:05.788180-04:00,OK
+","Filtered Water, Organic Apple Juice From Concentrate, Natural Flavors, Organic Natural Flavors, Vitamin C (Ascorbic Acid), Citric Acid (Provides Tartness).",N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,UPC: 657622741394,https://www.target.com/p/honest-kids-organic-apple-juice-drink-8pk-6-fl-oz-box/-/A-52270091#lnk=sametab,2024-08-26T01:30:52.012375-04:00,OK
