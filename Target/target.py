@@ -31,6 +31,15 @@ STORE_NAME = 'target'
 LOCATION = ''
 MAX_RETRY = 10
 
+def extract_city_and_region(address):
+    parts = address.split(', ')
+    if len(parts) >= 3:
+        city = parts[-3]
+        region = parts[-2].split()[0]
+        return [city, region]
+    else:
+        return ["Invalid", "Address"]
+
 
 def format_nutrition_label(nutrition_data):
     # Find all unique columns
@@ -391,6 +400,12 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     AddedSugars_pct_p100g = 'N/A'
     UPC = None
     Notes = 'OK'
+
+    global LOCATION
+    print(LOCATION)
+    result = extract_city_and_region(LOCATION)
+    City = result[0]
+    Region = result[1]
 
     for p_name in range(2):
         try:
@@ -767,8 +782,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                 elif bold_element and "UPC" in i.text:
                     upc_div = div
         Netcontent_org = net_weight_div.text.strip()
-        Netcontent_unit = net_weight_div.text.strip()
-        Netcontent_val = net_weight_div.text.strip()
+        Netcontent_val = ''.join(char for char in net_weight_div.text.strip() if char.isdigit() or char == '.')
+        Netcontent_unit = ''.join(char for char in net_weight_div.text.strip() if not char.isdigit() and char != '.')
 
         Unitpp = pack_quant_div.text.strip()
         UPC = upc_div.text.strip()
@@ -837,4 +852,4 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         'DataCaptureTimeStamp': datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(),
         'Notes': Notes
     }
-    return (new_row)
+    return new_row
