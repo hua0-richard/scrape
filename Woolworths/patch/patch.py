@@ -1,4 +1,7 @@
 import pandas as pd
+
+output_dir = ''
+
 addresses = [
     ['50', "shop 1248/Cnr Park street &, George St, Sydney NSW 2000, Australia"],
     ['51', "Pakington Strand, 95/113 Pakington St, Geelong West VIC 3218, Australia"],
