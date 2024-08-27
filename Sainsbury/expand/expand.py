@@ -27,6 +27,10 @@ for index, row in raw_df.iterrows():
         print(row['item_label'])
         print('')
         print(nutrient_dict)
+        # case 1
+        # case 2
+        # case 3
+
     except:
         print(row['idx'])
         print('Error')
