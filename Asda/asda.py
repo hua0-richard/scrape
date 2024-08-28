@@ -5,6 +5,7 @@ import requests
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 import pandas as pd
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -93,53 +94,18 @@ def setup_asda(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
 
 
 def setLocation_asda(driver, address, EXPLICIT_WAIT_TIME):
-    global LOCATION
-    LOCATION = address
-    time.sleep(GEN_TIMEOUT)
-    try:
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        # reject_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-reject-all-handler")))
-        # reject_button.click()
-        None
-    except:
-        print('No Reject Cookies')
-
-    try:
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        # sign_in_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-auto-id="btnSign"]')))
-        # sign_in_button.click()
-        None
-    except:
-        print('Sign in')
-
-    try:
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        # email_input = wait.until(EC.visibility_of_element_located((By.ID, "userName")))
-        # email_input.send_keys('u2894478@gmail.com')
-        # time.sleep(GEN_TIMEOUT)
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)  # 10 seconds timeout
-        # password_input = wait.until(EC.presence_of_element_located((By.ID, "password")))
-        # password_input.send_keys("notme123!")
-        None
-    except:
-        print('Sigin in Flow')
-
-    input('Cloudflare Check and Signin')
-
-    try:
-        time.sleep(FAVNUM)
-    except:
-        print('None')
-
+    input('Manually Set Location')
     print('Set Location Complete')
 
 
-def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
+
+def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i in items
     # i[0] is url
     # i[1] is aisle
     items = []
     subaisles = []
+    subsubaisles = []
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
@@ -150,23 +116,76 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
 
         try:
             time.sleep(GEN_TIMEOUT)
-            categories_link = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "a[data-test='@web/Header/MainMenuLink'][aria-label='Categories']"))
-            )
-            categories_link.click()
-        except:
+            wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+            groceries_link = wait.until(EC.element_to_be_clickable(
+                (By.XPATH, "//span[contains(@class, 'navigation-menu__text') and contains(text(), 'Groceries')]")))
+            groceries_link.click()
+            time.sleep(GEN_TIMEOUT)
+            aisle_button = wait.until(EC.element_to_be_clickable(
+                (By.XPATH, f"//button[contains(@class, 'h-nav__item-button') and ./span[contains(text(), '{aisle}')]]")))
+            aisle_button.click()
+        except Exception as e:
             print('Failed to get Categories')
+            print(e)
 
         try:
             time.sleep(GEN_TIMEOUT)
-            grocery_span = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.visibility_of_element_located(
-                    (By.XPATH, "//span[contains(@class, 'styles_wrapper__YYaWP') and text()='Grocery']"))
-            )
-            grocery_span.click()
+            wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+            taxonomy_explore = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
+            links = taxonomy_explore.find_elements(By.CSS_SELECTOR, 'a.asda-btn.asda-btn--light.taxonomy-explore__item')
+            for link in links:
+                href = link.get_attribute('href')
+                subaisles.append(href)
+            print(subaisles)
         except:
-            print('Failed to get Grocery')
+            print('Failed to get sub aisles Page')
+
+        ## REMOVE
+        count = 0
+        try:
+            for s in subaisles:
+
+                ## REMOVE
+                count = count + 1
+                print ('inc')
+                if count > 3:
+                    print('out')
+                    break
+
+                driver.get(s)
+                time.sleep(GEN_TIMEOUT * 2)
+                wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+                taxonomy_explore = wait.until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
+                links = taxonomy_explore.find_elements(By.CSS_SELECTOR,'a.asda-btn.asda-btn--light.taxonomy-explore__item')
+                for element in links:
+                    href = element.get_attribute("href")
+                    subsubaisles.append(href)
+                print(subsubaisles)
+
+        except Exception as e:
+            print('Failed to get sub sub aisles')
+            print(e)
+
+        try:
+            print('sub sub aisles')
+            for s in subsubaisles:
+                time.sleep(GEN_TIMEOUT * 2)
+                driver.get(s)
+                list_items = driver.find_elements(By.CSS_SELECTOR, "ul.co-product-list__main-cntr > li.co-item")
+                for item in list_items:
+                    try:
+                        link = item.find_element(By.CSS_SELECTOR, "h3.co-product__title a")
+                        href = link.get_attribute("href")
+                        items.append(href)
+                    except Exception as e:
+                        print(f"Error extracting link: {e}")
+                print(items)
+        except Exception as e:
+            print('Failed to get items')
+            print(e)
+
+        time.sleep(FAVNUM)
 
         try:
             time.sleep(GEN_TIMEOUT)
