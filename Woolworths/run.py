@@ -11,7 +11,11 @@ def main():
 
     for _ in [
         #49,
-        50, 51, 52]:
+        # 50,
+        51,
+        # 52
+        ]:
+
         ind = _
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
@@ -28,8 +32,8 @@ def main():
 
         driver.get(url)
 
-        # woolworths.setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
-        woolworths.scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Drinks', ind=ind)
+        #woolworths.setup_woolworths(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
+        woolworths.scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Dairy, Eggs & Fridge', ind=ind)
 
         driver.quit()
 

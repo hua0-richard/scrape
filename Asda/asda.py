@@ -11,8 +11,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import urllib.request
 from bs4 import BeautifulSoup
-from PIL import Image
-import pytesseract
 
 # Special Package to scrap and aids in avoiding more stringent sites
 import undetected_chromedriver as uc
@@ -99,27 +97,30 @@ def setLocation_asda(driver, address, EXPLICIT_WAIT_TIME):
     LOCATION = address
     time.sleep(GEN_TIMEOUT)
     try:
-        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        reject_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-reject-all-handler")))
-        reject_button.click()
+        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+        # reject_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-reject-all-handler")))
+        # reject_button.click()
+        None
     except:
         print('No Reject Cookies')
 
     try:
-        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        sign_in_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-auto-id="btnSign"]')))
-        sign_in_button.click()
+        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+        # sign_in_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-auto-id="btnSign"]')))
+        # sign_in_button.click()
+        None
     except:
         print('Sign in')
 
     try:
-        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        email_input = wait.until(EC.visibility_of_element_located((By.ID, "userName")))
-        email_input.send_keys('u2894478@gmail.com')
-        time.sleep(GEN_TIMEOUT)
-        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)  # 10 seconds timeout
-        password_input = wait.until(EC.presence_of_element_located((By.ID, "password")))
-        password_input.send_keys("notme123!")
+        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+        # email_input = wait.until(EC.visibility_of_element_located((By.ID, "userName")))
+        # email_input.send_keys('u2894478@gmail.com')
+        # time.sleep(GEN_TIMEOUT)
+        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)  # 10 seconds timeout
+        # password_input = wait.until(EC.presence_of_element_located((By.ID, "password")))
+        # password_input.send_keys("notme123!")
+        None
     except:
         print('Sigin in Flow')
 

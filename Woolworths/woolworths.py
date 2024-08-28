@@ -338,7 +338,8 @@ def scrapeSite_woolworths(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=No
 
         for v in range(5):
             try:
-                time.sleep(GEN_TIMEOUT)
+
+                #time.sleep(GEN_TIMEOUT)
                 driver.get(item_url)
                 new_row = scrape_item(driver, aisle, item_url, 0.5, ind, item_index,
                                       items[item_index][1])
@@ -579,25 +580,25 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index, sub_ais
     except:
         print('Failed to get Main Image')
 
-    try:
-        images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
-
-        images_arr_src = [image.get_attribute('src') for image in images_arr]
-        ProductImages += ','.join(images_arr_src)
-
-        for index in range(len(images_arr_src)):
-            response = requests.get(images_arr_src[index])
-            if response.status_code == 200:
-                if not os.path.exists(f'output/images/{str(ind)}/{str(ID)}'):
-                    os.makedirs(f'output/images/{str(ind)}/{str(ID)}', exist_ok=True)
-                full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
-                with open(full_path, 'wb') as file:
-                    file.write(response.content)
-
-    except Exception as e:
-        print('Failed to get Additional Product Images')
-        print(e)
+    # try:
+    #     images_arr = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+    #         EC.presence_of_all_elements_located((By.CSS_SELECTOR, "img.thumbnail-image")))
+    #
+    #     images_arr_src = [image.get_attribute('src') for image in images_arr]
+    #     ProductImages += ','.join(images_arr_src)
+    #
+    #     for index in range(len(images_arr_src)):
+    #         response = requests.get(images_arr_src[index])
+    #         if response.status_code == 200:
+    #             if not os.path.exists(f'output/images/{str(ind)}/{str(ID)}'):
+    #                 os.makedirs(f'output/images/{str(ind)}/{str(ID)}', exist_ok=True)
+    #             full_path = 'output/images/' + str(ind) + '/' + str(ID) + '/' + str(ID) + '-' + str(index) + '.png'
+    #             with open(full_path, 'wb') as file:
+    #                 file.write(response.content)
+    #
+    # except Exception as e:
+    #     print('Failed to get Additional Product Images')
+    #     print(e)
 
     try:
         pattern = r'(\d+(?:\.\d+)?)\s*(L|ML|l|ml)'
