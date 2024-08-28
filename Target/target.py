@@ -245,9 +245,7 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                         else:
                             print("The specific <a> tag was not found.")
                     try:
-                        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                        driver.execute_script("window.scrollBy(0, arguments[0]);", -800)
-                        time.sleep(5)
+                        time.sleep(2)
                         outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
                             EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
                         next_button = outer_container.find_element(By.CSS_SELECTOR, 'button[data-test="next"]')
@@ -255,6 +253,9 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                         if is_disabled:
                             print('No Next')
                             break
+                        driver.execute_script("arguments[0].scrollIntoView();", next_button)
+                        driver.execute_script("window.scrollBy(0, -100);")
+                        time.sleep(3)
                         next_button.click()
                         print('Next Button Found')
                     except Exception as e:
