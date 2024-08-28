@@ -30,6 +30,7 @@ STORE_NAME = 'asda'
 LOCATION = ''
 MAX_RETRY = 10
 
+
 def extract_city_and_region(address):
     parts = address.split(', ')
     if len(parts) >= 3:
@@ -98,7 +99,6 @@ def setLocation_asda(driver, address, EXPLICIT_WAIT_TIME):
     print('Set Location Complete')
 
 
-
 def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i in items
     # i[0] is url
@@ -122,7 +122,8 @@ def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
             groceries_link.click()
             time.sleep(GEN_TIMEOUT)
             aisle_button = wait.until(EC.element_to_be_clickable(
-                (By.XPATH, f"//button[contains(@class, 'h-nav__item-button') and ./span[contains(text(), '{aisle}')]]")))
+                (
+                By.XPATH, f"//button[contains(@class, 'h-nav__item-button') and ./span[contains(text(), '{aisle}')]]")))
             aisle_button.click()
         except Exception as e:
             print('Failed to get Categories')
@@ -131,7 +132,8 @@ def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
         try:
             time.sleep(GEN_TIMEOUT)
             wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-            taxonomy_explore = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
+            taxonomy_explore = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
             links = taxonomy_explore.find_elements(By.CSS_SELECTOR, 'a.asda-btn.asda-btn--light.taxonomy-explore__item')
             for link in links:
                 href = link.get_attribute('href')
@@ -140,26 +142,23 @@ def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
         except:
             print('Failed to get sub aisles Page')
 
-        ## REMOVE
-        count = 0
         try:
             for s in subaisles:
-
-                ## REMOVE
-                count = count + 1
-                print ('inc')
-                if count > 3:
-                    print('out')
-                    break
-
                 driver.get(s)
-                time.sleep(GEN_TIMEOUT * 2)
-                wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-                taxonomy_explore = wait.until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
-                links = taxonomy_explore.find_elements(By.CSS_SELECTOR,'a.asda-btn.asda-btn--light.taxonomy-explore__item')
-                for element in links:
-                    href = element.get_attribute("href")
+                links = []
+                for q in range(5):
+                    try:
+                        time.sleep(GEN_TIMEOUT * 4)
+                        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+                        taxonomy_explore = wait.until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
+                        links = taxonomy_explore.find_elements(By.CSS_SELECTOR,
+                                                               'a.asda-btn.asda-btn--light.taxonomy-explore__item')
+                        break
+                    except Exception as e:
+                        print('Trying again subaisle... ')
+                for next_page in links:
+                    href = next_page.get_attribute("href")
                     subsubaisles.append(href)
                 print(subsubaisles)
 
@@ -172,97 +171,43 @@ def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
             for s in subsubaisles:
                 time.sleep(GEN_TIMEOUT * 2)
                 driver.get(s)
-                list_items = driver.find_elements(By.CSS_SELECTOR, "ul.co-product-list__main-cntr > li.co-item")
-                for item in list_items:
+                while True:
+                    time.sleep(GEN_TIMEOUT * 2)
+                    parent_element = driver.find_element(By.CSS_SELECTOR,
+                                                         'div.co-product-list[data-module-id="89f48dab-0e3f-4e2e-944e-add8f133a1f7"]')
+                    li_elements = parent_element.find_elements(By.CSS_SELECTOR, 'li.co-item')
+                    for li in li_elements:
+                        try:
+                            anchor = li.find_element(By.CSS_SELECTOR, 'a.co-product__anchor')
+                            href = anchor.get_attribute('href')
+                            items.append(href)
+                        except Exception as e:
+                            print(f"An error occurred:")
+                            print(e)
+                    print(items)
+                    print(f'items so far... {len(items)}')
+
                     try:
-                        link = item.find_element(By.CSS_SELECTOR, "h3.co-product__title a")
-                        href = link.get_attribute("href")
-                        items.append(href)
-                    except Exception as e:
-                        print(f"Error extracting link: {e}")
-                print(items)
+                        total_height = driver.execute_script("return document.body.scrollHeight")
+                        half_height = total_height // 2
+                        driver.execute_script(f"window.scrollTo(0, {half_height});")
+                        time.sleep(2)
+                        wait = WebDriverWait(driver, 5)
+                        next_page = wait.until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, 'a[data-auto-id="btnright"]')))
+                        driver.execute_script("arguments[0].scrollIntoView(true);", next_page)
+                        driver.execute_script("window.scrollBy(0, -200);")
+                        next_page.click()
+                        print('Found Next Page')
+                    except:
+                        print('No Next Page')
+                        break
+
         except Exception as e:
             print('Failed to get items')
             print(e)
 
-        time.sleep(FAVNUM)
-
-        try:
-            time.sleep(GEN_TIMEOUT)
-            aisle_span = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.visibility_of_element_located(
-                    (By.XPATH, f"//span[contains(@class, 'styles_wrapper__YYaWP') and text()='{aisle}']"))
-            )
-            aisle_span.click()
-        except:
-            print('Failed to get Aisle')
-
-        try:
-            time.sleep(GEN_TIMEOUT)
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-test='@web/component-header/CategoryLink']"))
-            )
-            category_links = driver.find_elements(By.CSS_SELECTOR, "a[data-test='@web/component-header/CategoryLink']")
-            print(len(category_links))
-            for link in category_links:
-                href = link.get_attribute("href")
-                if (href != 'https://www.target.com/c/coffee-beverages-grocery/-/N-4yi5p'):
-                    subaisles.append(href)
-        except:
-            print('Failed to get Aisle SubCategories')
-
-        try:
-            subaisles.pop(0)
-            for s in subaisles:
-                items = list(dict.fromkeys(items))
-                print(f'Items so far... {len(items)}')
-                driver.get(s)
-                print('start')
-                while True:
-
-                    # REMOVE LATER
-                    if (len(items) > 100):
-                        break
-                    # REMOVE LATER
-
-                    time.sleep(GEN_TIMEOUT * 4)
-                    # Wait for the product cards to be present
-                    products = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                        EC.presence_of_all_elements_located(
-                            (By.CLASS_NAME, "rLjwS"))
-                    )
-                    # Extract Links from Products
-                    for p in products:
-                        prod_html = p.get_attribute("outerHTML")
-                        soup = BeautifulSoup(prod_html, 'html.parser')
-                        a_tag = soup.find('a')
-                        if a_tag:
-                            href = a_tag['href']
-                            print(f"The href attribute is: https://www.target.com{href}")
-                            items.append(f"https://www.target.com{href}")
-                        else:
-                            print("The specific <a> tag was not found.")
-                    try:
-                        outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                            EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
-                        next_button = outer_container.find_element(By.CSS_SELECTOR, 'button[data-test="next"]')
-                        is_disabled = next_button.get_attribute("disabled") is not None
-                        if is_disabled:
-                            print('No Next')
-                            break
-                        next_button.click()
-                        print('Next Button Found')
-                    except Exception as e:
-                        print('Next Button Not Found')
-                        print(e)
-                        break
-
-        except Exception as e:
-            print('Failed to get Subaisles')
-            print(e)
-
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
-                                   encoding='utf-8-sig')
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
     df_data = pd.DataFrame()
@@ -675,7 +620,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Ingredients and/or Nutrition Label')
 
     try:
-        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-cf555beb-2.sFaVI')))
+        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-cf555beb-2.sFaVI')))
         ptags = containers_html.find_elements(By.TAG_NAME, "p")
         for p in ptags:
             btag = p.find_element(By.TAG_NAME, "b")
@@ -683,7 +629,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
             if (btag.text.strip() == 'Serving Size:'):
                 Servsize_portion_org = f'{btag.text.strip()} {ptag_text.strip()}'
                 Servsize_portion_val = ''.join(char for char in ptag_text if char.isdigit()).strip()
-                Servsize_portion_unit = ''.join(char for char in ptag_text if not char.isdigit()).strip().replace('.','')
+                Servsize_portion_unit = ''.join(char for char in ptag_text if not char.isdigit()).strip().replace('.',
+                                                                                                                  '')
                 None
             elif (btag.text.strip() == 'Serving Per Container:'):
                 Servings_cont = f'{btag.text.strip()} {ptag_text.strip()}'
@@ -693,7 +640,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Failed to get Servings')
 
     try:
-        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.h-padding-l-default')))
+        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'div.h-padding-l-default')))
         spans = containers_html.find_elements(By.TAG_NAME, "span")
         Cals_org_pp = f'{spans[0].text.strip()} {spans[1].text.strip()}'
         Cals_unit_pp = 'Calories'
@@ -717,7 +665,8 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         for _ in range(5):
             try:
                 details_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable(
-                    (By.XPATH, "//h3[contains(@class, 'sc-fe064f5c-0') and contains(@class, 'cJJgsH') and contains(@class, 'h-margin-b-none') and text()='Details']")
+                    (By.XPATH,
+                     "//h3[contains(@class, 'sc-fe064f5c-0') and contains(@class, 'cJJgsH') and contains(@class, 'h-margin-b-none') and text()='Details']")
                 ))
                 driver.execute_script("arguments[0].scrollIntoView(true);", details_element)
                 driver.execute_script("window.scrollBy(0, arguments[0]);", -200)
