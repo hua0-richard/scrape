@@ -99,64 +99,36 @@ def setLocation_asda(driver, address, EXPLICIT_WAIT_TIME):
     LOCATION = address
     time.sleep(GEN_TIMEOUT)
     try:
-        signin_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "span.sc-58ad44c0-3.kwbrXj.h-margin-r-x3"))
-        )
-        signin_button.click()
-        signin_button_v2 = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "span.sc-859e7637-0.hHZPQy"))
-        )
-        signin_button_v2.click()
-        input_username = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.ID, "username"))
-        )
-        input_username.send_keys('u2894478@gmail.com')
-        password_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.ID, "password"))
-        )
-        password_input.send_keys('notme123!')
-        submit_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.ID, "login"))
-        )
-        submit_button.click()
-        try:
-            print('Skip Link')
-            skip_link = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.sc-9306beff-0.sc-e6042511-0.dfqbQr.ibmrHV")))
-            skip_link.click()
-        except:
-            print('None')
+        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+        reject_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-reject-all-handler")))
+        reject_button.click()
     except:
-        print('Failed to sign in')
+        print('No Reject Cookies')
 
     try:
-        zip_code_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, 'span[data-test="@web/ZipCodeButton/ZipCodeNumber"]'))
-        )
-        zip_code_element.click()
-        print('Zip Code Button')
+        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+        sign_in_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-auto-id="btnSign"]')))
+        sign_in_button.click()
     except:
-        print('Failed to get Zip Code Button')
+        print('Sign in')
 
     try:
-        zip_code_input = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable((By.ID, "zip-code"))
-        )
-        zip_code_input.send_keys(Keys.BACKSPACE * 10)
+        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+        email_input = wait.until(EC.visibility_of_element_located((By.ID, "userName")))
+        email_input.send_keys('u2894478@gmail.com')
         time.sleep(GEN_TIMEOUT)
-        zip_code_input.send_keys('19131')
-        time.sleep(GEN_TIMEOUT)
+        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)  # 10 seconds timeout
+        password_input = wait.until(EC.presence_of_element_located((By.ID, "password")))
+        password_input.send_keys("notme123!")
     except:
-        print('Failed to input Zip Code')
+        print('Sigin in Flow')
+
+    input('Cloudflare Check and Signin')
 
     try:
-        update_button = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, "button[data-test='@web/LocationFlyout/UpdateLocationButton']"))
-        )
-        update_button.click()
+        time.sleep(FAVNUM)
     except:
-        print('Failed to Update Zip Code')
+        print('None')
 
     print('Set Location Complete')
 

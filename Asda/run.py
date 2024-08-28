@@ -2,7 +2,7 @@
 from selenium import webdriver as uc
 import undetected_chromedriver as uc
 import pandas as pd
-import target
+import asda
 
 def main():
     EXPLICIT_WAIT_TIME = 10
@@ -25,11 +25,8 @@ def main():
 
         driver.get(url)
 
-        # target.setup_target(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
-        # target.scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Beverages', ind=ind)
-        # target.scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Coffee', ind=ind)
-        # target.scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Wine, Beer & Liquor', ind=ind)
-        # target.scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Dairy', ind=ind)
+        asda.setup_asda(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
+        # asda.scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisle='Beverages', ind=ind)
 
         driver.quit()
 
