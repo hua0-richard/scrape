@@ -5,6 +5,7 @@ import requests
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 import pandas as pd
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
@@ -28,6 +29,7 @@ GEN_TIMEOUT = 6
 STORE_NAME = 'asda'
 LOCATION = ''
 MAX_RETRY = 10
+
 
 def extract_city_and_region(address):
     parts = address.split(', ')
@@ -93,53 +95,17 @@ def setup_asda(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
 
 
 def setLocation_asda(driver, address, EXPLICIT_WAIT_TIME):
-    global LOCATION
-    LOCATION = address
-    time.sleep(GEN_TIMEOUT)
-    try:
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        # reject_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-reject-all-handler")))
-        # reject_button.click()
-        None
-    except:
-        print('No Reject Cookies')
-
-    try:
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        # sign_in_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[data-auto-id="btnSign"]')))
-        # sign_in_button.click()
-        None
-    except:
-        print('Sign in')
-
-    try:
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
-        # email_input = wait.until(EC.visibility_of_element_located((By.ID, "userName")))
-        # email_input.send_keys('u2894478@gmail.com')
-        # time.sleep(GEN_TIMEOUT)
-        # wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)  # 10 seconds timeout
-        # password_input = wait.until(EC.presence_of_element_located((By.ID, "password")))
-        # password_input.send_keys("notme123!")
-        None
-    except:
-        print('Sigin in Flow')
-
-    input('Cloudflare Check and Signin')
-
-    try:
-        time.sleep(FAVNUM)
-    except:
-        print('None')
-
+    input('Manually Set Location')
     print('Set Location Complete')
 
 
-def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
+def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     # i in items
     # i[0] is url
     # i[1] is aisle
     items = []
     subaisles = []
+    subsubaisles = []
     # check for previous items
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
@@ -150,100 +116,98 @@ def scrapeSite_target(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
 
         try:
             time.sleep(GEN_TIMEOUT)
-            categories_link = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "a[data-test='@web/Header/MainMenuLink'][aria-label='Categories']"))
-            )
-            categories_link.click()
-        except:
+            wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+            groceries_link = wait.until(EC.element_to_be_clickable(
+                (By.XPATH, "//span[contains(@class, 'navigation-menu__text') and contains(text(), 'Groceries')]")))
+            groceries_link.click()
+            time.sleep(GEN_TIMEOUT)
+            aisle_button = wait.until(EC.element_to_be_clickable(
+                (
+                By.XPATH, f"//button[contains(@class, 'h-nav__item-button') and ./span[contains(text(), '{aisle}')]]")))
+            aisle_button.click()
+        except Exception as e:
             print('Failed to get Categories')
+            print(e)
 
         try:
             time.sleep(GEN_TIMEOUT)
-            grocery_span = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.visibility_of_element_located(
-                    (By.XPATH, "//span[contains(@class, 'styles_wrapper__YYaWP') and text()='Grocery']"))
-            )
-            grocery_span.click()
+            wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+            taxonomy_explore = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
+            links = taxonomy_explore.find_elements(By.CSS_SELECTOR, 'a.asda-btn.asda-btn--light.taxonomy-explore__item')
+            for link in links:
+                href = link.get_attribute('href')
+                subaisles.append(href)
+            print(subaisles)
         except:
-            print('Failed to get Grocery')
+            print('Failed to get sub aisles Page')
 
         try:
-            time.sleep(GEN_TIMEOUT)
-            aisle_span = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.visibility_of_element_located(
-                    (By.XPATH, f"//span[contains(@class, 'styles_wrapper__YYaWP') and text()='{aisle}']"))
-            )
-            aisle_span.click()
-        except:
-            print('Failed to get Aisle')
-
-        try:
-            time.sleep(GEN_TIMEOUT)
-            WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "a[data-test='@web/component-header/CategoryLink']"))
-            )
-            category_links = driver.find_elements(By.CSS_SELECTOR, "a[data-test='@web/component-header/CategoryLink']")
-            print(len(category_links))
-            for link in category_links:
-                href = link.get_attribute("href")
-                if (href != 'https://www.target.com/c/coffee-beverages-grocery/-/N-4yi5p'):
-                    subaisles.append(href)
-        except:
-            print('Failed to get Aisle SubCategories')
-
-        try:
-            subaisles.pop(0)
             for s in subaisles:
-                items = list(dict.fromkeys(items))
-                print(f'Items so far... {len(items)}')
                 driver.get(s)
-                print('start')
-                while True:
-
-                    # REMOVE LATER
-                    if (len(items) > 100):
-                        break
-                    # REMOVE LATER
-
-                    time.sleep(GEN_TIMEOUT * 4)
-                    # Wait for the product cards to be present
-                    products = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                        EC.presence_of_all_elements_located(
-                            (By.CLASS_NAME, "rLjwS"))
-                    )
-                    # Extract Links from Products
-                    for p in products:
-                        prod_html = p.get_attribute("outerHTML")
-                        soup = BeautifulSoup(prod_html, 'html.parser')
-                        a_tag = soup.find('a')
-                        if a_tag:
-                            href = a_tag['href']
-                            print(f"The href attribute is: https://www.target.com{href}")
-                            items.append(f"https://www.target.com{href}")
-                        else:
-                            print("The specific <a> tag was not found.")
+                links = []
+                for q in range(5):
                     try:
-                        outer_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                            EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test="pagination"]')))
-                        next_button = outer_container.find_element(By.CSS_SELECTOR, 'button[data-test="next"]')
-                        is_disabled = next_button.get_attribute("disabled") is not None
-                        if is_disabled:
-                            print('No Next')
-                            break
-                        next_button.click()
-                        print('Next Button Found')
+                        time.sleep(GEN_TIMEOUT * 4)
+                        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
+                        taxonomy_explore = wait.until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-auto-id="taxonomyExplore"]')))
+                        links = taxonomy_explore.find_elements(By.CSS_SELECTOR,
+                                                               'a.asda-btn.asda-btn--light.taxonomy-explore__item')
+                        break
                     except Exception as e:
-                        print('Next Button Not Found')
-                        print(e)
+                        print('Trying again subaisle... ')
+                for next_page in links:
+                    href = next_page.get_attribute("href")
+                    subsubaisles.append(href)
+                print(subsubaisles)
+
+        except Exception as e:
+            print('Failed to get sub sub aisles')
+            print(e)
+
+        try:
+            print('sub sub aisles')
+            for s in subsubaisles:
+                time.sleep(GEN_TIMEOUT * 2)
+                driver.get(s)
+                while True:
+                    time.sleep(GEN_TIMEOUT * 2)
+                    parent_element = driver.find_element(By.CSS_SELECTOR,
+                                                         'div.co-product-list[data-module-id="89f48dab-0e3f-4e2e-944e-add8f133a1f7"]')
+                    li_elements = parent_element.find_elements(By.CSS_SELECTOR, 'li.co-item')
+                    for li in li_elements:
+                        try:
+                            anchor = li.find_element(By.CSS_SELECTOR, 'a.co-product__anchor')
+                            href = anchor.get_attribute('href')
+                            items.append(href)
+                        except Exception as e:
+                            print(f"An error occurred:")
+                            print(e)
+                    print(items)
+                    print(f'items so far... {len(items)}')
+
+                    try:
+                        total_height = driver.execute_script("return document.body.scrollHeight")
+                        half_height = total_height // 2
+                        driver.execute_script(f"window.scrollTo(0, {half_height});")
+                        time.sleep(2)
+                        wait = WebDriverWait(driver, 5)
+                        next_page = wait.until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, 'a[data-auto-id="btnright"]')))
+                        driver.execute_script("arguments[0].scrollIntoView(true);", next_page)
+                        driver.execute_script("window.scrollBy(0, -200);")
+                        next_page.click()
+                        print('Found Next Page')
+                    except:
+                        print('No Next Page')
                         break
 
         except Exception as e:
-            print('Failed to get Subaisles')
+            print('Failed to get items')
             print(e)
 
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
-                                   encoding='utf-8-sig')
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
     df_data = pd.DataFrame()
@@ -372,6 +336,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     AddedSugars_g_p100g = 'N/A'
     AddedSugars_pct_p100g = 'N/A'
     UPC = None
+    ItemNum = None
     Notes = 'OK'
 
     global LOCATION
@@ -383,7 +348,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     for p_name in range(2):
         try:
             ProductName = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-                EC.visibility_of_element_located((By.ID, "pdp-product-title-id"))
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "h1.pdp-main-details__title"))
             ).text
             break
         except Exception as e:
@@ -396,373 +361,43 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     try:
         ProductBrand = ProductName.split()[0]
     except:
-        print('Failed to get Product Brand')
+        print('Brand Error')
 
     try:
-        breadcrumbs_container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-module-type='ProductDetailBreadcrumbs']"))
+        ItemNum = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "span.pdp-main-details__product-code"))).text
+    except:
+        print('ItemNum Error')
+
+    try:
+        parent_divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-cntr"))
         )
-        breadcrumb_links = breadcrumbs_container.find_elements(By.CSS_SELECTOR,
-                                                               "a[data-test='@web/Breadcrumbs/BreadcrumbLink']")
-        breadcrumb_texts = [link.text for link in breadcrumb_links]
-        breadcrumb_texts.pop(0)
-        breadcrumb_texts.pop(0)
-        if len(breadcrumb_texts) > 0:
-            ProductCategory = breadcrumb_texts.pop(0)
-        if len(breadcrumb_texts) > 0:
-            ProductSubCategory = breadcrumb_texts.pop(0)
-    except:
-        print('Failed to get Product Categories')
 
-    try:
-        gallery_section = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_element_located((By.ID, "PdpImageGallerySection"))
-        )
-        img_elements = gallery_section.find_elements(By.TAG_NAME, "img")
-        image_urls = [img.get_attribute("src") for img in img_elements]
-        if len(image_urls) > 0:
-            response = requests.get(image_urls[0])
-            if response.status_code == 200:
-                if not os.path.exists(f'output/images/{str(ind)}/'):
-                    os.makedirs(f'output/images/{str(ind)}/', exist_ok=True)
-                full_path = 'output/images/' + str(ind) + '/' + str(ID) + '-' + str(index) + '.png'
-                with open(full_path, 'wb') as file:
-                    file.write(response.content)
-                ProductImages = image_urls[0]
-            None
-    except:
-        print('Failed to get Product Images')
-
-    try:
-        size_pattern = r'(\d+(?:\.\d+)?)\s*(fl\s*oz|oz|ml|l|pk|pack)\b'
-        focus_string = ProductName.split('-')[1].strip()
-        Packsize_org = focus_string
-        match = re.search(size_pattern, focus_string, re.IGNORECASE)
-        if match:
-            volume = match.group(1)
-            unit = match.group(2).lower()
-            Containersize_org = f"{volume}{unit}"
-            Containersize_val = volume
-            Containersize_unit = unit
-    except:
-        print('Failed to get Container Size')
-
-    try:
-        focus_string = ProductName.split('-')[1].strip()
-        match = re.search(r'(\d+x\d+(?:\.\d+)?(?:ml|l|g|kg|fl oz))', focus_string, re.IGNORECASE)
-        if match:
-            full_quantity = match.group(1)
-            pack_size_match = re.search(r'(\d+)x', full_quantity)
-            if pack_size_match:
-                Unitpp = int(pack_size_match.group(1))
-                Packsize_org = f"{full_quantity}"
-    except:
-        print("Failed to get Packsize")
-
-    try:
-        pattern = r'\b(?:(\d+(?:\.\d+)?)\s*(?:fl\s*oz|oz|ml|l(?:iter)?s?|gal(?:lon)?s?|pt|qt|cup|tbsp|tsp|cl|dl|kg|g|lb|pint|quart))?\s*' \
-                  r'(bottles?|cans?|cartons?|boxe?s?|pouche?s?|sachets?|' \
-                  r'flasks?|jugs?|pitchers?|tetra\s?paks?|kegs?|barrels?|casks?|' \
-                  r'cups?|glass(?:es)?|mugs?|tumblers?|goblets?|steins?|' \
-                  r'canisters?|thermos(?:es)?|vacuum\s?flasks?|' \
-                  r'six-packs?|twelve-packs?|cases?|packs?|' \
-                  r'tins?|containers?|tubs?|packets?|' \
-                  r'single-serves?|multi-packs?|variety\s?packs?|' \
-                  r'miniatures?|minis?|nips?|shooters?|' \
-                  r'pints?|quarts?|gallons?|liters?|' \
-                  r'growlers?|crowlers?|howlers?|' \
-                  r'magnums?|jeroboams?|rehoboams?|methusela(?:hs?)?|' \
-                  r'salmanazars?|balthazars?|nebuchadnezzars?|' \
-                  r'melchiors?|solomons?|primats?|melchizedeks?|' \
-                  r'splits?|half\s?bottles?|standard\s?bottles?|double\s?magnums?|' \
-                  r'bags?-in-boxe?s?|beverage\s?dispensers?|soda\s?fountains?|' \
-                  r'kegerators?|draft\s?systems?|taps?|spouts?|nozzles?|' \
-                  r'straws?|lids?|caps?|corks?|stoppers?|seals?|' \
-                  r'wine\s?boxe?s?|beer\s?boxe?s?|soda\s?boxe?s?|juice\s?boxe?s?|' \
-                  r'aluminum\s?bottles?|plastic\s?bottles?|glass\s?bottles?|' \
-                  r'slim\s?cans?|tall\s?cans?|stubby\s?bottles?|longneck\s?bottles?|' \
-                  r'twist-off\s?caps?|pull-tabs?|pop-tops?|' \
-                  r'screw\s?caps?|crown\s?caps?|cork\s?closures?|' \
-                  r'sport\s?caps?|flip-tops?|push-pull\s?caps?|' \
-                  r'droppers?|pumps?|sprays?|misters?|atomizers?|' \
-                  r'wine\s?glass(?:es)?|champagne\s?flutes?|beer\s?glass(?:es)?|' \
-                  r'shot\s?glass(?:es)?|highball\s?glass(?:es)?|lowball\s?glass(?:es)?|' \
-                  r'collins\s?glass(?:es)?|martini\s?glass(?:es)?|margarita\s?glass(?:es)?|' \
-                  r'hurricane\s?glass(?:es)?|pilsner\s?glass(?:es)?|weizen\s?glass(?:es)?|' \
-                  r'snifters?|glencairns?|tulip\s?glass(?:es)?|' \
-                  r'coupe\s?glass(?:es)?|nick\s?and\s?nora\s?glass(?:es)?|' \
-                  r'rocks\s?glass(?:es)?|old\s?fashioned\s?glass(?:es)?|' \
-                  r'coffee\s?mugs?|tea\s?cups?|espresso\s?cups?|' \
-                  r'travel\s?mugs?|sippy\s?cups?|paper\s?cups?|' \
-                  r'red\s?solo\s?cups?|disposable\s?cups?|' \
-                  r'punch\s?bowls?|decanters?|carafes?|' \
-                  r'amphoras?|oak\s?barrels?|stainless\s?steel\s?tanks?|' \
-                  r'firkins?|pins?|tuns?|butts?|puncheons?|' \
-                  r'hogsheads?|barriques?|goon\s?bags?|' \
-                  r'beer\s?bottles?|wine\s?bottles?|liquor\s?bottles?|' \
-                  r'soda\s?bottles?|water\s?bottles?|juice\s?bottles?|' \
-                  r'energy\s?drink\s?cans?|seltzer\s?cans?|' \
-                  r'cocktail\s?shakers?|mixing\s?glass(?:es)?|' \
-                  r'water\s?coolers?|water\s?jugs?|dispensers?|' \
-                  r'soda\s?stream\s?bottles?|kombucha\s?bottles?|' \
-                  r'cold\s?brew\s?pitchers?|french\s?press(?:es)?|' \
-                  r'espresso\s?pods?|coffee\s?pods?|k-cups?|' \
-                  r'tea\s?bags?|loose\s?leaf\s?tins?|' \
-                  r'smoothie\s?bottles?|protein\s?shakers?|' \
-                  r'squeeze\s?bottles?|syrup\s?bottles?|' \
-                  r'boba\s?cups?|slushie\s?cups?|frozen\s?drink\s?cups?|' \
-                  r'wine\s?skins?|hip\s?flasks?|canteens?|' \
-                  r'hydration\s?packs?|water\s?bladders?)\b'
-
-        focus_string = ProductName.split('-')[1].strip()
-        print(focus_string)
-        match = re.search(pattern, focus_string, re.IGNORECASE)
-        if match:
-            Pack_type = match.group(2)
-    except:
-        print('Failed to find Pack Type')
-
-    try:
-        pattern = r'\b(zero\s?sugar|no\s?sugar|sugar\s?free|unsweetened|' \
-                  r'low\s?sugar|reduced\s?sugar|less\s?sugar|half\s?sugar|' \
-                  r'no\s?added\s?sugar|naturally\s?sweetened|artificially\s?sweetened|' \
-                  r'sweetened\s?with\s?stevia|aspartame\s?free|' \
-                  r'diet|light|lite|skinny|slim|' \
-                  r'low\s?calorie|calorie\s?free|zero\s?calorie|no\s?calorie|' \
-                  r'low\s?carb|no\s?carb|zero\s?carb|carb\s?free|' \
-                  r'keto\s?friendly|diabetic\s?friendly|' \
-                  r'decaf|caffeine\s?free|low\s?caffeine|' \
-                  r'regular|original|classic|traditional|' \
-                  r'extra\s?strong|strong|bold|intense|' \
-                  r'mild|smooth|mellow|light\s?roast|medium\s?roast|dark\s?roast|' \
-                  r'organic|non\s?gmo|all\s?natural|100%\s?natural|no\s?artificial|' \
-                  r'gluten\s?free|dairy\s?free|lactose\s?free|vegan|' \
-                  r'low\s?fat|fat\s?free|no\s?fat|skim|skimmed|' \
-                  r'full\s?fat|whole|creamy|rich|' \
-                  r'fortified|enriched|vitamin\s?enhanced|' \
-                  r'probiotic|prebiotic|gut\s?health|' \
-                  r'high\s?protein|protein\s?enriched|' \
-                  r'low\s?sodium|sodium\s?free|no\s?salt|salt\s?free|' \
-                  r'sparkling|carbonated|still|flat|' \
-                  r'flavored|unflavored|unsweetened|' \
-                  r'concentrate|from\s?concentrate|not\s?from\s?concentrate|' \
-                  r'fresh\s?squeezed|freshly\s?squeezed|cold\s?pressed|' \
-                  r'raw|unpasteurized|pasteurized|' \
-                  r'premium|luxury|gourmet|artisanal|craft|' \
-                  r'limited\s?edition|seasonal|special\s?edition|' \
-                  r'low\s?alcohol|non\s?alcoholic|alcohol\s?free|virgin|mocktail|' \
-                  r'sugar\s?alcohol|sugar\s?alcohols|' \
-                  r'high\s?fiber|fiber\s?enriched|' \
-                  r'antioxidant|superfood|nutrient\s?rich|' \
-                  r'energy|energizing|revitalizing|' \
-                  r'relaxing|calming|soothing|' \
-                  r'hydrating|isotonic|electrolyte|' \
-                  r'fermented|cultured|living|active|' \
-                  r'ultra\s?filtered|micro\s?filtered|nano\s?filtered|' \
-                  r'distilled|purified|spring|mineral|' \
-                  r'fair\s?trade|ethically\s?sourced|sustainably\s?sourced|' \
-                  r'local|imported|authentic|genuine)\b'
-
-        matches = re.findall(pattern, ProductName, re.IGNORECASE)
-        if matches:
-            ProductVariety = ", ".join(sorted(set(match.lower() for match in matches)))
-    except:
-        print('Failed to find Product Variety')
-
-    try:
-        pattern = r'\b(vanilla|chocolate|strawberry|raspberry|blueberry|blackberry|' \
-                  r'berry|mixed berry|wild berry|acai berry|goji berry|cranberry|' \
-                  r'apple|green apple|cinnamon apple|caramel apple|pear|peach|apricot|' \
-                  r'mango|pineapple|coconut|passion fruit|guava|papaya|lychee|' \
-                  r'orange|blood orange|tangerine|clementine|mandarin|grapefruit|' \
-                  r'lemon|lime|lemon-lime|key lime|cherry|black cherry|wild cherry|' \
-                  r'grape|white grape|concord grape|watermelon|honeydew|cantaloupe|' \
-                  r'kiwi|fig|pomegranate|dragonfruit|star fruit|jackfruit|durian|' \
-                  r'banana|plantain|avocado|almond|hazelnut|walnut|pecan|pistachio|' \
-                  r'peanut|cashew|macadamia|coffee|espresso|mocha|cappuccino|latte|' \
-                  r'caramel|butterscotch|toffee|cinnamon|nutmeg|ginger|turmeric|' \
-                  r'cardamom|clove|anise|licorice|fennel|mint|peppermint|spearmint|' \
-                  r'eucalyptus|lavender|rose|jasmine|hibiscus|chamomile|earl grey|' \
-                  r'bergamot|lemongrass|basil|rosemary|thyme|sage|oregano|' \
-                  r'green tea|black tea|white tea|oolong tea|pu-erh tea|rooibos|' \
-                  r'cola|root beer|cream soda|ginger ale|birch beer|sarsaparilla|' \
-                  r'bubblegum|cotton candy|marshmallow|toasted marshmallow|' \
-                  r'cookies and cream|cookie dough|birthday cake|red velvet|' \
-                  r'pumpkin spice|pumpkin pie|apple pie|pecan pie|key lime pie|' \
-                  r'cheesecake|tiramisu|creme brulee|custard|pudding|' \
-                  r'butter pecan|butter toffee|butterscotch ripple|' \
-                  r'salted caramel|sea salt caramel|dulce de leche|' \
-                  r'maple|maple syrup|honey|agave|molasses|brown sugar|' \
-                  r'vanilla bean|french vanilla|madagascar vanilla|' \
-                  r'dark chocolate|milk chocolate|white chocolate|cocoa|' \
-                  r'strawberries and cream|peaches and cream|berries and cream|' \
-                  r'tropical|tropical punch|fruit punch|citrus|citrus blend|' \
-                  r'melon|mixed melon|berry medley|forest fruits|' \
-                  r'blue raspberry|sour apple|sour cherry|sour patch|' \
-                  r'lemonade|pink lemonade|cherry lemonade|strawberry lemonade|' \
-                  r'iced tea|sweet tea|arnold palmer|' \
-                  r'horchata|tamarind|hibiscus|jamaica|' \
-                  r'pina colada|mojito|margarita|sangria|' \
-                  r'bubble tea|boba|taro|matcha|chai|masala chai|' \
-                  r'cucumber|celery|carrot|beet|tomato|' \
-                  r'vegetable|mixed vegetable|green vegetable|' \
-                  r'aloe vera|noni|acerola|guarana|yerba mate|' \
-                  r'bourbon vanilla|tahitian vanilla|mexican vanilla|' \
-                  r'dutch chocolate|swiss chocolate|belgian chocolate|' \
-                  r'neapolitan|spumoni|rocky road|' \
-                  r'unflavored|original|classic|traditional|' \
-                  r'mystery flavor|surprise flavor|limited edition flavor)\b'
-        matches = re.findall(pattern, ProductName, re.IGNORECASE)
-        if matches:
-            ProductFlavor = ", ".join(sorted(set(match.lower() for match in matches)))
-    except:
-        print('Failed to get Product Flavour')
-
-    try:
-        elements = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.h-margin-t-tight")))
-        nutrition_dict = {}
-        for element in elements:
-            spans = element.find_elements(By.TAG_NAME, "span")
-            if len(spans) >= 2:
-                nutrient_name = spans[0].find_element(By.TAG_NAME, "b").text.strip()
-                nutrient = spans[0].text.strip().replace(nutrient_name, '')
-                value = spans[1].text.strip()
-
-                nutrition_dict[nutrient_name] = {
-                    'amount': nutrient,
-                    'daily_value': value
-                }
-        print(nutrition_dict)
-
-        for key, value in nutrition_dict.items():
-            if key == 'Total Carbohydrate':
-                TotalCarb_g_pp = value['amount']
-                TotalCarb_pct_pp = value['daily_value']
-            elif key == 'Sugars':
-                TotalSugars_g_pp = value['amount']
-                TotalSugars_pct_pp = value['daily_value']
-            elif key == 'Total Sugars':
-                TotalSugars_g_pp = value['amount']
-                TotalSugars_pct_pp = value['daily_value']
-            elif key == 'Added Sugars':
-                AddedSugars_g_pp = value['amount']
-                AddedSugars_pct_pp = value['daily_value']
-
-        Nutr_label = format_nutrition_label(nutrition_dict)
-
-
-    except:
-        print('Failed to get Ingredients and/or Nutrition Label')
-
-    try:
-        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.sc-cf555beb-2.sFaVI')))
-        ptags = containers_html.find_elements(By.TAG_NAME, "p")
-        for p in ptags:
-            btag = p.find_element(By.TAG_NAME, "b")
-            ptag_text = p.text.replace(btag.text, '')
-            if (btag.text.strip() == 'Serving Size:'):
-                Servsize_portion_org = f'{btag.text.strip()} {ptag_text.strip()}'
-                Servsize_portion_val = ''.join(char for char in ptag_text if char.isdigit()).strip()
-                Servsize_portion_unit = ''.join(char for char in ptag_text if not char.isdigit()).strip().replace('.','')
+        for p in parent_divs:
+            try:
+                div_question = p.find_element(By.XPATH, ".//div[contains(text(), 'Net Content')]")
+                Containersize_org = p.find_element(By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-content").text
+                print(Containersize_org)
+            except:
                 None
-            elif (btag.text.strip() == 'Serving Per Container:'):
-                Servings_cont = f'{btag.text.strip()} {ptag_text.strip()}'
-            print(btag.text.strip())
-            print(ptag_text.strip())
-    except:
-        print('Failed to get Servings')
 
-    try:
-        containers_html = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.h-padding-l-default')))
-        spans = containers_html.find_elements(By.TAG_NAME, "span")
-        Cals_org_pp = f'{spans[0].text.strip()} {spans[1].text.strip()}'
-        Cals_unit_pp = 'Calories'
-        Cals_value_pp = spans[1].text.strip()
-        for s in spans:
-            print(s.text)
-
-    except:
-        print('Calories Error')
-
-    try:
-        h4_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located(
-            (By.XPATH, "//h4[contains(@class, 'sc-fe064f5c-0') and text()='Ingredients:']")))
-        parent_div = h4_element.find_element(By.XPATH, "..")
-        Ingredients = parent_div.find_element(By.TAG_NAME, "div").text.strip()
-    except:
-        print('Ingredients Error')
-
-    try:
-        time.sleep(GEN_TIMEOUT)
-        for _ in range(5):
             try:
-                details_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable(
-                    (By.XPATH, "//h3[contains(@class, 'sc-fe064f5c-0') and contains(@class, 'cJJgsH') and contains(@class, 'h-margin-b-none') and text()='Details']")
-                ))
-                driver.execute_script("arguments[0].scrollIntoView(true);", details_element)
-                driver.execute_script("window.scrollBy(0, arguments[0]);", -200)
-                time.sleep(1)
-                details_element.click()
-                break
-            except Exception as e:
-                print(f'Trying Again Description... Attempt {_}')
-                print(e)
-                time.sleep(1)
-        time.sleep(GEN_TIMEOUT)
-        description_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((
-            By.CSS_SELECTOR,
-            "div.h-margin-t-x2[data-test='item-details-description']"
-        )))
-        Description = description_element.text
-        print(Description)
-    except Exception as e:
-        Notes = 'ERR'
-        print('Description Error')
+                div_question = p.find_element(By.XPATH, ".//div[contains(text(), 'Ingredients')]")
+                Ingredients = p.find_element(By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-content").text
+                print(Ingredients)
+            except:
+                None
 
-    try:
-        for _ in range(5):
             try:
-                button_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.element_to_be_clickable((
-                    By.XPATH,
-                    "//button[contains(@class, 'styles_button__D8Xvn') and .//h3[contains(text(), 'Specifications')]]"
-                )))
-                driver.execute_script("arguments[0].scrollIntoView(true);", button_element)
-                driver.execute_script("window.scrollBy(0, arguments[0]);", -200)
-                time.sleep(1)
-                button_element.click()
-                break
-            except Exception as e:
-                print(f'Trying Again Description... Attempt {_}')
-                time.sleep(1)
-                print(e)
-        time.sleep(GEN_TIMEOUT)
-        container = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-test='item-details-specifications']"))
-        )
-        divs = container.find_elements(By.TAG_NAME, "div")
-        # More Specifications
-        net_weight_div = None
-        pack_quant_div = None
-        upc_div = None
-        for div in divs:
-            bold_element = div.find_elements(By.TAG_NAME, "b")
-            for i in bold_element:
-                if "Net weight:" in i.text:
-                    net_weight_div = div
-                elif bold_element and "Package Quantity:" in i.text:
-                    pack_quant_div = div
-                elif bold_element and "UPC" in i.text:
-                    upc_div = div
-        Netcontent_org = net_weight_div.text.strip()
-        Netcontent_val = ''.join(char for char in net_weight_div.text.strip() if char.isdigit() or char == '.')
-        Netcontent_unit = ''.join(char for char in net_weight_div.text.strip() if not char.isdigit() and char != '.')
+                div_question = p.find_element(By.XPATH, ".//div[contains(text(), 'Product Information')]")
+                Description = p.find_element(By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-content").text
+                print(Description)
+            except:
+                None
 
-        Unitpp = pack_quant_div.text.strip()
-        UPC = upc_div.text.strip()
     except:
-        Notes = 'ERR'
-        print('More Details Error')
+        print('Net Content Error')
+
 
     new_row = {
         'ID': ID,
@@ -818,7 +453,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         'Servings_cont': Servings_cont,
         'ProdType': 'N/A',
         'StorType': 'N/A',
-        'ItemNum': 'N/A',
+        'ItemNum': ItemNum,
         'SKU': 'N/A',
         'UPC': UPC,
         'url': item_url,
