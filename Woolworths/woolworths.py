@@ -1,27 +1,14 @@
 import glob
 import os
-import shutil
-
 import requests
-from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 import pandas as pd
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import urllib.request
 from bs4 import BeautifulSoup
-
-# Special Package to scrap and aids in avoiding more stringent sites
-import undetected_chromedriver as uc
-
 import time
 import datetime
 import pytz
-
-import random
-
 import re
 
 FAVNUM = 22222
