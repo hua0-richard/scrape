@@ -383,6 +383,10 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         Netcontent_val = net_content_value.text
         Netcontent_unit = net_content_value.text
 
+        Containersize_org = net_content_value.text
+        Containersize_unit = net_content_value.text
+        Containersize_val = net_content_value.text
+
     except:
         print('Net Content Error')
 
