@@ -11,6 +11,7 @@ def connect_to_existing_chrome(address, ind):
     driver = webdriver.Chrome(options=chrome_options)
 
     try:
+        print('Attempting to connect to existing chrome... ')
         current_url = driver.current_url
         print(f"Connected to Chrome. Current URL: {current_url}")
         print(f"Page title: {driver.title}")

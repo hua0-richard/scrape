@@ -1,2 +1,341 @@
 ID,Country,Store,Region,City,ProductName,ProductVariety,ProductFlavor,Unitpp,ProductBrand,ProductAisle,ProductCategory,ProductSubCategory,ProductImages,Containersize_org,Containersize_val,Containersize_unit,Cals_org_pp,Cals_value_pp,Cals_unit_pp,TotalCarb_g_pp,TotalCarb_pct_pp,TotalSugars_g_pp,TotalSugars_pct_pp,AddedSugars_g_pp,AddedSugars_pct_pp,Cals_value_p100g,Cals_unit_p100g,TotalCarb_g_p100g,TotalCarb_pct_p100g,TotalSugars_g_p100g,TotalSugars_pct_p100g,AddedSugars_g_p100g,AddedSugars_pct_p100g,Packsize_org,Pack_type,Netcontent_val,Netcontent_org,Netcontent_unit,Price,Description,Nutr_label,Ingredients,NutrInfo_org,Servsize_container_type_org,Servsize_container_type_val,Servsize_container_type_unit,Servsize_portion_org,Servsize_portion_val,Servsize_portion_unit,Servings_cont,ProdType,StorType,ItemNum,SKU,UPC,url,DataCaptureTimeStamp,Notes
-70-0-DRI,United States,Target,Address,Invalid,Pepsi Max Cans,,,,,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,,330 Millilitres,,,,,,N/A,N/A,N/A,N/A,,,,,N/A,N/A,N/A,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/pepsi-max-cans/910000201931,2024-08-28T17:24:47.760031-04:00,OK
+70-0-DRI,United Kingdom,ASDA,Address,Invalid,Pepsi Max Cans,,,,Pepsi,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,"Pepsi MAX is the fizz-popping, taste rocking, sugar free cola - bursting with taste and bold refreshment. The perfect drink for fun times together, at home or on the go!
+Maximum Taste, no sugar - The long lasting hit of caramel and vanilla and the intense taste of a regular Pepsi all with no sugar, for the best taste no compromise!
+Make meal times better with Pepsi MAX. Perfect for pizza nights in, BBQs and evening meals together with friends and family.
+Best served chilled or over ice for maximum refreshment.
+Thirsty for More? Why not try our great tasting flavoured cola variants. Available in Cherry, Lime and Mango - which one's your favourite?
+Key Features:
+• Maximum taste, no sugar
+• Low Calorie carbonated cola that has just 1 calorie per can
+• Suitable for vegetarians
+• 100% recyclable
+Delivered pack design may vary.","Serving sizes: Per 100ml, Per 330ml
+
+Energy:
+  Per 100ml - 2kJ/0.4kcal
+  Per 330ml - 7kJ/1kcal
+
+Fat:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Carbohydrate:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Protein:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Salt:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Pack contains 8 servings of 330ml:
+  Per 100ml - 
+  Per 330ml - 
+
+","Carbonated Water, Colour (E150d), Sweeteners (Aspartame, Acesulfame K), Acids (Phosphoric Acid, Citric Acid), Flavourings (Including Caffeine), Preservative (Potassium Sorbate)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 3111503,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/pepsi-max-cans/910000201931,2024-09-04T20:44:23.787849-04:00,OK
+70-1-DRI,United Kingdom,ASDA,Address,Invalid,Dr Pepper Zero 8 x 330ml,,,,Dr,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,"I don't know what it is, but I like it!
+For over a century, Dr Pepper's truly unique taste has been impossible to describe… a taste so misunderstood that's confusingly good. Grab it now, thank us later. Available with zero sugar and zero calories.
+So odd, so good, So MiSuNderStoOd®
+
+- Sparkling Low Calorie Fruit Flavour Soft Drink With Sweeteners.
+- Zero Sugar, Zero Calories
+
+Serve cold for maximum refreshment.
+
+Store in a cool and dry place
+
+Please recycle.","Serving sizes: Per 100ml, Per 330ml (%*)
+
+Energy:
+  Per 100ml - 2.1 kJ
+  Per 330ml (%*) - 7kJ
+
+Fat:
+  Per 100ml - 0g
+  Per 330ml (%*) - 0g (0%)
+
+Carbohydrate:
+  Per 100ml - 0g
+  Per 330ml (%*) - 0g (0%)
+
+Protein:
+  Per 100ml - 0g
+  Per 330ml (%*) - 0g (0%)
+
+Salt:
+  Per 100ml - 0g
+  Per 330ml (%*) - 0g (0%)
+
+","Carbonated Water, Colour (Caramel E150d), Flavourings including Caffeine, Acid (Phosphoric Acid), Sweeteners (Aspartame, Acesulfame K), Preservative (Potassium Sorbate)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 7304544,N/A,,https://groceries.asda.com/product/sugar-free-diet-flavoured-fizzy-drinks/dr-pepper-zero-8-x-330-ml/1000360714116,2024-09-04T20:44:36.309680-04:00,OK
+70-2-DRI,United Kingdom,ASDA,Address,Invalid,Fanta Orange 8 x 330ml,,,,Fanta,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,,"Serving sizes: 100 ml, 330 ml
+
+Energy:
+  100 ml - 11 kJ
+  330 ml - 36 kJ
+
+Fat:
+  100 ml - 0 g
+  330 ml - 0 g
+
+Carbohydrate:
+  100 ml - 0.4 g
+  330 ml - 1.3 g
+
+Protein:
+  100 ml - 0 g
+  330 ml - 0 g
+
+Salt:
+  100 ml - 0.01 g
+  330 ml - 0.03 g
+
+","Carbonated Water, Orange Juice from Concentrate (4%), Acids (Citric Acid, Malic Acid), Sweeteners (Cyclamates, Acesulfame-K, Sucralose, Steviol Glycosides from Stevia, Neohesperidine DC), Natural Orange Flavouring with Other Natural Flavourings, Preservative (Potassium Sorbate), Antioxidant (Ascorbic Acid), Stabiliser (Guar Gum), Colour (Carotenes)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 3111487,N/A,,https://groceries.asda.com/product/fanta/fanta-orange-8-x-330-ml/910000201384,2024-09-04T20:44:59.188765-04:00,OK
+70-3-DRI,United Kingdom,ASDA,Address,Invalid,Pepsi Max 2 Litres,,,,Pepsi,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,2 Litres,2 Litres,2 Litres,,"Pepsi MAX is the fizz-popping, taste rocking, sugar free cola - bursting with taste and bold refreshment. The perfect drink for fun times together, at home or on the go!
+Maximum Taste, no sugar - The long lasting hit of caramel and vanilla and the intense taste of a regular Pepsi all with no sugar, for the best taste no compromise!
+Make meal times better with Pepsi MAX. Perfect for pizza nights in, BBQs and evening meals together with friends and family.
+Best served chilled or over ice for maximum refreshment.
+Thirsty for More? Why not try our great tasting flavoured cola variants. Available in Cherry, Lime and Mango - which one's your favourite?
+Key Features:
+• Maximum taste, no sugar
+• Low Calorie carbonated cola that has just 1 calorie per can
+• Suitable for vegetarians
+• 100% recyclable
+Delivered pack design may vary.","Serving sizes: Per 100ml, Per 250ml
+
+Energy:
+  Per 100ml - 2kJ/0.4kcal
+  Per 250ml - 5kJ/1kcal
+
+Fat:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Carbohydrate:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Protein:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Salt:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Bottle contains 8 servings:
+  Per 100ml - 
+  Per 250ml - 
+
+","Carbonated Water, Colour (E150d), Sweeteners (Aspartame, Acesulfame K), Acids (Phosphoric Acid, Citric Acid), Flavourings (including Caffeine), Preservative (Potassium Sorbate)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 6620,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/pepsi-max-2-litres/19081,2024-09-04T20:45:11.659415-04:00,OK
+70-4-DRI,United Kingdom,ASDA,Address,Invalid,Diet Coke 2L,,,,Diet,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,2 Litres,2 Litres,2 Litres,,"Add some sparkle to your day without the sugar or calories, with a crisp, refreshing Diet Coke!","Serving sizes: 100 ml, 250 ml
+
+Energy:
+  100 ml - 1.6 kJ
+  250 ml - 4 kJ
+
+Fat:
+  100 ml - 0 g
+  250 ml - 0 g
+
+Carbohydrate:
+  100 ml - 0 g
+  250 ml - 0 g
+
+Protein:
+  100 ml - 0 g
+  250 ml - 0 g
+
+Salt:
+  100 ml - 0 g
+  250 ml - 0 g
+
+","Carbonated Water, Colour (Caramel E150d), Sweeteners (Aspartame, Acesulfame K), Natural Flavourings, Caffeine Flavouring, Acids (Phosphoric Acid, Citric Acid)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 6052006,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/diet-coke-2-l/1000027469746,2024-09-04T20:45:24.078934-04:00,OK
+70-5-DRI,United Kingdom,ASDA,Address,Invalid,Pepsi Max Cans,,,,Pepsi,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,"Pepsi MAX is the fizz-popping, taste rocking, sugar free cola - bursting with taste and bold refreshment. The perfect drink for fun times together, at home or on the go!
+Maximum Taste, no sugar - The long lasting hit of caramel and vanilla and the intense taste of a regular Pepsi all with no sugar, for the best taste no compromise!
+Make meal times better with Pepsi MAX. Perfect for pizza nights in, BBQs and evening meals together with friends and family.
+Best served chilled or over ice for maximum refreshment.
+Thirsty for More? Why not try our great tasting flavoured cola variants. Available in Cherry, Lime and Mango - which one's your favourite?
+Key Features:
+• Maximum taste, no sugar
+• Low Calorie carbonated cola that has just 1 calorie per can
+• Suitable for vegetarians
+• 100% recyclable
+Delivered pack design may vary.","Serving sizes: Per 100ml, Per 330ml
+
+Energy:
+  Per 100ml - 2kJ/0.4kcal
+  Per 330ml - 7kJ/1kcal
+
+Fat:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Carbohydrate:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Protein:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Salt:
+  Per 100ml - 0g
+  Per 330ml - 0g
+
+Pack contains 24 servings of 330ml:
+  Per 100ml - 
+  Per 330ml - 
+
+","Carbonated Water, Colour (E150d), Sweeteners (Aspartame, Acesulfame K), Acids (Phosphoric Acid, Citric Acid), Flavourings (Including Caffeine), Preservative (Potassium Sorbate)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 5934876,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/pepsi-max-cans/1000012279554,2024-09-04T20:45:36.619846-04:00,OK
+70-6-DRI,United Kingdom,ASDA,Address,Invalid,Sprite Zero 8 x 330ml,,,,Sprite,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,,"Serving sizes: 100 ml:, 330 ml (%*):
+
+Energy::
+  100 ml: - 5 kJ, 1 kcal
+  330 ml (%*): - 17 kJ (0%), 3 kcal (0%)
+
+Fat::
+  100 ml: - 0 g
+  330 ml (%*): - 0 g (0%)
+
+Carbohydrate::
+  100 ml: - 0 g
+  330 ml (%*): - 0 g (0%)
+
+Protein::
+  100 ml: - 0 g
+  330 ml (%*): - 0 g (0%)
+
+Salt::
+  100 ml: - 0.03 g
+  330 ml (%*): - 0.10 g (2%)
+
+Vitamins/Minerals:
+  100 ml: - 
+  330 ml (%*): - 
+
+Sodium::
+  100 ml: - 11.9 mg
+  330 ml (%*): - 39.27 mg (655%)
+
+","Carbonated Water, Acids (Citric Acid, Tartaric Acid), Acidity Regulator (Sodium Citrates), Sweeteners (Aspartame, Acesulfame-K, Sucralose), Natural Lemon, Lime Flavourings",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 3111497,N/A,,https://groceries.asda.com/product/sugar-free-diet-flavoured-fizzy-drinks/sprite-zero-8-x-330-ml/910000201590,2024-09-04T20:45:59.409927-04:00,OK
+70-7-DRI,United Kingdom,ASDA,Address,Invalid,Coca-Cola Zero Sugar 8 x 330ml,,,,Coca-Cola,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,,"Serving sizes: Per: 100ml, Per: 330ml (%*)
+
+Energy:
+  Per: 100ml - 1.3 kJ
+  Per: 330ml (%*) - 4 kJ
+
+Fat:
+  Per: 100ml - 0 g
+  Per: 330ml (%*) - 0 g (0%)
+
+Carbohydrate:
+  Per: 100ml - 0 g
+  Per: 330ml (%*) - 0 g (0%)
+
+Protein:
+  Per: 100ml - 0 g
+  Per: 330ml (%*) - 0 g (0%)
+
+Salt:
+  Per: 100ml - 0.01 g
+  Per: 330ml (%*) - 0.03 g (1%)
+
+Sodium:
+  Per: 100ml - 0.00515 g
+  Per: 330ml (%*) - 0.017 g (283%)
+
+","Carbonated Water, Colour (E150d), Acid (Phosphoric Acid), Sweeteners (Aspartame, Acesulfame-K, Enzymatically Produced Steviol Glycosides), Natural Flavourings, Caffeine Flavouring, Acidity Regulator (Sodium Citrates)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 2703451,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/coca-cola-zero-sugar-8-x-330-ml/80996825,2024-09-04T20:46:22.140399-04:00,OK
+70-8-DRI,United Kingdom,ASDA,Address,Invalid,Coca-Cola Zero Cherry 8 x 330ml,,,,Coca-Cola,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,,"Serving sizes: Per: 100 ml, Per: 330 ml
+
+Energy:
+  Per: 100 ml - 2.1 kJ
+  Per: 330 ml - 7 kJ
+
+Fat:
+  Per: 100 ml - 0 g
+  Per: 330 ml - 0 g
+
+Carbohydrate:
+  Per: 100 ml - 0 g
+  Per: 330 ml - 0 g
+
+Protein:
+  Per: 100 ml - 0 g
+  Per: 330 ml - 0 g
+
+Salt:
+  Per: 100 ml - 0.02 g
+  Per: 330 ml - 0.07 g
+
+","Carbonated Water, Colour (E 150d), Acid (Phosphoric Acid), Natural Flavourings, Sweeteners (Aspartame, Acesulfame K), Acidity Regulator (Sodium Citrates), Caffeine Flavouring",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 4226865,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/coca-cola-zero-cherry-8-x-330-ml/910001014588,2024-09-04T20:46:45.446970-04:00,OK
+70-9-DRI,United Kingdom,ASDA,Address,Invalid,Coca-Cola Zero Sugar 24 x 330ml,,,,Coca-Cola,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,330 Millilitres,330 Millilitres,330 Millilitres,,,"Serving sizes: Per: 100 ml, Per: 330 ml
+
+Energy:
+  Per: 100 ml - 1.3 kJ
+  Per: 330 ml - 4 kJ
+
+Fat:
+  Per: 100 ml - 0 g
+  Per: 330 ml - 0 g
+
+Carbohydrate:
+  Per: 100 ml - 0 g
+  Per: 330 ml - 0 g
+
+Protein:
+  Per: 100 ml - 0 g
+  Per: 330 ml - 0 g
+
+Salt:
+  Per: 100 ml - 0.01 g
+  Per: 330 ml - 0.03 g
+
+Per::
+  Per: 100 ml - 100 ml
+  Per: 330 ml - 330 ml
+
+Sodium:
+  Per: 100 ml - 0.00515 g
+  Per: 330 ml - 0.017 g
+
+","Carbonated Water, Colour (E150d), Acid (Phosphoric Acid), Sweeteners (Aspartame, Acesulfame-K, Enzymatically Produced Steviol Glycosides), Natural Flavourings, Caffeine Flavouring, Acidity Regulator (Sodium Citrates)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 5003175,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/coca-cola-zero-sugar-24-x-330-ml/910001761676,2024-09-04T20:47:08.349934-04:00,OK
+70-10-DRI,United Kingdom,ASDA,Address,Invalid,Pepsi Max 1.25 Litres,,,,Pepsi,Drinks,,,,,,,,,,,N/A,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,,,1.25 Litres,1.25 Litres,1.25 Litres,,"Pepsi MAX is the fizz-popping, taste rocking, sugar free cola - bursting with taste and bold refreshment. The perfect drink for fun times together, at home or on the go!
+Maximum Taste, no sugar - The long lasting hit of caramel and vanilla and the intense taste of a regular Pepsi all with no sugar, for the best taste no compromise!
+Make meal times better with Pepsi MAX. Perfect for pizza nights in, BBQs and evening meals together with friends and family.
+Best served chilled or over ice for maximum refreshment.
+Thirsty for More? Why not try our great tasting flavoured cola variants. Available in Cherry, Lime and Mango - which one's your favourite?
+Key Features:
+• Maximum taste, no sugar
+• Low Calorie carbonated cola that has just 1 calorie per can
+• Suitable for vegetarians
+• 100% recyclable
+Delivered pack design may vary.","Serving sizes: Per 100ml, Per 250ml
+
+Energy:
+  Per 100ml - 2kJ/0.4kcal
+  Per 250ml - 5kJ/1kcal
+
+Fat:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Carbohydrate:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Protein:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Salt:
+  Per 100ml - 0g
+  Per 250ml - 0g
+
+Bottle contains 5 servings:
+  Per 100ml - 
+  Per 250ml - 
+
+","Carbonated Water, Colour (E150d), Sweeteners (Aspartame, Acesulfame K), Acids (Phosphoric Acid, Citric Acid), Flavourings (including Caffeine), Preservative (Potassium Sorbate)",N/A,N/A,N/A,N/A,,,,,N/A,N/A,Product code: 6328834,N/A,,https://groceries.asda.com/product/sugar-free-diet-cola/pepsi-max-1-25-litres/1000110474532,2024-09-04T20:47:21.404670-04:00,OK

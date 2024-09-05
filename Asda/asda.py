@@ -123,7 +123,8 @@ def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
             time.sleep(GEN_TIMEOUT)
             aisle_button = wait.until(EC.element_to_be_clickable(
                 (
-                By.XPATH, f"//button[contains(@class, 'h-nav__item-button') and ./span[contains(text(), '{aisle}')]]")))
+                    By.XPATH,
+                    f"//button[contains(@class, 'h-nav__item-button') and ./span[contains(text(), '{aisle}')]]")))
             aisle_button.click()
         except Exception as e:
             print('Failed to get Categories')
@@ -207,7 +208,8 @@ def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
             print('Failed to get items')
             print(e)
 
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
+                                   encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
     df_data = pd.DataFrame()
@@ -364,45 +366,100 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Brand Error')
 
     try:
-        ItemNum = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "span.pdp-main-details__product-code"))).text
+        ItemNum = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, "span.pdp-main-details__product-code"))).text
     except:
         print('ItemNum Error')
 
     try:
-        parent_divs = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-cntr"))
-        )
+        net_content_title = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.XPATH,
+                                            "//div[contains(@class, 'pdp-description-reviews__product-details-title') and text()='Net Content']")))
 
-        for p in parent_divs:
-            try:
-                div_question = p.find_element(By.XPATH, ".//div[contains(text(), 'Net Content')]")
-                Containersize_org = p.find_element(By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-content").text
-                print(Containersize_org)
-            except:
-                None
+        net_content_value = net_content_title.find_element(By.XPATH,
+                                                           "following-sibling::div[contains(@class, 'pdp-description-reviews__product-details-content')]")
 
-            try:
-                div_question = p.find_element(By.XPATH, ".//div[contains(text(), 'Ingredients')]")
-                Ingredients = p.find_element(By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-content").text
-                print(Ingredients)
-            except:
-                None
-
-            try:
-                div_question = p.find_element(By.XPATH, ".//div[contains(text(), 'Product Information')]")
-                Description = p.find_element(By.CSS_SELECTOR, "div.pdp-description-reviews__product-details-content").text
-                print(Description)
-            except:
-                None
+        Netcontent_org = net_content_value.text
+        Netcontent_val = net_content_value.text
+        Netcontent_unit = net_content_value.text
 
     except:
         print('Net Content Error')
 
+    try:
+        product_info_title = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(EC.presence_of_element_located((By.XPATH,"//div[contains(@class, 'pdp-description-reviews__product-details-title') and text()='Product Information']")))
+        product_info_content = product_info_title.find_element(By.XPATH,"following-sibling::div[contains(@class, 'pdp-description-reviews__product-details-content')]")
+        Description = product_info_content.text
+    except:
+        print('Description Error')
+
+    try:
+        ingredients_title = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'pdp-description-reviews__product-details-title') and text()='Ingredients']"))
+        )
+        ingredients_content = ingredients_title.find_element(By.XPATH, "following-sibling::div[contains(@class, 'pdp-description-reviews__product-details-content')]")
+        Ingredients = ingredients_content.text
+    except:
+        print('Description Error')
+
+    try:
+        table = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "pdp-description-reviews__nutrition-table-cntr"))
+        )
+        rows = table.find_elements(By.CLASS_NAME, "pdp-description-reviews__nutrition-row")
+        header_cells = rows[0].find_elements(By.CLASS_NAME, "pdp-description-reviews__nutrition-cell")
+        serving_sizes = [cell.text.strip() for cell in header_cells[1:] if cell.text.strip()]
+        nutrition_info = {size: {} for size in serving_sizes}
+        nutrition_string = f"Serving sizes: {', '.join(serving_sizes)}\n\n"
+        current_main_nutrient = ""
+        for row in rows[1:]:
+            cells = row.find_elements(By.CLASS_NAME, "pdp-description-reviews__nutrition-cell")
+            if len(cells) >= len(serving_sizes) + 1:
+                key = cells[0].text.strip()
+                values = [cell.text.strip() for cell in cells[1:len(serving_sizes)+1]]
+
+                if "of which" in key.lower():
+                    key = f"{current_main_nutrient} - {key}"
+                else:
+                    current_main_nutrient = key
+
+                nutrition_string += f"{key}:\n"
+                for size, value in zip(serving_sizes, values):
+                    nutrition_info[size][key] = value
+                    nutrition_string += f"  {size} - {value}\n"
+                nutrition_string += "\n"
+        Nutr_label = nutrition_string
+    except:
+        print('Nutrition Error')
+
+    try:
+        element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "pdp-main-details__weight"))
+        )
+        Unitpp = element.text.strip()
+    except:
+        print('Unitpp Error')
+
+    try:
+        image_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "img.asda-img.asda-image.product-detail-page__swatch-img"))
+        )
+        image_url = image_element.get_attribute('src')
+        ProductImages = image_url
+        response = requests.get(image_url)
+        if response.status_code == 200:
+            if not os.path.exists(f'output/images/{str(ind)}/'):
+                os.makedirs(f'output/images/{str(ind)}/', exist_ok=True)
+            full_path = 'output/images/' + str(ind) + '/' + str(ID) + '-' + str(index) + '.png'
+            with open(full_path, 'wb') as file:
+                file.write(response.content)
+    except:
+        print('Image Error')
 
     new_row = {
         'ID': ID,
-        'Country': 'United States',
-        'Store': 'Target',
+        'Country': 'United Kingdom',
+        'Store': 'ASDA',
         'Region': Region,
         'City': City,
         'ProductName': ProductName,
