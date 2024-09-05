@@ -413,7 +413,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         rows = table.find_elements(By.CLASS_NAME, "pdp-description-reviews__nutrition-row")
         header_cells = rows[0].find_elements(By.CLASS_NAME, "pdp-description-reviews__nutrition-cell")
         serving_sizes = [cell.text.strip() for cell in header_cells[1:] if cell.text.strip()]
-        nutrition_info = {size: {} for size in serving_sizes}
+        nutrition_info_dict = {size: {} for size in serving_sizes}
         nutrition_string = f"Serving sizes: {', '.join(serving_sizes)}\n\n"
         current_main_nutrient = ""
         for row in rows[1:]:
@@ -429,10 +429,31 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
                 nutrition_string += f"{key}:\n"
                 for size, value in zip(serving_sizes, values):
-                    nutrition_info[size][key] = value
+                    nutrition_info_dict[size][key] = value
                     nutrition_string += f"  {size} - {value}\n"
                 nutrition_string += "\n"
         Nutr_label = nutrition_string
+        print(nutrition_info_dict)
+
+        try:
+            if (len(nutrition_info_dict) > 0):
+                hundred_serv = nutrition_info_dict[0]
+                hundred_serv['Energy']
+                hundred_serv['Fat']
+                hundred_serv['Carbohydrate']
+                hundred_serv['Carbohydrate - of which sugars']
+
+
+            if (len(nutrition_info_dict) > 1):
+                serv = nutrition_info_dict[1]
+                hundred_serv['Energy']
+                hundred_serv['Fat']
+                hundred_serv['Carbohydrate']
+                hundred_serv['Carbohydrate - of which sugars']
+
+        except:
+            print('Parse Nutrition Error')
+
     except:
         print('Nutrition Error')
 
@@ -459,6 +480,21 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
                 file.write(response.content)
     except:
         print('Image Error')
+
+    try:
+        breadcrumb = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-auto-id='pdpBreadcrumb']"))
+        )
+        elements = breadcrumb.find_elements(By.CSS_SELECTOR, "a.breadcrumb__link, span.breadcrumb__current")
+        breadcrumb_array = [element.text.strip() for element in elements if element.text.strip()]
+        if (len(breadcrumb_array) > 0):
+            breadcrumb_array.pop(0)
+        if (len(breadcrumb_array) > 0):
+            ProductCategory = breadcrumb_array.pop(0)
+        if (len(breadcrumb_array) > 0):
+            ProductSubCategory = breadcrumb_array.pop(0)
+    except:
+        print('Aisle Error')
 
     new_row = {
         'ID': ID,
