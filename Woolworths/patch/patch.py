@@ -1,29 +1,37 @@
+import os
+import re
 import pandas as pd
 
-output_dir = ''
 
+def get_region_and_city(address):
+    address_mapping = {
+        "shop 1248/Cnr Park street &, George St, Sydney NSW 2000, Australia": ("NSW", "Sydney"),
+        "Pakington Strand, 95/113 Pakington St, Geelong West VIC 3218, Australia": ("VIC", "Geelong West"),
+        "Macarthur Central 259 Queen Street, Brisbane QLD 4000": ("QLD", "Brisbane"),
+        "166 Murray St, Perth WA 6000, Australia": ("WA", "Perth")
+    }
+
+    return address_mapping.get(address, ("Unknown", "Unknown"))
+
+# Example usage
 addresses = [
-    ['50', "shop 1248/Cnr Park street &, George St, Sydney NSW 2000, Australia"],
-    ['51', "Pakington Strand, 95/113 Pakington St, Geelong West VIC 3218, Australia"],
-    ['52', "Macarthur Central 259 Queen Street, Brisbane QLD 4000"],
-    ['53', "166 Murray St, Perth WA 6000, Australia"]
+    "shop 1248/Cnr Park street &, George St, Sydney NSW 2000, Australia",
+    "Pakington Strand, 95/113 Pakington St, Geelong West VIC 3218, Australia",
+    "Macarthur Central 259 Queen Street, Brisbane QLD 4000",
+    "166 Murray St, Perth WA 6000, Australia"
 ]
 
-def extract_city_region(address):
-    known_locations = {
-        "Sydney": "NSW",
-        "Geelong West": "VIC",
-        "Brisbane": "QLD",
-        "Perth": "WA"
-    }
-    for city, region in known_locations.items():
-        if city in address:
-            return [city, region]
+directory = 'v1'
+for filename in os.listdir(directory):
+    buffer = []
+    if filename.endswith('_data.csv'):
+        buffer.append(filename)
+    for b in buffer:
+        prefix = filename[:8].split('_')[1]
+        df = pd.read_csv(f'{directory}/{filename}')
+        loc_result = get_region_and_city(addresses[int(prefix) - 50])
+        df['Region'] = loc_result[0]
+        df['City'] = loc_result[1]
+        df.to_csv(f'{directory}/{filename}', index = False)
 
-    return [None, None]
 
-def patch_images():
-    None
-
-def patch_notes():
-    None
