@@ -436,23 +436,60 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print(nutrition_info_dict)
 
         try:
-            if (len(nutrition_info_dict) > 0):
-                hundred_serv = nutrition_info_dict[0]
-                hundred_serv['Energy']
-                hundred_serv['Fat']
-                hundred_serv['Carbohydrate']
-                hundred_serv['Carbohydrate - of which sugars']
+            first_item = next(iter(nutrition_info_dict.items()), (None, None))
+            second_item = next(iter(nutrition_info_dict.items()), (None, None))
 
+            if (first_item != (None, None)):
+                # Per 100 ml
+                first_value = first_item[1]
+                try:
+                    Cals_value_p100g = first_value['Energy']
+                except:
+                    print('Cals Error')
+                try:
+                    TotalCarb_g_p100g = first_value['Carbohydrates']
+                except:
+                    try:
+                        TotalCarb_g_p100g = first_value['Carbohydrate']
+                    except:
+                        print('Carb Error')
+                try:
+                    TotalSugars_g_p100g = first_value['Carbohydrates - of which sugars']
+                except:
+                    try:
+                        TotalSugars_g_p100g = first_value['Carbohydrate - of which sugars']
+                    except:
+                        print('Sugar Error')
 
-            if (len(nutrition_info_dict) > 1):
-                serv = nutrition_info_dict[1]
-                hundred_serv['Energy']
-                hundred_serv['Fat']
-                hundred_serv['Carbohydrate']
-                hundred_serv['Carbohydrate - of which sugars']
+            if (second_item != (None, None)):
+                print(second_item)
+                first_value = second_item[0]
+                second_value = second_item[1]
+                Servsize_portion_org = first_value
+                Servsize_portion_unit = first_value
+                Servsize_portion_val = first_value
+                try:
+                    Cals_org_pp = second_value['Energy']
+                except:
+                    print('Cals Error')
+                try:
+                    TotalCarb_g_pp = first_value['Carbohydrates']
+                except:
+                    try:
+                        TotalCarb_g_pp = first_value['Carbohydrate']
+                    except:
+                        print('Carb Error')
+                try:
+                    TotalSugars_g_pp = first_value['Carbohydrates - of which sugars']
+                except:
+                    try:
+                        TotalSugars_g_pp = first_value['Carbohydrate - of which sugars']
+                    except:
+                        print('Sugar Error')
 
-        except:
+        except Exception as e:
             print('Parse Nutrition Error')
+            print(e)
 
     except:
         print('Nutrition Error')
