@@ -1,18 +1,31 @@
-# Packages for scrapping
-#import undetected_chromedriver as uc
-import time
-
-import pandas as pd
-from selenium import webdriver as uc
 import os
-import soriana
+import kroger
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import pandas as pd
 
+def connect_to_existing_chrome(address, ind):
+    print('Start')
+    chrome_options = Options()
+    chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+    driver = webdriver.Chrome(options=chrome_options)
 
+    try:
+        print('Attempting to connect to existing chrome... ')
+        current_url = driver.current_url
+        print(f"Connected to Chrome. Current URL: {current_url}")
+        print(f"Page title: {driver.title}")
+        kroger.setLocation_kroger(driver, address, 10)
+        aisles_todo = ['Beverages', 'Beer, Wine & Liquor', 'Dairy & Eggs', 'Coffee']
+        for a in aisles_todo:
+            kroger.scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME = 10, aisle=a, ind = ind)
+    except Exception as e:
+        print(f"An error occurred: {e}")
 def main():
     site_location_df = pd.read_excel('urlLocations.xlsx', header=None)
     EXPLICIT_WAIT_TIME = 30
 
-    for z in [29, 30, 31, 32]:
+    for z in [14, 15]:
         ind = z
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
@@ -28,20 +41,6 @@ def main():
             os.mkdir('output/images/' + str(ind))
         except:
             None
-        driver_options = uc.chrome.options.Options()
-        driver_options.add_argument("--disable-notifications")
-        driver_options.add_argument("--disable-infobars")
-        driver_options.add_argument("--disable-extensions")
-        driver = uc.Chrome(driver_options)
-        driver.maximize_window()
-
-        driver.get(url)
-
-        # soriana.setup_soriana(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
-        # soriana.scrapeSite_soriana(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisles=['Jugos y bebidas'],
-        #                            ind=ind)
-        soriana.setup_kroger(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url)
-        soriana.scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=str(ind), aisles=['Lácteos y huevo'],
-                                  ind=ind)
+        connect_to_existing_chrome(scrape_location, ind)
 if __name__ == '__main__':
     res = main()

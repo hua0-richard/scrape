@@ -5,6 +5,11 @@ import pandas as pd
 import time
 import datetime
 import pytz
+from selenium.webdriver import ActionChains, Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import bs4
 
 FAVNUM = 22222
 GEN_TIMEOUT = 6
@@ -28,15 +33,12 @@ def cache_strategy():
     return combined_reference_df
 
 
-def setup_target(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
+def setup_kroger(driver, EXPLICIT_WAIT_TIME, site_location_df, ind, url):
     setLocation_kroger(driver, site_location_df.loc[ind - 1, 1], EXPLICIT_WAIT_TIME)
 
 
 def setLocation_kroger(driver, address, EXPLICIT_WAIT_TIME):
-    global LOCATION
-    LOCATION = address
-    time.sleep(GEN_TIMEOUT)
-
+    input('Manually set location?')
     print('Set Location Complete')
 
 def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
@@ -47,6 +49,72 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
         print('Found Prior Items')
     except Exception as e:
         print('No Prior Items')
+
+        if aisle == 'Beverages':
+            driver.get('https://www.kroger.com/d/beverages')
+        elif aisle == 'Beer, Wine & Liquor':
+            driver.get('https://www.kroger.com/d/beer-wine-liquor')
+        elif aisle == 'Dairy & Eggs':
+            driver.get('https://www.kroger.com/d/dairy')
+        elif aisle == 'Coffee':
+            driver.get('https://www.kroger.com/d/coffee')
+
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div.ImageNav a.kds-Link"))
+        )
+        link_elements = driver.find_elements(By.CSS_SELECTOR, "div.ImageNav a.kds-Link")
+        store_aisles = []
+        for element in link_elements:
+            href = element.get_attribute('href')
+            if href and href not in store_aisles:
+                store_aisles.append(href)
+
+        # aisle links fix
+        if aisle == 'Beverages':
+            store_aisles.append('https://www.kroger.com/pl/energy-drinks/04011')
+
+        for s in store_aisles:
+            driver.get(s)
+            flag = True
+            while flag:
+                for ty in range(3):
+                    try:
+                        time.sleep(2)
+                        wait = WebDriverWait(driver, 10)
+                        res = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.ProductGridContainer")))
+                        outer_html = driver.execute_script("""
+                            var element = document.querySelector('div.ProductGridContainer');
+                            return element ? element.outerHTML : 'Element not found';
+                        """)
+                        soup = bs4.BeautifulSoup(outer_html, 'html.parser')
+                        links = [a['href'] for a in soup.find_all('a', class_='kds-Link') if 'href' in a.attrs]
+                        items = [*items, *links]
+                    except:
+                        print('error... trying again')
+
+                items = list(set(items))
+                print(len(items))
+                print(items)
+                for x in range(2):
+                    try:
+                        time.sleep(2)
+                        load_more_button = WebDriverWait(driver, 10).until(
+                            EC.presence_of_element_located((By.CSS_SELECTOR, "button.LoadMore__load-more-button"))
+                        )
+                        actions = ActionChains(driver)
+                        actions.move_to_element(load_more_button).perform()
+                        load_more_button = WebDriverWait(driver, 10).until(
+                            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.LoadMore__load-more-button"))
+                        )
+                        load_more_button.click()
+                        print('More Items To Scroll')
+                        break
+                    except:
+                        print(f'Failed. Trying Again... Attempt {x}')
+                        if (x == 1):
+                            flag = False
+                            break
+            print('No More items to scroll... ')
 
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
