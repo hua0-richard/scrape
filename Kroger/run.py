@@ -27,8 +27,10 @@ def main():
 
     for z in [
         #13,
-        #14,
-        15, 16]:
+        14,
+        #15,
+        #16
+        ]:
         ind = z
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]

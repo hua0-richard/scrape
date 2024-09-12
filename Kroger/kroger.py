@@ -1,5 +1,7 @@
 import glob
 import os
+import re
+
 import requests
 import pandas as pd
 import time
@@ -16,13 +18,25 @@ GEN_TIMEOUT = 6
 STORE_NAME = 'target'
 LOCATION = ''
 MAX_RETRY = 10
+def nutrient_dict_to_string(nutrient_dict):
+    result = []
+    result.append("Nutrition Facts")
+    result.append(f"Servings per container: {nutrient_dict['Servings per container']}")
+    result.append(f"Serving size: {nutrient_dict['Serving size']}")
+    result.append(f"Calories: {nutrient_dict['Calories']}")
+    result.append("\nNutrient Information:")
 
+    for nutrient, info in nutrient_dict.items():
+        if nutrient not in ['Servings per container', 'Serving size', 'Calories']:
+            result.append(f"{nutrient}:")
+            result.append(f"  Amount: {info['Amount']}")
+            result.append(f"  Daily Value: {info['Daily Value']}")
+
+    return "\n".join(result)
 
 def custom_sort_key(value):
     parts = value.split('-')
     return int(parts[1])
-
-
 def cache_strategy():
     folder_path = 'output/tmp'
     item_urls_csvs = glob.glob(os.path.join(folder_path, '*data.csv'))
@@ -44,7 +58,7 @@ def setLocation_kroger(driver, address, EXPLICIT_WAIT_TIME):
     print('Set Location Complete')
 
 
-def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, base_url = None):
+def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, base_url=None):
     items = []
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
@@ -126,7 +140,6 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
                 print(items)
             except Exception as e:
                 print('Failed!')
-
 
         pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
                                    encoding='utf-8-sig')
@@ -263,10 +276,222 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     global LOCATION
     print(LOCATION)
 
-    # Brand Name
-    # Brand Product
+    # Product Name
+    try:
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "h1.ProductDetails-header[data-testid='product-details-name']"))
+        )
+        ProductName = element.text
+        print(f"Product name: {ProductName}")
+    except Exception as e:
+        print('Name Error')
 
+    # Product Brand
+    try:
+        ProductBrand = ProductName.split()[0]
+    except Exception as e:
+        print('Brand Error')
 
+    # Product Description
+    try:
+        details_div = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-testid='product-details']"))
+        )
+        description_p = details_div.find_element(By.CSS_SELECTOR, ".RomanceDescription p")
+        Description = description_p.text
+        try:
+            bullet_points = details_div.find_elements(By.CSS_SELECTOR, ".RomanceDescription ul li")
+            for point in bullet_points:
+                Description = f'{Description}\n{point.text}'
+        except:
+            print('No Bullet Points')
+        print(Description)
+    except Exception as e:
+        print('Description Error')
+
+    # Product Ingredients
+    try:
+        ingredients_p = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "p.NutritionIngredients-Ingredients"))
+        )
+        full_text = ingredients_p.text
+        ingredients_match = re.search(r'Ingredients\s*(.+)', full_text, re.DOTALL)
+        if ingredients_match:
+            ingredients = ingredients_match.group(1).strip()
+            ingredients = ' '.join(ingredients.split())
+            print("Ingredients:")
+            print(ingredients)
+            Ingredients = ingredients
+        else:
+            print("Ingredients not found in the expected format.")
+    except Exception as e:
+        print("Ingredients Error")
+
+    # UPC
+    try:
+        upc_span = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "span.ProductDetails-upc[data-testid='product-details-upc']"))
+        )
+        full_text = upc_span.text
+        upc_match = re.search(r'UPC:\s*(\d+)', full_text)
+        if upc_match:
+            upc = upc_match.group(1)
+            print(f"UPC: {upc}")
+            UPC = upc
+        else:
+            print("UPC not found in the expected format.")
+    except Exception as e:
+        print('UPC Error')
+
+    try:
+        size_label = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "label.kds-Label.kds-VariantSelectorText-groupLabel.kds-Text--m"))
+        )
+        full_text = size_label.text
+        size_match = re.search(r'Size:\s*(\d+)\s*(\w+)', full_text)
+
+        if size_match:
+            size = size_match.group(1)
+            unit = size_match.group(2)
+            Netcontent_org = full_text
+            Netcontent_val = size
+            Netcontent_org = unit
+        else:
+            print("Size and unit not found in the expected format.")
+    except Exception as e:
+        print('Net Content Error')
+
+    nutrition_facts = {}
+
+    # Nutrition Label
+    try:
+        # Wait for the nutrition facts container to be present
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "NutritionInfo-LabelContainer"))
+        )
+
+        # Extract nutrition information
+        nutrition_dict = {}
+
+        # Servings per container
+        servings = driver.find_element(By.CLASS_NAME, 'NutritionLabel-ServingsPerContainer').text.strip()
+        nutrition_dict['Servings per container'] = servings.split(' ')[0]
+
+        # Serving size
+        serving_size = driver.find_element(By.CLASS_NAME, 'NutritionLabel-ServingSize').text.strip()
+        nutrition_dict['Serving size'] = serving_size.split('Serving size')[-1].strip()
+
+        # Calories
+        calories = driver.find_element(By.CLASS_NAME, 'NutritionLabel-Calories').find_elements(By.TAG_NAME, 'span')[
+            -1].text
+        nutrition_dict['Calories'] = calories
+
+        # Nutrients
+        nutrients = driver.find_elements(By.CLASS_NAME, 'NutrientDetail')
+        for nutrient in nutrients:
+            title = nutrient.find_element(By.CLASS_NAME, 'NutrientDetail-Title').text.strip()
+            amount = nutrient.find_element(By.CLASS_NAME, 'NutrientDetail-TitleAndAmount').text.split(title)[-1].strip()
+            try:
+                daily_value = nutrient.find_element(By.CLASS_NAME, 'NutrientDetail-DailyValue').text
+            except:
+                daily_value = 'N/A'
+
+            nutrition_dict[title] = {
+                'Amount': amount,
+                'Daily Value': daily_value
+            }
+        print(nutrition_dict)
+        Nutr_label = nutrient_dict_to_string(nutrition_dict)
+
+        try:
+            Servsize_portion_org = nutrition_dict['Serving size']
+            pattern = r'\b\d+(?:\.\d+)?\b|\b[a-zA-Z]+\b'
+            matches = re.findall(pattern, Servsize_portion_org)
+            numbers = [float(match) for match in matches if match[0].isdigit()]
+            words = [match for match in matches if match[0].isalpha()]
+            Servsize_portion_val = ', '.join(str(x) for x in numbers)
+            Servsize_portion_unit = ', '.join(str(x) for x in words)
+        except:
+            print('No Serving Size')
+
+        try:
+            Cals_org_pp = nutrition_dict['Calories']
+            Cals_unit_pp = 'Calories'
+            Cals_value_pp = Cals_org_pp
+        except:
+            print('No Calories')
+
+        try:
+            try:
+                TotalSugars_g_pp = nutrition_dict['Sugar']['Amount']
+            except:
+                print('Total Sugar Error')
+            try:
+                TotalSugars_pct_pp = nutrition_dict['Sugar']['Daily Value']
+            except:
+                print('Total Sugar Daily Error')
+            try:
+                AddedSugars_g_pp = nutrition_dict['Added Sugar']['Amount']
+            except:
+                print('Added Sugar Error')
+            try:
+                AddedSugars_pct_pp = nutrition_dict['Added Sugar']['Daily Value']
+            except:
+                print('Added Sugar Daily Error')
+        except:
+            print('No Sugar')
+
+        try:
+            try:
+                TotalCarb_g_pp = nutrition_dict['Total Carbohydrate']['Amount']
+            except:
+                print('No Total Carb')
+            try:
+                TotalCarb_pct_pp = nutrition_dict['Total Carbohydrate']['Daily Value']
+            except:
+                print('No Daily Total Carb')
+        except:
+            print('No Carb')
+
+        try:
+            Servings_cont = nutrition_dict['Servings per container']
+        except:
+            print('No Serving Sizes Per Container')
+
+    except:
+        print('Nutrition Label Error')
+
+    try:
+        nav_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "kds-Breadcrumb"))
+        )
+        elements = nav_element.find_elements(By.CSS_SELECTOR, "a, span.kds-Text--l")
+        breadcrumb_text = [element.text.strip() for element in elements if element.text.strip()]
+        breadcrumb_text.pop()
+        if (len(breadcrumb_text) > 0):
+            ProductSubCategory = breadcrumb_text.pop()
+        if (len(breadcrumb_text) > 0):
+            ProductCategory = breadcrumb_text.pop()
+    except:
+        print('Category Error')
+
+    try:
+        wait = WebDriverWait(driver, 10)
+        image = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "img.ProductImages-image")))
+        ProductImages = image.get_attribute("src")
+    except:
+        print('Image Error')
+
+    try:
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR,"span#ProductDetails-sellBy-unit.kds-Text--l.mr-8.text-primary.ProductDetails-sellBy"))
+        )
+        Unitpp = element.text
+    except Exception as e:
+        print('Unit Error')
 
     new_row = {
         'ID': ID,
