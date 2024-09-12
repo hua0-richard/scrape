@@ -26,7 +26,7 @@ def main():
     EXPLICIT_WAIT_TIME = 30
 
     for z in [
-        13,
+        #13,
         #14,
         15, 16]:
         ind = z

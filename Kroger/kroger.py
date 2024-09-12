@@ -76,6 +76,7 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
         # aisle links fix
         if aisle == 'Beverages':
             store_aisles.append(f'{base_url}/pl/energy-drinks/04011')
+            store_aisles.append(f'{base_url}/pl/sports-drinks/04005')
 
         for s in store_aisles:
             driver.get(s)
