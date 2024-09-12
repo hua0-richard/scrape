@@ -17,9 +17,11 @@ STORE_NAME = 'target'
 LOCATION = ''
 MAX_RETRY = 10
 
+
 def custom_sort_key(value):
     parts = value.split('-')
     return int(parts[1])
+
 
 def cache_strategy():
     folder_path = 'output/tmp'
@@ -41,23 +43,25 @@ def setLocation_kroger(driver, address, EXPLICIT_WAIT_TIME):
     input('Manually set location?')
     print('Set Location Complete')
 
-def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
+
+def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, base_url = None):
     items = []
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
         items = items.iloc[:, 0].tolist()
+        print(items)
         print('Found Prior Items')
     except Exception as e:
         print('No Prior Items')
 
         if aisle == 'Beverages':
-            driver.get('https://www.kroger.com/d/beverages')
+            driver.get(f'{base_url}d/beverages')
         elif aisle == 'Beer, Wine & Liquor':
-            driver.get('https://www.kroger.com/d/beer-wine-liquor')
+            driver.get(f'{base_url}d/beer-wine-liquor')
         elif aisle == 'Dairy & Eggs':
-            driver.get('https://www.kroger.com/d/dairy')
+            driver.get(f'{base_url}d/dairy')
         elif aisle == 'Coffee':
-            driver.get('https://www.kroger.com/d/coffee')
+            driver.get(f'{base_url}d/coffee')
 
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "div.ImageNav a.kds-Link"))
@@ -71,7 +75,7 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
 
         # aisle links fix
         if aisle == 'Beverages':
-            store_aisles.append('https://www.kroger.com/pl/energy-drinks/04011')
+            store_aisles.append(f'{base_url}/pl/energy-drinks/04011')
 
         for s in store_aisles:
             driver.get(s)
@@ -79,22 +83,14 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
             while flag:
                 for ty in range(3):
                     try:
-                        time.sleep(2)
+                        time.sleep(5)
                         wait = WebDriverWait(driver, 10)
-                        res = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.ProductGridContainer")))
-                        outer_html = driver.execute_script("""
-                            var element = document.querySelector('div.ProductGridContainer');
-                            return element ? element.outerHTML : 'Element not found';
-                        """)
-                        soup = bs4.BeautifulSoup(outer_html, 'html.parser')
-                        links = [a['href'] for a in soup.find_all('a', class_='kds-Link') if 'href' in a.attrs]
-                        items = [*items, *links]
+                        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                        time.sleep(2)  # Give time for new content to load
+                        break
                     except:
                         print('error... trying again')
 
-                items = list(set(items))
-                print(len(items))
-                print(items)
                 for x in range(2):
                     try:
                         time.sleep(2)
@@ -115,8 +111,24 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                             flag = False
                             break
             print('No More items to scroll... ')
+            try:
+                product_container = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "div.ProductGridContainer"))
+                )
+                link_elements = driver.find_elements(By.CSS_SELECTOR, "a.ProductDescription-truncated")
+                links = [elem.get_attribute('href') for elem in link_elements if elem.get_attribute('href')]
 
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
+                # Add base_url if necessary and extend items list
+                full_links = [base_url + link if not link.startswith('http') else link for link in links]
+                items.extend(full_links)
+                print(len(items))
+                print(items)
+            except Exception as e:
+                print('Failed!')
+
+
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
+                                   encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
     df_data = pd.DataFrame()
@@ -250,10 +262,15 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     global LOCATION
     print(LOCATION)
 
+    # Brand Name
+    # Brand Product
+
+
+
     new_row = {
         'ID': ID,
         'Country': 'United States',
-        'Store': 'Target',
+        'Store': 'Kroger',
         'Region': Region,
         'City': City,
         'ProductName': ProductName,
@@ -312,4 +329,3 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         'Notes': Notes
     }
     return new_row
-

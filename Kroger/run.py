@@ -4,7 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import pandas as pd
 
-def connect_to_existing_chrome(address, ind):
+def connect_to_existing_chrome(address, ind, url):
     print('Start')
     chrome_options = Options()
     chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
@@ -18,14 +18,17 @@ def connect_to_existing_chrome(address, ind):
         kroger.setLocation_kroger(driver, address, 10)
         aisles_todo = ['Beverages', 'Beer, Wine & Liquor', 'Dairy & Eggs', 'Coffee']
         for a in aisles_todo:
-            kroger.scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME = 10, aisle=a, ind = ind)
+            kroger.scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME = 10, aisle=a, ind = ind, base_url=url)
     except Exception as e:
         print(f"An error occurred: {e}")
 def main():
     site_location_df = pd.read_excel('urlLocations.xlsx', header=None)
     EXPLICIT_WAIT_TIME = 30
 
-    for z in [14, 15]:
+    for z in [
+        13,
+        #14,
+        15, 16]:
         ind = z
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
@@ -41,6 +44,6 @@ def main():
             os.mkdir('output/images/' + str(ind))
         except:
             None
-        connect_to_existing_chrome(scrape_location, ind)
+        connect_to_existing_chrome(scrape_location, ind, url)
 if __name__ == '__main__':
     res = main()
