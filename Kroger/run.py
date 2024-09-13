@@ -1,6 +1,7 @@
 import os
 import kroger
-from selenium import webdriver
+# from selenium import webdriver
+import undetected_chromedriver as uc
 from selenium.webdriver.chrome.options import Options
 import pandas as pd
 
@@ -8,7 +9,7 @@ def connect_to_existing_chrome(address, ind, url):
     print('Start')
     chrome_options = Options()
     chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = uc.Chrome(options=chrome_options)
 
     try:
         print('Attempting to connect to existing chrome... ')
@@ -26,10 +27,8 @@ def main():
     EXPLICIT_WAIT_TIME = 30
 
     for z in [
-        #13,
-        14,
-        #15,
-        #16
+        13,
+        # 14,
         ]:
         ind = z
         print('\nIndex: ', ind)

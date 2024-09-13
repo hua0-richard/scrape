@@ -15,7 +15,7 @@ import bs4
 
 FAVNUM = 22222
 GEN_TIMEOUT = 6
-STORE_NAME = 'target'
+STORE_NAME = 'Kroger'
 LOCATION = ''
 MAX_RETRY = 10
 def nutrient_dict_to_string(nutrient_dict):
@@ -63,7 +63,9 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
         items = items.iloc[:, 0].tolist()
+        items = list(set(items))
         print(items)
+        print(len(items))
         print('Found Prior Items')
     except Exception as e:
         print('No Prior Items')
@@ -89,16 +91,17 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
 
         # aisle links fix
         if aisle == 'Beverages':
-            store_aisles.append(f'{base_url}/pl/energy-drinks/04011')
-            store_aisles.append(f'{base_url}/pl/sports-drinks/04005')
+            store_aisles.append(f'{base_url}pl/energy-drinks/04011')
+            store_aisles.append(f'{base_url}pl/sports-drinks/04005')
 
         for s in store_aisles:
             driver.get(s)
             flag = True
+            counter = 0
             while flag:
                 for ty in range(3):
                     try:
-                        time.sleep(5)
+                        time.sleep(2)
                         wait = WebDriverWait(driver, 10)
                         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                         time.sleep(2)  # Give time for new content to load
@@ -119,6 +122,7 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
                         )
                         load_more_button.click()
                         print('More Items To Scroll')
+                        counter = counter + 1
                         break
                     except:
                         print(f'Failed. Trying Again... Attempt {x}')
@@ -128,7 +132,7 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
             print('No More items to scroll... ')
             try:
                 product_container = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, "div.ProductGridContainer"))
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "div.AutoGrid"))
                 )
                 link_elements = driver.find_elements(By.CSS_SELECTOR, "a.ProductDescription-truncated")
                 links = [elem.get_attribute('href') for elem in link_elements if elem.get_attribute('href')]
@@ -136,8 +140,9 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
                 # Add base_url if necessary and extend items list
                 full_links = [base_url + link if not link.startswith('http') else link for link in links]
                 items.extend(full_links)
-                print(len(items))
+                items = list(set(items))
                 print(items)
+                print(len(items))
             except Exception as e:
                 print('Failed!')
 
@@ -196,7 +201,7 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
         if not df_data.empty and items[item_index] in df_data['url'].values:
             print(f'{ind}-{item_index} Item Already Exists!')
             continue
-
+        print(df_data)
         for v in range(5):
             try:
                 time.sleep(GEN_TIMEOUT)
@@ -345,27 +350,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     except Exception as e:
         print('UPC Error')
 
-    try:
-        size_label = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, "label.kds-Label.kds-VariantSelectorText-groupLabel.kds-Text--m"))
-        )
-        full_text = size_label.text
-        size_match = re.search(r'Size:\s*(\d+)\s*(\w+)', full_text)
-
-        if size_match:
-            size = size_match.group(1)
-            unit = size_match.group(2)
-            Netcontent_org = full_text
-            Netcontent_val = size
-            Netcontent_org = unit
-        else:
-            print("Size and unit not found in the expected format.")
-    except Exception as e:
-        print('Net Content Error')
-
-    nutrition_facts = {}
-
     # Nutrition Label
     try:
         # Wait for the nutrition facts container to be present
@@ -470,7 +454,6 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         )
         elements = nav_element.find_elements(By.CSS_SELECTOR, "a, span.kds-Text--l")
         breadcrumb_text = [element.text.strip() for element in elements if element.text.strip()]
-        breadcrumb_text.pop()
         if (len(breadcrumb_text) > 0):
             ProductSubCategory = breadcrumb_text.pop()
         if (len(breadcrumb_text) > 0):
@@ -486,12 +469,201 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Image Error')
 
     try:
-        element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR,"span#ProductDetails-sellBy-unit.kds-Text--l.mr-8.text-primary.ProductDetails-sellBy"))
-        )
-        Unitpp = element.text
+        flag_unitpp = False
+        span_element = wait.until(EC.presence_of_element_located((By.ID, "ProductDetails-sellBy-unit")))
+        unit_text = span_element.text
+
+        unit_text = unit_text.split('/')
+
+        for i in range(len(unit_text)):
+            unit_text[i] = unit_text[i].strip()
+        if (len(unit_text) > 1):
+            Unitpp = unit_text[0]
+            unit_text.pop(0)
+            flag_unitpp = True
+            Packsize_org = Unitpp
+        else:
+            Unitpp = 1
+        Containersize_org = unit_text[0]
+        Containersize_val = Containersize_org
+        tmp = Containersize_org
+        pattern = r'\b\d+(?:\.\d+)?\b|\b[a-zA-Z]+\b'
+        matches = re.findall(pattern, tmp)
+        numbers = [match for match in matches if re.match(r'\d', match)]
+        words = [match for match in matches if re.match(r'[a-zA-Z]', match)]
+        Containersize_unit =  ', '.join(str(x) for x in words)
+        Containersize_val =  ', '.join(str(x) for x in numbers)
+
+        if flag_unitpp:
+            matches = re.findall(pattern, Unitpp)
+            numbers = [match for match in matches if re.match(r'\d', match)]
+
+            Netcontent_org = int(round(float(numbers) * round(float(Containersize_val))))
+        else:
+            Netcontent_org = Containersize_val
+        Netcontent_val = Netcontent_org
+        Netcontent_unit = Containersize_unit
     except Exception as e:
         print('Unit Error')
+
+    try:
+        pattern = r'\b(?:(\d+(?:\.\d+)?)\s*(?:fl\s*oz|oz|ml|l(?:iter)?s?|gal(?:lon)?s?|pt|qt|cup|tbsp|tsp|cl|dl|kg|g|lb|pint|quart))?\s*' \
+                  r'(bottles?|cans?|cartons?|boxe?s?|pouche?s?|sachets?|' \
+                  r'flasks?|jugs?|pitchers?|tetra\s?paks?|kegs?|barrels?|casks?|' \
+                  r'cups?|glass(?:es)?|mugs?|tumblers?|goblets?|steins?|' \
+                  r'canisters?|thermos(?:es)?|vacuum\s?flasks?|' \
+                  r'six-packs?|twelve-packs?|cases?|packs?|' \
+                  r'tins?|containers?|tubs?|packets?|' \
+                  r'single-serves?|multi-packs?|variety\s?packs?|' \
+                  r'miniatures?|minis?|nips?|shooters?|' \
+                  r'pints?|quarts?|gallons?|liters?|' \
+                  r'growlers?|crowlers?|howlers?|' \
+                  r'magnums?|jeroboams?|rehoboams?|methusela(?:hs?)?|' \
+                  r'salmanazars?|balthazars?|nebuchadnezzars?|' \
+                  r'melchiors?|solomons?|primats?|melchizedeks?|' \
+                  r'splits?|half\s?bottles?|standard\s?bottles?|double\s?magnums?|' \
+                  r'bags?-in-boxe?s?|beverage\s?dispensers?|soda\s?fountains?|' \
+                  r'kegerators?|draft\s?systems?|taps?|spouts?|nozzles?|' \
+                  r'straws?|lids?|caps?|corks?|stoppers?|seals?|' \
+                  r'wine\s?boxe?s?|beer\s?boxe?s?|soda\s?boxe?s?|juice\s?boxe?s?|' \
+                  r'aluminum\s?bottles?|plastic\s?bottles?|glass\s?bottles?|' \
+                  r'slim\s?cans?|tall\s?cans?|stubby\s?bottles?|longneck\s?bottles?|' \
+                  r'twist-off\s?caps?|pull-tabs?|pop-tops?|' \
+                  r'screw\s?caps?|crown\s?caps?|cork\s?closures?|' \
+                  r'sport\s?caps?|flip-tops?|push-pull\s?caps?|' \
+                  r'droppers?|pumps?|sprays?|misters?|atomizers?|' \
+                  r'wine\s?glass(?:es)?|champagne\s?flutes?|beer\s?glass(?:es)?|' \
+                  r'shot\s?glass(?:es)?|highball\s?glass(?:es)?|lowball\s?glass(?:es)?|' \
+                  r'collins\s?glass(?:es)?|martini\s?glass(?:es)?|margarita\s?glass(?:es)?|' \
+                  r'hurricane\s?glass(?:es)?|pilsner\s?glass(?:es)?|weizen\s?glass(?:es)?|' \
+                  r'snifters?|glencairns?|tulip\s?glass(?:es)?|' \
+                  r'coupe\s?glass(?:es)?|nick\s?and\s?nora\s?glass(?:es)?|' \
+                  r'rocks\s?glass(?:es)?|old\s?fashioned\s?glass(?:es)?|' \
+                  r'coffee\s?mugs?|tea\s?cups?|espresso\s?cups?|' \
+                  r'travel\s?mugs?|sippy\s?cups?|paper\s?cups?|' \
+                  r'red\s?solo\s?cups?|disposable\s?cups?|' \
+                  r'punch\s?bowls?|decanters?|carafes?|' \
+                  r'amphoras?|oak\s?barrels?|stainless\s?steel\s?tanks?|' \
+                  r'firkins?|pins?|tuns?|butts?|puncheons?|' \
+                  r'hogsheads?|barriques?|goon\s?bags?|' \
+                  r'beer\s?bottles?|wine\s?bottles?|liquor\s?bottles?|' \
+                  r'soda\s?bottles?|water\s?bottles?|juice\s?bottles?|' \
+                  r'energy\s?drink\s?cans?|seltzer\s?cans?|' \
+                  r'cocktail\s?shakers?|mixing\s?glass(?:es)?|' \
+                  r'water\s?coolers?|water\s?jugs?|dispensers?|' \
+                  r'soda\s?stream\s?bottles?|kombucha\s?bottles?|' \
+                  r'cold\s?brew\s?pitchers?|french\s?press(?:es)?|' \
+                  r'espresso\s?pods?|coffee\s?pods?|k-cups?|' \
+                  r'tea\s?bags?|loose\s?leaf\s?tins?|' \
+                  r'smoothie\s?bottles?|protein\s?shakers?|' \
+                  r'squeeze\s?bottles?|syrup\s?bottles?|' \
+                  r'boba\s?cups?|slushie\s?cups?|frozen\s?drink\s?cups?|' \
+                  r'wine\s?skins?|hip\s?flasks?|canteens?|' \
+                  r'hydration\s?packs?|water\s?bladders?)\b'
+
+        focus_string = ProductName.split('-')[1].strip()
+        print(focus_string)
+        match = re.search(pattern, focus_string, re.IGNORECASE)
+        if match:
+            Pack_type = match.group(2)
+    except:
+        print('Failed to find Pack Type')
+
+    try:
+        pattern = r'\b(zero\s?sugar|no\s?sugar|sugar\s?free|unsweetened|' \
+                  r'low\s?sugar|reduced\s?sugar|less\s?sugar|half\s?sugar|' \
+                  r'no\s?added\s?sugar|naturally\s?sweetened|artificially\s?sweetened|' \
+                  r'sweetened\s?with\s?stevia|aspartame\s?free|' \
+                  r'diet|light|lite|skinny|slim|' \
+                  r'low\s?calorie|calorie\s?free|zero\s?calorie|no\s?calorie|' \
+                  r'low\s?carb|no\s?carb|zero\s?carb|carb\s?free|' \
+                  r'keto\s?friendly|diabetic\s?friendly|' \
+                  r'decaf|caffeine\s?free|low\s?caffeine|' \
+                  r'regular|original|classic|traditional|' \
+                  r'extra\s?strong|strong|bold|intense|' \
+                  r'mild|smooth|mellow|light\s?roast|medium\s?roast|dark\s?roast|' \
+                  r'organic|non\s?gmo|all\s?natural|100%\s?natural|no\s?artificial|' \
+                  r'gluten\s?free|dairy\s?free|lactose\s?free|vegan|' \
+                  r'low\s?fat|fat\s?free|no\s?fat|skim|skimmed|' \
+                  r'full\s?fat|whole|creamy|rich|' \
+                  r'fortified|enriched|vitamin\s?enhanced|' \
+                  r'probiotic|prebiotic|gut\s?health|' \
+                  r'high\s?protein|protein\s?enriched|' \
+                  r'low\s?sodium|sodium\s?free|no\s?salt|salt\s?free|' \
+                  r'sparkling|carbonated|still|flat|' \
+                  r'flavored|unflavored|unsweetened|' \
+                  r'concentrate|from\s?concentrate|not\s?from\s?concentrate|' \
+                  r'fresh\s?squeezed|freshly\s?squeezed|cold\s?pressed|' \
+                  r'raw|unpasteurized|pasteurized|' \
+                  r'premium|luxury|gourmet|artisanal|craft|' \
+                  r'limited\s?edition|seasonal|special\s?edition|' \
+                  r'low\s?alcohol|non\s?alcoholic|alcohol\s?free|virgin|mocktail|' \
+                  r'sugar\s?alcohol|sugar\s?alcohols|' \
+                  r'high\s?fiber|fiber\s?enriched|' \
+                  r'antioxidant|superfood|nutrient\s?rich|' \
+                  r'energy|energizing|revitalizing|' \
+                  r'relaxing|calming|soothing|' \
+                  r'hydrating|isotonic|electrolyte|' \
+                  r'fermented|cultured|living|active|' \
+                  r'ultra\s?filtered|micro\s?filtered|nano\s?filtered|' \
+                  r'distilled|purified|spring|mineral|' \
+                  r'fair\s?trade|ethically\s?sourced|sustainably\s?sourced|' \
+                  r'local|imported|authentic|genuine)\b'
+
+        matches = re.findall(pattern, ProductName, re.IGNORECASE)
+        if matches:
+            ProductVariety = ", ".join(sorted(set(match.lower() for match in matches)))
+    except:
+        print('Failed to find Product Variety')
+
+    try:
+        pattern = r'\b(vanilla|chocolate|strawberry|raspberry|blueberry|blackberry|' \
+                  r'berry|mixed berry|wild berry|acai berry|goji berry|cranberry|' \
+                  r'apple|green apple|cinnamon apple|caramel apple|pear|peach|apricot|' \
+                  r'mango|pineapple|coconut|passion fruit|guava|papaya|lychee|' \
+                  r'orange|blood orange|tangerine|clementine|mandarin|grapefruit|' \
+                  r'lemon|lime|lemon-lime|key lime|cherry|black cherry|wild cherry|' \
+                  r'grape|white grape|concord grape|watermelon|honeydew|cantaloupe|' \
+                  r'kiwi|fig|pomegranate|dragonfruit|star fruit|jackfruit|durian|' \
+                  r'banana|plantain|avocado|almond|hazelnut|walnut|pecan|pistachio|' \
+                  r'peanut|cashew|macadamia|coffee|espresso|mocha|cappuccino|latte|' \
+                  r'caramel|butterscotch|toffee|cinnamon|nutmeg|ginger|turmeric|' \
+                  r'cardamom|clove|anise|licorice|fennel|mint|peppermint|spearmint|' \
+                  r'eucalyptus|lavender|rose|jasmine|hibiscus|chamomile|earl grey|' \
+                  r'bergamot|lemongrass|basil|rosemary|thyme|sage|oregano|' \
+                  r'green tea|black tea|white tea|oolong tea|pu-erh tea|rooibos|' \
+                  r'cola|root beer|cream soda|ginger ale|birch beer|sarsaparilla|' \
+                  r'bubblegum|cotton candy|marshmallow|toasted marshmallow|' \
+                  r'cookies and cream|cookie dough|birthday cake|red velvet|' \
+                  r'pumpkin spice|pumpkin pie|apple pie|pecan pie|key lime pie|' \
+                  r'cheesecake|tiramisu|creme brulee|custard|pudding|' \
+                  r'butter pecan|butter toffee|butterscotch ripple|' \
+                  r'salted caramel|sea salt caramel|dulce de leche|' \
+                  r'maple|maple syrup|honey|agave|molasses|brown sugar|' \
+                  r'vanilla bean|french vanilla|madagascar vanilla|' \
+                  r'dark chocolate|milk chocolate|white chocolate|cocoa|' \
+                  r'strawberries and cream|peaches and cream|berries and cream|' \
+                  r'tropical|tropical punch|fruit punch|citrus|citrus blend|' \
+                  r'melon|mixed melon|berry medley|forest fruits|' \
+                  r'blue raspberry|sour apple|sour cherry|sour patch|' \
+                  r'lemonade|pink lemonade|cherry lemonade|strawberry lemonade|' \
+                  r'iced tea|sweet tea|arnold palmer|' \
+                  r'horchata|tamarind|hibiscus|jamaica|' \
+                  r'pina colada|mojito|margarita|sangria|' \
+                  r'bubble tea|boba|taro|matcha|chai|masala chai|' \
+                  r'cucumber|celery|carrot|beet|tomato|' \
+                  r'vegetable|mixed vegetable|green vegetable|' \
+                  r'aloe vera|noni|acerola|guarana|yerba mate|' \
+                  r'bourbon vanilla|tahitian vanilla|mexican vanilla|' \
+                  r'dutch chocolate|swiss chocolate|belgian chocolate|' \
+                  r'neapolitan|spumoni|rocky road|' \
+                  r'unflavored|original|classic|traditional|' \
+                  r'mystery flavor|surprise flavor|limited edition flavor)\b'
+        matches = re.findall(pattern, ProductName, re.IGNORECASE)
+        if matches:
+            ProductFlavor = ", ".join(sorted(set(match.lower() for match in matches)))
+    except:
+        print('Failed to get Product Flavour')
 
     new_row = {
         'ID': ID,
