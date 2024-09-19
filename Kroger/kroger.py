@@ -14,7 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import bs4
 
 FAVNUM = 22222
-GEN_TIMEOUT = 6
+GEN_TIMEOUT = 7
 STORE_NAME = 'Kroger'
 LOCATION = ''
 MAX_RETRY = 10
@@ -59,6 +59,7 @@ def setLocation_kroger(driver, address, EXPLICIT_WAIT_TIME):
 
 
 def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, base_url=None):
+    time.sleep(GEN_TIMEOUT)
     items = []
     try:
         items = pd.read_csv(f"output/tmp/index_{str(ind)}_{aisle}_item_urls.csv")
@@ -79,15 +80,19 @@ def scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None, 
         elif aisle == 'Coffee':
             driver.get(f'{base_url}d/coffee')
 
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div.ImageNav a.kds-Link"))
-        )
-        link_elements = driver.find_elements(By.CSS_SELECTOR, "div.ImageNav a.kds-Link")
-        store_aisles = []
-        for element in link_elements:
-            href = element.get_attribute('href')
-            if href and href not in store_aisles:
-                store_aisles.append(href)
+        try:
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "div.ImageNav a.kds-Link"))
+            )
+            link_elements = driver.find_elements(By.CSS_SELECTOR, "div.ImageNav a.kds-Link")
+            store_aisles = []
+            for element in link_elements:
+                href = element.get_attribute('href')
+                if href and href not in store_aisles:
+                    store_aisles.append(href)
+        except Exception as e:
+            print('failed getting links')
+            print(e)
 
         # aisle links fix
         if aisle == 'Beverages':
@@ -283,7 +288,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     # Product Name
     try:
-        element = WebDriverWait(driver, 10).until(
+        element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, "h1.ProductDetails-header[data-testid='product-details-name']"))
         )
@@ -317,7 +322,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     # Product Ingredients
     try:
-        ingredients_p = WebDriverWait(driver, 10).until(
+        ingredients_p = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "p.NutritionIngredients-Ingredients"))
         )
         full_text = ingredients_p.text
@@ -335,7 +340,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
 
     # UPC
     try:
-        upc_span = WebDriverWait(driver, 10).until(
+        upc_span = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, "span.ProductDetails-upc[data-testid='product-details-upc']"))
         )
@@ -353,7 +358,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     # Nutrition Label
     try:
         # Wait for the nutrition facts container to be present
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_element_located((By.CLASS_NAME, "NutritionInfo-LabelContainer"))
         )
 
@@ -449,7 +454,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Nutrition Label Error')
 
     try:
-        nav_element = WebDriverWait(driver, 10).until(
+        nav_element = WebDriverWait(driver, EXPLICIT_WAIT_TIME).until(
             EC.presence_of_element_located((By.CLASS_NAME, "kds-Breadcrumb"))
         )
         elements = nav_element.find_elements(By.CSS_SELECTOR, "a, span.kds-Text--l")
@@ -462,7 +467,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
         print('Category Error')
 
     try:
-        wait = WebDriverWait(driver, 10)
+        wait = WebDriverWait(driver, EXPLICIT_WAIT_TIME)
         image = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "img.ProductImages-image")))
         ProductImages = image.get_attribute("src")
     except:

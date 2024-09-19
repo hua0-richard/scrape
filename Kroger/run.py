@@ -19,7 +19,7 @@ def connect_to_existing_chrome(address, ind, url):
         kroger.setLocation_kroger(driver, address, 10)
         aisles_todo = ['Beverages', 'Beer, Wine & Liquor', 'Dairy & Eggs', 'Coffee']
         for a in aisles_todo:
-            kroger.scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME = 10, aisle=a, ind = ind, base_url=url)
+            kroger.scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME = 1, aisle=a, ind = ind, base_url=url)
     except Exception as e:
         print(f"An error occurred: {e}")
 def main():
@@ -27,9 +27,10 @@ def main():
     EXPLICIT_WAIT_TIME = 30
 
     for z in [
-        13,
+        # 13,
         # 14,
-        ]:
+        # 16
+        15 ]:
         ind = z
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
