@@ -17,7 +17,9 @@ def connect_to_existing_chrome(address, ind, url):
         print(f"Connected to Chrome. Current URL: {current_url}")
         print(f"Page title: {driver.title}")
         kroger.setLocation_kroger(driver, address, 10)
-        aisles_todo = ['Beverages', 'Beer, Wine & Liquor', 'Dairy & Eggs', 'Coffee']
+        aisles_todo = [
+            # 'Beverages', 'Beer, Wine & Liquor', 'Dairy & Eggs',
+        'Coffee']
         for a in aisles_todo:
             kroger.scrapeSite_kroger(driver, EXPLICIT_WAIT_TIME = 1, aisle=a, ind = ind, base_url=url)
     except Exception as e:
@@ -29,8 +31,8 @@ def main():
     for z in [
         # 13,
         # 14,
-        # 16
-        15 ]:
+        16 ]:
+        # 15 ]:
         ind = z
         print('\nIndex: ', ind)
         url = site_location_df.loc[ind, 0]
