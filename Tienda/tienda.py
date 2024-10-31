@@ -11,11 +11,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import urllib.request
 from bs4 import BeautifulSoup
-from PIL import Image
-import pytesseract
 
 # Special Package to scrap and aids in avoiding more stringent sites
-import undetected_chromedriver as uc
 
 import time
 import datetime
@@ -267,48 +264,35 @@ def scrapeSite_tienda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
     except Exception as e:
         print('No Prior Items')
         driver.get('https://www.chedraui.com.mx/supermercado/bebidas')
+        categories_drinks = ['https://www.chedraui.com.mx/supermercado/bebidas/jugos', 'https://www.chedraui.com.mx/supermercado/bebidas/refrescos', 'https://www.chedraui.com.mx/supermercado/bebidas/agua', 'https://www.chedraui.com.mx/supermercado/bebidas/rehidratantes-y-energizantes', 'https://www.chedraui.com.mx/supermercado/bebidas/te-y-cafe-bebibles']
 
-        try:
-            # gallery_container = WebDriverWait(driver, 10).until(
-            #     EC.presence_of_element_located((By.ID, "gallery-layout-container"))
-            # )
-            # links = gallery_container.find_elements(By.TAG_NAME, "a")
-            #
-            # for link in links:
-            #     href = link.get_attribute("href")
-            #     if href:
-            #         print(href)
-            #
-            # links = gallery_container.find_elements(By.CSS_SELECTOR, 'a[class="your-exact-class-name"]')
-            # for link in links:
-            #     href = link.get_attribute("href")
-            #     if href:
-            #             print(href)
-            while True:
-                for i in range(10000):
-                    scroll_amount = random.randint(100, 200)
+        for cat in categories_drinks:
+            driver.get(cat)
+            try:
+                for i in range(50):
+                    gallery_container = WebDriverWait(driver, 10).until(
+                        EC.presence_of_element_located((By.ID, "gallery-layout-container"))
+                    )
+                    links = gallery_container.find_elements(By.TAG_NAME, "a")
+
+                    for link in links:
+                        href = link.get_attribute("href")
+                        if href:
+                            items.append(href)  # Append href instead of link object
+
+                    scroll_amount = 500
                     scroll_script = f"window.scrollBy(0, {scroll_amount});"
                     driver.execute_script(scroll_script)
-                    time.sleep(random.uniform(0.1, 0.3))
+                    time.sleep(2)
 
-                # Wait for dynamic content
-                time.sleep(4)
+                items = list(set(items))  # Remove duplicates after all scrolling
+                print(f'items so far... {len(items)}')
 
-                # Calculate new scroll height
-                new_height = driver.execute_script("return document.body.scrollHeight")
+            except Exception as e:
+                print(f'error: {str(e)}')
+            pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
 
-                # Break if bottom reached
-                if new_height == last_height:
-                    break
-
-                last_height = new_height
-
-        except:
-            print('error')
-
-
-        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None,
-                                   encoding='utf-8-sig')
+        pd.DataFrame(items).to_csv(f'output/tmp/index_{str(ind)}_{aisle}_item_urls.csv', index=False, header=None, encoding='utf-8-sig')
         print(f'items so far... {len(items)}')
 
     df_data = pd.DataFrame()
@@ -809,7 +793,7 @@ def scrape_item(driver, aisle, item_url, EXPLICIT_WAIT_TIME, ind, index):
     new_row = {
         'ID': ID,
         'Country': 'United Kingdom',
-        'Store': 'Tesco',
+        'Store': 'Tienda',
         'Region': Region,
         'City': City,
         'ProductName': ProductName,
