@@ -6,19 +6,19 @@ import pandas as pd
 
 def get_region_and_city(address):
     address_mapping = {
-        "1401 Broadway Seattle, WA 98122": ("WA", "Seattle"),
-        "4000 Polk St, Houston, TX 77023, United States": ("TX", "Houston"),
-        "1419 W Carroll Ave Chicago, IL 60607": ("IL", "Chicago"),
-        "5429 Hollywood Blvd Los Angeles, CA 90027": ("CA", "Los Angeles")
+        "Oxford Rd, High Wycombe HP11 2DN, United Kingdom": ("Buckinghamshire", "High Wycombe"),
+        "66 E Barnet Rd, London, Barnet EN4 8RQ, United Kingdom": ("Greater London", "Barnet"),
+        "Heaton Park Rd, Manchester M9 0QS, United Kingdom": ("Greater Manchester", "Manchester"),
+        "Felixstowe Rd, Ipswich IP3 8TQ, United Kingdom": ("Suffolk", "Ipswich")
     }
 
     return address_mapping.get(address, ("Unknown", "Unknown"))
 
 addresses = [
-    "1401 Broadway Seattle, WA 98122",
-    "4000 Polk St, Houston, TX 77023, United States",
-    "1419 W Carroll Ave Chicago, IL 60607",
-    "5429 Hollywood Blvd Los Angeles, CA 90027"
+    "Oxford Rd, High Wycombe HP11 2DN, United Kingdom",
+    "66 E Barnet Rd, London, Barnet EN4 8RQ, United Kingdom",
+    "Heaton Park Rd, Manchester M9 0QS, United Kingdom",
+    "Felixstowe Rd, Ipswich IP3 8TQ, United Kingdom"
 ]
 
 
