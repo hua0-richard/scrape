@@ -272,7 +272,6 @@ def scrapeSite_asda(driver, EXPLICIT_WAIT_TIME, idx=None, aisle='', ind=None):
                 if new_row is None:
                     break
                 site_items_df = pd.concat([site_items_df, pd.DataFrame([new_row])], ignore_index=True)
-                site_items_df = site_items_df.drop_duplicates(subset=['url'], keep='last')
                 print(new_row)
                 break
             except Exception as e:
